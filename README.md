@@ -5,7 +5,7 @@ A hackathon project covering data collection, sentiment, demographics, trends an
 | Section | Folder | Owner |
 |---|---|---|
 | A. Data Collection and Timeline | sections/a-data-collection | (name) |
-| B. Sentiment Analysis | sections/b-sentiment | (name) |
+| B. Sentiment Analysis | sections/b-sentiment | Sukriti | In Progress
 | C. Demographic Profiling | sections/c-demographics | (name) |
 | D. Trend and Topic Detection | sections/d-trends | (name) |
 | E. Network and Influence Analysis | sections/e-network | (name) |
