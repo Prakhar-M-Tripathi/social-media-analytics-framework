@@ -18,18 +18,18 @@
     "reply": 660
   },
   "match_methods": {
-    "exact_keyword": 639,
-    "hashtag": 210,
-    "official_account": 139,
-    "semantic_match": 212,
+    "exact_keyword": 618,
+    "hashtag": 207,
+    "official_account": 155,
+    "semantic_match": 220,
     "thread_connection": 780
   },
   "languages": {
-    "en": 856,
-    "en-es": 299,
-    "en-hi": 317,
-    "es": 272,
-    "hi": 236
+    "en": 858,
+    "en-es": 250,
+    "en-hi": 301,
+    "es": 286,
+    "hi": 285
   },
   "interaction_types": {
     "quote_of": 120,
@@ -37,12 +37,12 @@
     "repost_of": 264
   },
   "campaign_ids": [
-    "example-company-launch",
-    "sample-foods-sustainability"
+    "apple-iphone-17-synthetic-scenario",
+    "coca-cola-zero-sugar-synthetic-scenario"
   ],
-  "start_timestamp": "2026-10-07 19:42:30",
-  "end_timestamp": "2026-11-06 19:17:47",
-  "exported_at_utc": "2026-11-06 19:17:48",
+  "start_timestamp": "2026-10-07 20:37:54",
+  "end_timestamp": "2026-11-06 20:34:18",
+  "exported_at_utc": "2026-11-06 20:34:19",
   "files": [
     "demo_posts.csv",
     "demo_post_metadata.csv",
@@ -53,7 +53,7 @@
   "generated_records": 1980,
   "window_days": 30,
   "campaigns": [
-    "example-company-launch",
-    "sample-foods-sustainability"
+    "apple-iphone-17-synthetic-scenario",
+    "coca-cola-zero-sugar-synthetic-scenario"
   ]
 }

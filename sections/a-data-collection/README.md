@@ -12,7 +12,7 @@
 
 The pipeline normalizes collected content to the project's shared post columns and keeps richer collection details in Section A sidecar files. These include campaign matches, source and observation timestamps, post types, available engagement counts, and typed interaction edges. The shared columns are not changed.
 
-The synthetic fixture contains multiple campaigns, varied languages and conversation styles, stable fictional author profiles, replies, quotes, repost events, mock engagement counts, and clearly marked expected labels for downstream demo work. The labels are only synthetic reference labels; they are not AI model results. No generated item came from a real account or API.
+The synthetic fixture uses real company and product names ([Apple iPhone 17](https://www.apple.com/iphone-17/) and [The Coca-Cola Company Coca-Cola Zero Sugar](https://www.coca-cola.com/us/en/brands/coca-cola/products/zero)) in two explicitly marked discussion scenarios. Every post, reply, quote, repost, author profile, engagement count, and expected label is generated fiction. The scenarios are not real campaigns, customer statements, company statements, or API observations. The expected labels are synthetic references, not AI model results. No real official account handles are configured in the fixture.
 
 The pipeline is started manually by the project operator using a campaign configuration file. A future product interface or scheduler can produce the same configuration and invoke the collector; Section A itself is a backend, not a customer-facing setup screen.
 
@@ -24,7 +24,7 @@ Use Python 3.9 or newer. From this folder run:
 python pipeline.py demo
 ```
 
-Edit `config.json` to change campaign names, products, keywords, hashtags, exclusion terms, simulated languages, platforms, and sample size. The default fixture creates 100 root posts per campaign/platform over a 30-day window, plus replies, quote posts, and repost edges. For actual customer account filters, use the ignored local `live_campaigns.local.json` overlay so real handles or account IDs are not added to the shared repository.
+Edit `config.json` to change company and product examples, campaign scenario names, keywords, hashtags, exclusion terms, simulated languages, platforms, and sample size. The default fixture creates 100 root posts per campaign/platform over a 30-day window, plus replies, quote posts, and repost edges. For actual customer account filters, use the ignored local `live_campaigns.local.json` overlay so real handles or account IDs are not added to the shared repository.
 
 ## Optional live collection
 
@@ -64,7 +64,7 @@ The post CSV uses exactly the six columns listed in `data/README.md`: `post_id`,
 The ordinary demo and live exports stay under this section folder. For a reviewed integration handoff, the project lead can publish exactly one campaign to the shared file:
 
 ```powershell
-python pipeline.py export --mode demo --campaign-id example-company-launch --publish-shared
+python pipeline.py export --mode demo --campaign-id apple-iphone-17-synthetic-scenario --publish-shared
 ```
 
 Use `--mode live` for authorized live records. The explicit `--publish-shared` flag writes `data/posts.csv`; `--campaign-id` is required so separate customer campaigns are not mixed in a schema that has no campaign ID. The project lead reviews and commits that shared file. Sidecars remain in Section A unless the lead approves a shared interface for them.
