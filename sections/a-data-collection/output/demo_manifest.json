@@ -40,9 +40,9 @@
     "example-company-launch",
     "sample-foods-sustainability"
   ],
-  "start_timestamp": "2026-10-07 18:30:11",
-  "end_timestamp": "2026-11-06 18:05:28",
-  "exported_at_utc": "2026-11-06 18:05:28",
+  "start_timestamp": "2026-10-07 19:42:30",
+  "end_timestamp": "2026-11-06 19:17:47",
+  "exported_at_utc": "2026-11-06 19:17:48",
   "files": [
     "demo_posts.csv",
     "demo_post_metadata.csv",

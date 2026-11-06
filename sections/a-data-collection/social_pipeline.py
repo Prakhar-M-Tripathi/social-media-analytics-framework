@@ -28,13 +28,16 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "output"
 DB_PATH = OUT / "collection.sqlite3"
-POST_COLUMNS = ["post_id", "platform", "user_id", "timestamp", "text", "parent_id", "language", "user_bio", "user_location"]
+SHARED_COLUMNS = ["post_id", "platform", "user_id", "timestamp", "text", "parent_id"]
+PROFILE_COLUMNS = ["language", "user_bio", "user_location"]
+POST_COLUMNS = SHARED_COLUMNS + PROFILE_COLUMNS
 METADATA_COLUMNS = [
     "post_id", "source_mode", "source_post_id", "source_url", "content_type",
     "conversation_id", "root_post_id", "published_at_utc", "collected_at_utc",
     "likes_count", "reposts_count", "replies_count", "quotes_count", "views_count",
     "profile_provenance",
 ]
+POST_METADATA_EXPORT_COLUMNS = METADATA_COLUMNS + PROFILE_COLUMNS
 MATCH_COLUMNS = ["post_id", "campaign_id", "company", "campaign", "match_method", "matched_term", "match_reason", "confidence"]
 EDGE_COLUMNS = [
     "edge_id", "source_mode", "campaign_id", "platform", "actor_user_id", "target_user_id",
@@ -228,12 +231,17 @@ def export_mode(conn: sqlite3.Connection, mode: str) -> dict:
         label_rows = [dict(row) for row in conn.execute(f"SELECT * FROM expected_labels WHERE post_id IN ({ids}) ORDER BY campaign_id, post_id", post_ids).fetchall()] if mode == "demo" else []
     else:
         metadata_rows, match_rows, label_rows = [], [], []
+    profile_by_id = {row["post_id"]: row for row in post_rows}
+    metadata_rows = [
+        {**row, **{column: profile_by_id.get(row["post_id"], {}).get(column, "") for column in PROFILE_COLUMNS}}
+        for row in metadata_rows
+    ]
     edge_rows = [dict(row) for row in conn.execute(
         f"SELECT * FROM interactions WHERE source_mode IN ({placeholders}) ORDER BY occurred_at_utc, edge_id", source_modes
     ).fetchall()]
     prefix = "demo" if mode == "demo" else "live"
-    export_csv(OUT / f"{prefix}_posts.csv", post_rows, POST_COLUMNS)
-    export_csv(OUT / f"{prefix}_post_metadata.csv", metadata_rows, METADATA_COLUMNS)
+    export_csv(OUT / f"{prefix}_posts.csv", post_rows, SHARED_COLUMNS)
+    export_csv(OUT / f"{prefix}_post_metadata.csv", metadata_rows, POST_METADATA_EXPORT_COLUMNS)
     export_csv(OUT / f"{prefix}_campaign_matches.csv", match_rows, MATCH_COLUMNS)
     export_csv(OUT / f"{prefix}_interactions.csv", edge_rows, EDGE_COLUMNS)
     if mode == "demo":
@@ -262,6 +270,27 @@ def export_mode(conn: sqlite3.Connection, mode: str) -> dict:
         (OUT / "live_manifest.json").write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
     refresh_collection_status(conn)
     return status
+
+
+def publish_shared_csv(conn: sqlite3.Connection, mode: str, campaign_id: str) -> Path:
+    """Publish one campaign to the fixed shared CSV schema after explicit CLI opt-in."""
+    if not campaign_id:
+        raise ValueError("Choose one campaign with --campaign-id before publishing to the shared file.")
+    source_modes = ["synthetic_demo"] if mode == "demo" else ["x_live", "x_owned_live", "telegram_live"]
+    placeholders = ",".join("?" for _ in source_modes)
+    query = (
+        "SELECT DISTINCT " + ", ".join(f'p.\"{column}\"' for column in SHARED_COLUMNS)
+        + " FROM posts p JOIN post_metadata m ON m.post_id=p.post_id"
+        + " JOIN campaign_matches cm ON cm.post_id=p.post_id"
+        + f" WHERE m.source_mode IN ({placeholders}) AND cm.campaign_id=?"
+        + " ORDER BY p.timestamp, p.post_id"
+    )
+    rows = [dict(row) for row in conn.execute(query, source_modes + [campaign_id]).fetchall()]
+    if not rows:
+        raise ValueError(f"No {mode} records were found for campaign_id '{campaign_id}'. Generate or collect that campaign first.")
+    target = HERE.parents[1] / "data" / "posts.csv"
+    export_csv(target, rows, SHARED_COLUMNS)
+    return target
 
 
 def refresh_collection_status(conn: sqlite3.Connection) -> None:
@@ -888,6 +917,8 @@ def main() -> None:
     collect_parser.add_argument("--interval", type=int, default=300, help="Seconds between polling cycles while watching; minimum 30.")
     export_parser = subparsers.add_parser("export", help="Re-export stored live or synthetic records.")
     export_parser.add_argument("--mode", choices=["demo", "live"], required=True)
+    export_parser.add_argument("--campaign-id", help="Select one campaign when publishing to the shared feed.")
+    export_parser.add_argument("--publish-shared", action="store_true", help="Write the selected campaign to data/posts.csv using the fixed shared columns.")
     args = parser.parse_args()
     if args.command is None:
         generate_demo(load_config(HERE / "config.json"))
@@ -898,9 +929,14 @@ def main() -> None:
     elif command == "collect":
         collect_live(load_config(args.config), args.sources, args.acknowledge_x_cost, args.watch, args.interval)
     elif command == "export":
+        if args.campaign_id and not args.publish_shared:
+            parser.error("--campaign-id is used with --publish-shared.")
         conn = database()
         try:
             print(json.dumps(export_mode(conn, args.mode), indent=2))
+            if args.publish_shared:
+                target = publish_shared_csv(conn, args.mode, args.campaign_id or "")
+                print(f"Published one campaign using the agreed shared columns to {target}")
         finally:
             conn.close()
 
