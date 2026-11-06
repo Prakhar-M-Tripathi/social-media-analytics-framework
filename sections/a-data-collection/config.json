@@ -1,0 +1,55 @@
+{
+  "project_name": "Campaign Conversation Demo",
+  "seed": 42,
+  "window_days": 30,
+  "records_per_platform_per_campaign": 100,
+  "reply_ratio": 0.55,
+  "quote_ratio": 0.1,
+  "repost_ratio": 0.22,
+  "platforms": ["X", "Telegram", "Instagram", "Facebook", "YouTube", "Reddit"],
+  "campaigns": [
+    {
+      "campaign_id": "example-company-launch",
+      "company": "Example Company",
+      "campaign": "Example product launch",
+      "product": "Example One",
+      "keywords": ["product launch", "new feature", "customer experience", "setup experience", "launch date"],
+      "hashtags": ["#ExampleOne", "#ExampleLaunch"],
+      "aliases": ["Example One", "Example company launch"],
+      "urls": [],
+      "official_accounts": ["exampleco"],
+      "competitor_accounts": ["samplecompetitor"],
+      "connected_account_ids": [],
+      "seed_post_ids": [],
+      "include_all_connected_posts": false,
+      "exclusions": ["unrelated giveaway"],
+      "topics": ["ease_of_use", "value_for_money", "product_quality", "launch_timing", "customer_service", "competitor_comparison"]
+    },
+    {
+      "campaign_id": "sample-foods-sustainability",
+      "company": "Sample Foods",
+      "campaign": "Sample sustainability campaign",
+      "product": "Sample reusable packaging",
+      "keywords": ["reusable packaging", "sustainable choice", "less waste", "refill option", "packaging change"],
+      "hashtags": ["#LessWaste", "#SampleSustainable"],
+      "aliases": ["Sample reusable pack", "Sample Foods sustainability"],
+      "urls": [],
+      "official_accounts": ["samplefoods"],
+      "competitor_accounts": ["freshmarketbrand"],
+      "connected_account_ids": [],
+      "seed_post_ids": [],
+      "include_all_connected_posts": false,
+      "exclusions": ["unrelated giveaway"],
+      "topics": ["sustainability", "product_quality", "price", "availability", "customer_service", "competitor_comparison"]
+    }
+  ],
+  "live": {
+    "x_max_pages": 2,
+    "x_max_results": 100,
+    "collect_public_profile_fields": false,
+    "telegram": {
+      "allowed_chat_ids": [],
+      "long_poll_seconds": 5
+    }
+  }
+}

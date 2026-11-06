@@ -1,0 +1,59 @@
+{
+  "data_status": "synthetic_demo_only",
+  "warning": "Simulated records only; no platform API was called.",
+  "post_count": 1980,
+  "campaign_match_count": 1980,
+  "interaction_edge_count": 1044,
+  "platforms": {
+    "Facebook": 330,
+    "Instagram": 330,
+    "Reddit": 330,
+    "Telegram": 330,
+    "X": 330,
+    "YouTube": 330
+  },
+  "content_types": {
+    "post": 1200,
+    "quote": 120,
+    "reply": 660
+  },
+  "match_methods": {
+    "exact_keyword": 639,
+    "hashtag": 210,
+    "official_account": 139,
+    "semantic_match": 212,
+    "thread_connection": 780
+  },
+  "languages": {
+    "en": 856,
+    "en-es": 299,
+    "en-hi": 317,
+    "es": 272,
+    "hi": 236
+  },
+  "interaction_types": {
+    "quote_of": 120,
+    "reply_to": 660,
+    "repost_of": 264
+  },
+  "campaign_ids": [
+    "example-company-launch",
+    "sample-foods-sustainability"
+  ],
+  "start_timestamp": "2026-10-07 18:30:11",
+  "end_timestamp": "2026-11-06 18:05:28",
+  "exported_at_utc": "2026-11-06 18:05:28",
+  "files": [
+    "demo_posts.csv",
+    "demo_post_metadata.csv",
+    "demo_campaign_matches.csv",
+    "demo_interactions.csv",
+    "demo_expected_labels.csv"
+  ],
+  "generated_records": 1980,
+  "window_days": 30,
+  "campaigns": [
+    "example-company-launch",
+    "sample-foods-sustainability"
+  ]
+}

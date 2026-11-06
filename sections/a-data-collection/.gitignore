@@ -1,0 +1,10 @@
+.env
+live_campaigns.local.json
+__pycache__/
+*.py[cod]
+output/*.sqlite3
+output/*-wal
+output/*-shm
+output/live_*.csv
+output/live_*.json
+output/collection_status.json
