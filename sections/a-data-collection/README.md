@@ -2,6 +2,7 @@
 
 - Owner team: (add names)
 - Status: In progress
+- Role: Backend ingestion component. Customers do not use this page to configure or start collection.
 - Primary live source: X
 - Other live connector: Telegram Bot API (only configured chats that the bot can access)
 - Demo source: rich synthetic conversations across X, Telegram, Instagram, Facebook, YouTube, and Reddit labels
@@ -12,6 +13,8 @@
 The pipeline normalizes collected content to the project's shared post columns and keeps richer collection details in Section A sidecar files. These include campaign matches, source and observation timestamps, post types, available engagement counts, and typed interaction edges. The shared columns are not changed.
 
 The synthetic fixture contains multiple campaigns, varied languages and conversation styles, stable fictional author profiles, replies, quotes, repost events, mock engagement counts, and clearly marked expected labels for downstream demo work. The labels are only synthetic reference labels; they are not AI model results. No generated item came from a real account or API.
+
+The pipeline is started manually by the project operator using a campaign configuration file. A future product interface or scheduler can produce the same configuration and invoke the collector; Section A itself is a backend, not a customer-facing setup screen.
 
 ## Generate the synthetic demo
 
@@ -46,8 +49,8 @@ The watch mode polls until stopped with `Ctrl+C`. A computer must remain on and 
 
 ## Output files
 
-- `output/demo_posts.csv`: synthetic posts using the agreed shared columns.
-- `output/demo_post_metadata.csv`: content type, source mode, publication/collection time, source reference, and mock engagement counters.
+- `output/demo_posts.csv`: synthetic posts using exactly the six agreed shared columns.
+- `output/demo_post_metadata.csv`: content type, source mode, publication/collection time, source reference, mock engagement counters, and optional profile fields.
 - `output/demo_campaign_matches.csv`: campaign identity, match type, matched term, rationale, and confidence.
 - `output/demo_interactions.csv`: synthetic reply, quote, and repost edges for network demos.
 - `output/demo_expected_labels.csv`: simulated reference sentiment/emotion/topic labels, never model output.
@@ -56,7 +59,15 @@ The watch mode polls until stopped with `Ctrl+C`. A computer must remain on and 
 - `output/collection_status.json`: recent run status, counts, and errors without credentials.
 - `output/collection.sqlite3`: local working database, ignored by Git so live data is not accidentally committed.
 
-The project currently designates `data/posts.csv` as the shared file for Sections B-E. This pipeline leaves the canonical output inside Section A to respect the section-folder rule. The project lead should review and copy the chosen demo or live export into the shared location during integration. Sidecar files are not part of the current shared contract; other sections should use them only if the lead approves a shared interface for them.
+The post CSV uses exactly the six columns listed in `data/README.md`: `post_id`, `platform`, `user_id`, `timestamp`, `text`, and `parent_id`. Language, fictional/demo profile attributes, source references, campaign matches, collection times, and typed network events stay in Section A sidecars; they do not change the shared schema.
+
+The ordinary demo and live exports stay under this section folder. For a reviewed integration handoff, the project lead can publish exactly one campaign to the shared file:
+
+```powershell
+python pipeline.py export --mode demo --campaign-id example-company-launch --publish-shared
+```
+
+Use `--mode live` for authorized live records. The explicit `--publish-shared` flag writes `data/posts.csv`; `--campaign-id` is required so separate customer campaigns are not mixed in a schema that has no campaign ID. The project lead reviews and commits that shared file. Sidecars remain in Section A unless the lead approves a shared interface for them.
 
 ## Privacy and limits
 
