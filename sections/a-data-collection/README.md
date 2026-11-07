@@ -7,6 +7,7 @@
 - Other live connector: Telegram Bot API (only configured chats that the bot can access)
 - Demo source: rich synthetic conversations across X, Telegram, Instagram, Facebook, YouTube, and Reddit labels
 - Outputs produced: see the `output/` links on `index.html`; all generated data is clearly separated by source mode.
+- `index.html` uses the shared project theme at `../../assets/css/site-theme.css` for its layout and visual style.
 
 ## What the pipeline does
 

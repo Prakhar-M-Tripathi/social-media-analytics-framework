@@ -67,3 +67,4 @@ Your AI tool does not know this project. Give it the context:
 - `docs/DATA_CONTRACT.md`: the shared data format
 - `docs/COLAB_STARTERS.md`: starter code for each section (if added by the lead)
 - `AGENTS.md`: rules your AI assistant must follow
+- `assets/css/site-theme.css`: shared monochrome design system used by the project landing page and section pages
