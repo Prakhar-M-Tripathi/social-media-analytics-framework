@@ -23,6 +23,11 @@ The dashboard includes:
 - Reply versus parent sentiment changes, only for `parent_id` values matched in the loaded data.
 - Supportive, opposition, and concern proxy groups mapped from emotion labels; these are not direct stance-model predictions.
 - A post-level results table and downloadable CSV with model scores.
+- A concise executive readout based on day-over-day primary-emotion changes, the most common heuristic intent cue, and the leading keyword topic.
+- A rolling negative-volume screen using prior daily buckets, with a minimum sample and an observed-reply proxy threshold.
+- Additional processed CSV columns: `primary_emotion`, `intent_class`, `aspect_scores`, `sarcasm_probability`, `virality_score`, and `topic_cluster`.
+
+The six shared input columns remain unchanged. `analysis.js` contains JSDoc data shapes and the dependency-free enrichment functions. `intent_class` is a transparent keyword heuristic (not zero-shot NLP); `aspect_scores` applies whole-post polarity to matched configurable terms; `topic_cluster` is a frequent-keyword label, not semantic clustering. `virality_score` is only a within-file percentile of replies observed through `parent_id`; the shared contract has no likes, shares, impressions, or reach. `sarcasm_probability` is left blank because the configured models do not predict sarcasm. The crisis screen compares daily negative-post counts to up to seven earlier observed days, requires at least three baseline days and three negative posts, a count above mean + 2 sample standard deviations, and average reply proxy ≥0.65. These are screening heuristics, not verified campaign facts or crisis determinations.
 
 The default 24-post demo is fictional and should be used only to demonstrate the workflow. Upload a CSV containing exactly these shared fields: `post_id`, `platform`, `user_id`, `timestamp`, `text`, and `parent_id`. The analysis scope can be set to the first 100, first 500, or all posts. Platform filtering updates the dashboard after analysis.
 
@@ -34,7 +39,8 @@ The project currently has no shared `data/posts.csv` on this branch; the demo lo
 
 ## Files produced
 
-- `index.html`: static dashboard, demo rows, model loading/inference, visualizations, CSV upload, and result export.
+- `index.html`: static dashboard, demo rows, model loading/inference, visualizations, CSV upload, executive summary, anomaly screen, and result export.
+- `analysis.js`: browser-side types (JSDoc), intent/aspect/topic enrichment, reply-count virality proxy, rolling anomaly detection, and executive-summary helpers.
 
 ## References
 
