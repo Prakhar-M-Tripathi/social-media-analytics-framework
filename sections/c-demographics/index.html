@@ -1,16 +1,339 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Section C: Demographic Profiling</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aggregate, anonymised audience demographics: language, region, professional interests and life-stage cues.">
+  <title>Audience Profile | Demographic Profiling</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
-    .placeholder { background: #eef2f7; border: 2px dashed #9aa8bb; padding: 30px; text-align: center; }
+    :root{color-scheme:light;--ink:#192537;--muted:#667489;--line:#e5eaf1;--paper:#fff;--canvas:#f5f7fb;--navy:#172944;--blue:#5369ee;--teal:#13a89e;--amber:#e9ab50;--red:#e06469;--violet:#9b6fe8;--green:#23966b;--grey:#9aa6b8;--shadow:0 10px 32px #2033540b}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    button,select{font:inherit}button{cursor:pointer}
+    .shell{max-width:1240px;margin:auto;padding:0 28px}
+    .hero{background:radial-gradient(ellipse at 80% 20%,#253d65 0,transparent 42%),var(--navy);color:#fff;padding-bottom:30px}
+    .topbar{height:60px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:.01em}
+    .brand-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,#2fc3b6,#14857c);font-weight:900}
+    .topbar a{color:#dce6f5;text-decoration:none;font-size:13px}
+    .topbar a:hover,.topbar a:focus{text-decoration:underline}
+    .eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:11px;color:#8fe0d8;font-weight:800}
+    .hero h1{font-size:clamp(26px,3vw,36px);letter-spacing:-.03em;margin:8px 0 6px}
+    .hero p{color:#b8c6db;margin:0;max-width:700px}
+    main{padding-top:20px;padding-bottom:48px}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+    .ingest{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .ingest strong{display:block;font-size:13px}.ingest small{display:block;color:var(--muted);margin-top:2px}
+    .actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .btn{border:1px solid #d9e0eb;background:#fff;color:#344258;border-radius:8px;padding:8px 13px;font-weight:700;font-size:12px}
+    .btn:hover{background:#f8f9fc}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn:focus-visible,select:focus-visible,.file-input:focus-visible+.btn{outline:2px solid var(--blue);outline-offset:2px}
+    .file-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    select{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 26px 7px 10px;color:#38465c;font-size:12px}
+    .banner{margin:12px 0;padding:11px 14px;border-radius:10px;font-size:12px;display:flex;gap:10px;align-items:flex-start}
+    .banner b{white-space:nowrap}
+    .banner.privacy{background:#eefaf8;border:1px solid #c9ece7;color:#285a55}
+    .banner.demo{background:#fff7e8;border:1px solid #f3dfb4;color:#7a5614}
+    .banner.error{background:#fff0f0;border:1px solid #f1c9cb;color:#8e3036}
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}
+    .kpi{padding:15px 17px}.kpi span{display:block;color:var(--muted);font-size:11px;font-weight:650}
+    .kpi strong{display:block;font-size:26px;letter-spacing:-.04em;margin:6px 0 1px}.kpi small{color:var(--muted);font-size:11px}
+    .findings{padding:16px 20px;margin-bottom:14px}
+    .findings h2,.panel h2{font-size:14px;margin:0 0 2px}
+    .findings ul{margin:8px 0 0;padding-left:18px;color:#344258}.findings li{margin:3px 0}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .panel{padding:17px 19px;min-width:0;margin-bottom:0}
+    .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .badge{background:#eef1ff;color:#4a5fd8;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:750;white-space:nowrap}
+    .badge.warn{background:#fff3df;color:#9a6410}
+    .desc{color:var(--muted);font-size:11px;margin:4px 0 12px}
+    .bars{display:grid;gap:9px}
+    .row{display:grid;grid-template-columns:minmax(110px,190px) 1fr 82px;align-items:center;gap:10px;font-size:12px}
+    .row .name{color:#344258}
+    .track{height:9px;background:#eef1f6;border-radius:99px;overflow:hidden}
+    .fill{display:block;height:100%;border-radius:99px;background:var(--c,var(--blue))}
+    .val{text-align:right;color:#556278;font-variant-numeric:tabular-nums;font-size:11px}
+    .na{margin-top:11px;font-size:11px;color:var(--muted)}
+    .empty{padding:30px 8px;text-align:center;color:#8490a2;font-size:12px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:2px 0 10px}
+    .legend span{display:inline-flex;align-items:center;gap:5px}.key{height:9px;width:9px;border-radius:3px;display:inline-block}
+    .stack-row{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;margin-bottom:9px;font-size:12px}
+    .stack{display:flex;height:20px;border-radius:5px;overflow:hidden;background:#eef1f6}.stack i{display:block;height:100%}
+    .full{margin-bottom:14px}
+    .table-scroll{overflow:auto}
+    table{border-collapse:collapse;width:100%;font-size:12px;min-width:520px}
+    th,td{padding:10px 12px;border-top:1px solid #edf0f5;text-align:left}
+    th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8390a3;background:#fbfcfe}
+    td.num{text-align:right;font-variant-numeric:tabular-nums}th.num{text-align:right}
+    .method{padding:17px 20px;font-size:12px;color:#445168}
+    .method h2{font-size:14px;margin:0 0 8px;color:var(--ink)}.method ul{margin:6px 0 10px;padding-left:18px}.method li{margin:3px 0}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    @media(max-width:860px){.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:0 16px}}
+    @media(max-width:520px){.row{grid-template-columns:1fr 70px;grid-template-areas:"n v" "t t"}.row .name{grid-area:n}.row .val{grid-area:v}.row .track{grid-area:t}.stack-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <p><a href="../../index.html">Back to home</a></p>
-  <h1>Section C: Demographic Profiling</h1>
-  <div class="placeholder">This section is under construction. The assigned team adds its work here.</div>
+  <header class="hero">
+    <div class="shell">
+      <nav class="topbar"><div class="brand"><span class="brand-mark">C</span> AUDIENCE PROFILE</div><a href="../../index.html">&larr; Back to framework</a></nav>
+      <div class="eyebrow">Section C &middot; Demographic profiling</div>
+      <h1>Who is the audience?</h1>
+      <p>Aggregate, anonymised estimates of language, region, professional interests and life-stage cues, built from public profile indicators.</p>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="card ingest" aria-label="Dataset controls">
+      <div><strong id="dataset-title">Loading dataset&hellip;</strong><small id="dataset-meta">Looking for the shared dataset</small></div>
+      <div class="actions">
+        <label for="platform-filter" class="sr">Platform</label>
+        <select id="platform-filter" aria-label="Filter by platform"><option value="all">All platforms</option></select>
+        <input class="file-input" id="csv-file" type="file" accept=".csv,text/csv">
+        <label class="btn" for="csv-file" role="button">Choose CSV</label>
+        <button class="btn" id="download" type="button" disabled>Export aggregates</button>
+      </div>
+    </section>
+
+    <div id="notice" role="status"></div>
+    <div class="banner privacy"><b>Privacy</b><span>Only group totals are shown. Groups with fewer than 5 users are merged into &ldquo;Other&rdquo; and their exact size is hidden. No handle, name, bio text or per-user result is displayed or exported.</span></div>
+
+    <section class="kpis" aria-label="Summary">
+      <div class="card kpi"><span>Posts analysed</span><strong id="k-posts">&ndash;</strong><small>in the current selection</small></div>
+      <div class="card kpi"><span>Audience profiles</span><strong id="k-users">&ndash;</strong><small id="k-users-sub">unique anonymised IDs</small></div>
+      <div class="card kpi"><span>Non-English or mixed</span><strong id="k-multi">&ndash;</strong><small>of profiles with a known language</small></div>
+      <div class="card kpi"><span>Profile coverage</span><strong id="k-cov">&ndash;</strong><small id="k-cov-sub">with a stated location</small></div>
+    </section>
+
+    <section class="card findings" aria-labelledby="f-h"><h2 id="f-h">Key findings</h2><ul id="findings"><li>Waiting for data.</li></ul></section>
+
+    <div class="grid2">
+      <section class="card panel" aria-labelledby="h-lang">
+        <div class="panel-head"><h2 id="h-lang">Languages</h2><span class="badge">Declared or detected</span></div>
+        <p class="desc">Main language per profile, from the language code, or the writing script when no code exists.</p>
+        <div class="bars" id="bars-language"></div><div class="na" id="na-language"></div>
+      </section>
+      <section class="card panel" aria-labelledby="h-reg">
+        <div class="panel-head"><h2 id="h-reg">Regions</h2><span class="badge">From stated location</span></div>
+        <p class="desc">Broad world region matched from the location text. Exact places are never shown.</p>
+        <div class="bars" id="bars-region"></div><div class="na" id="na-region"></div>
+      </section>
+    </div>
+
+    <div class="grid2">
+      <section class="card panel" aria-labelledby="h-int">
+        <div class="panel-head"><h2 id="h-int">Professional interests</h2><span class="badge">Keyword rules</span></div>
+        <p class="desc">Interest themes found in bio text. A profile can have several, so shares add up to more than 100%.</p>
+        <div class="bars" id="bars-interest"></div><div class="na" id="na-interest"></div>
+      </section>
+      <section class="card panel" aria-labelledby="h-age">
+        <div class="panel-head"><h2 id="h-age">Life-stage cues</h2><span class="badge warn">Weak signal</span></div>
+        <p class="desc">Approximate age brackets suggested by self-described bio words such as &ldquo;student&rdquo;. Most profiles give no cue, and this is not a statement about any person.</p>
+        <div class="bars" id="bars-age"></div><div class="na" id="na-age"></div>
+      </section>
+    </div>
+
+    <section class="card panel full" aria-labelledby="h-plat">
+      <div class="panel-head"><h2 id="h-plat">Compare platforms</h2>
+        <div><label for="dim" class="sr">Dimension</label><select id="dim" aria-label="Choose what to compare"><option value="language">Languages</option><option value="region">Regions</option><option value="interest">Interests</option></select></div></div>
+      <p class="desc">Share of profiles in each group, per platform. Always uses all platforms, regardless of the filter above.</p>
+      <div class="legend" id="stack-legend"></div><div id="stack"></div>
+    </section>
+
+    <section class="card panel full" aria-labelledby="h-seg">
+      <div class="panel-head"><h2 id="h-seg">Largest audience segments</h2><span class="badge">Region &times; interest</span></div>
+      <p class="desc">Only segments with at least 5 profiles. Language is the most common one in that segment.</p>
+      <div class="table-scroll"><table><thead><tr><th>Region</th><th>Interest</th><th>Main language</th><th class="num">Profiles</th></tr></thead><tbody id="seg-body"></tbody></table></div>
+    </section>
+
+    <section class="card method" aria-labelledby="h-m">
+      <h2 id="h-m">How this works, and its limits</h2>
+      <ul>
+        <li><b>Input:</b> the shared <code>data/posts.csv</code>. If it lacks the optional columns <code>language</code>, <code>user_bio</code> and <code>user_location</code>, they are joined by <code>post_id</code> from Section A&rsquo;s sidecar files. You can also load your own CSV.</li>
+        <li><b>Method:</b> transparent keyword rules and script detection run in your browser. No model is trained, no data leaves the page, and nothing is sent to a server.</li>
+        <li><b>Unit:</b> one profile is one anonymised <code>user_id</code>. The same person on two platforms counts twice. Brand or official accounts are excluded from audience figures.</li>
+        <li><b>Estimates, not facts:</b> bios and locations are self-reported, short and sometimes jokes. Rules miss many profiles (see the &ldquo;not available&rdquo; counts) and can mislabel others. Life-stage cues are the weakest signal here.</li>
+        <li><b>Not inferred:</b> gender, ethnicity, religion, politics, health or exact identity.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="profiler.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var P = window.Profiler;
+    var SHARED = '../../data/posts.csv';
+    var A = '../a-data-collection/output/';
+    var DEMO_POSTS = A + 'demo_posts.csv';
+    var SIDECARS = [A + 'live_post_metadata.csv', A + 'demo_post_metadata.csv'];
+    var PALETTE = ['#5369ee', '#13a89e', '#e9ab50', '#e06469', '#9b6fe8', '#23966b'];
+    var OTHER = '#9aa6b8';
+    var rows = [], summary = null, manual = false;
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function fmt(n) { return Number(n).toLocaleString('en-US'); }
+    function nText(it, k) { return it.hidden ? '<' + k : fmt(it.n); }
+
+    function notice(kind, html) { $('notice').innerHTML = html ? '<div class="banner ' + kind + '">' + html + '</div>' : ''; }
+
+    function fetchText(url) {
+      return fetch(url, { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error(url + ' returned ' + r.status);
+        return r.text();
+      });
+    }
+    function tryText(url) { return fetchText(url).catch(function () { return null; }); }
+
+    /* ---------- loading ---------- */
+    function enrich(posts) {
+      if (P.hasProfileColumns(posts)) return Promise.resolve('');
+      return Promise.all(SIDECARS.map(tryText)).then(function (texts) {
+        var total = 0;
+        texts.forEach(function (t) { if (t) total += P.mergeProfileFields(posts, P.parseCSV(t)); });
+        return total ? ' &middot; profile fields joined from Section A sidecar files' : ' &middot; no profile fields found, so coverage is low';
+      });
+    }
+
+    function loadDefault() {
+      return tryText(SHARED).then(function (shared) {
+        var parsed = shared ? P.parseCSV(shared) : [];
+        if (parsed.length) {
+          return enrich(parsed).then(function (extra) {
+            if (manual) return;
+            use(parsed, 'Shared project dataset', 'data/posts.csv' + extra, false);
+          });
+        }
+        return fetchText(DEMO_POSTS).then(function (t) {
+          var posts = P.parseCSV(t);
+          return enrich(posts).then(function (extra) {
+            if (manual) return;
+            use(posts, 'Synthetic demo dataset from Section A', 'a-data-collection/output/demo_posts.csv' + extra, true);
+          });
+        });
+      }).catch(function () {
+        if (manual) return;
+        $('dataset-title').textContent = 'No dataset found';
+        $('dataset-meta').textContent = 'Use Choose CSV to load a file with post_id, platform, user_id, text and the optional language, user_bio and user_location columns.';
+        notice('error', '<b>No data</b><span>The shared dataset and the Section A demo files could not be loaded. Open this page from the website, or choose a CSV.</span>');
+        render();
+      });
+    }
+
+    function use(data, title, meta, demo) {
+      rows = data;
+      $('dataset-title').textContent = title;
+      $('dataset-meta').innerHTML = fmt(rows.length) + ' posts &middot; ' + meta; // meta is built from static strings and an escaped file name
+      notice(demo ? 'demo' : '', demo ? '<b>Demo data</b><span>These records are synthetic and fictional (generated by Section A). Results show how the page works, not a real audience.</span>' : '');
+      var sel = $('platform-filter'), old = sel.value, names = {};
+      rows.forEach(function (r) { names[r.platform || 'Unknown'] = 1; });
+      var list = Object.keys(names).sort();
+      sel.innerHTML = '<option value="all">All platforms</option>' + list.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+      sel.value = list.indexOf(old) >= 0 ? old : 'all';
+      render();
+    }
+
+    /* ---------- rendering ---------- */
+    function bars(id, dist, color, k) {
+      var el = $(id), na = $('na-' + id.replace('bars-', ''));
+      if (!dist.items.length) { el.innerHTML = '<div class="empty">Not enough data for this view.</div>'; na.textContent = dist.unknown ? fmt(dist.unknown) + ' profiles had no usable signal.' : ''; return; }
+      var max = Math.max.apply(null, dist.items.map(function (i) { return i.share; })) || 1;
+      el.innerHTML = dist.items.map(function (it) {
+        var w = Math.max(2, Math.round(100 * it.share / max));
+        var c = it.grouped ? OTHER : color;
+        return '<div class="row"><span class="name">' + esc(it.label) + '</span><span class="track"><i class="fill" style="width:' + w + '%;--c:' + c + '"></i></span><span class="val">' + it.share + '% &middot; ' + esc(nText(it, k)) + '</span></div>';
+      }).join('');
+      na.textContent = dist.unknown ? 'Not available for ' + fmt(dist.unknown) + ' of ' + fmt(summary.audience) + ' profiles (no stated value, or no rule matched).' : '';
+    }
+
+    function stacked() {
+      var dim = $('dim').value, host = $('stack'), legend = $('stack-legend');
+      if (!summary || !summary.platforms.length) { host.innerHTML = '<div class="empty">No platform data.</div>'; legend.innerHTML = ''; return; }
+      var totals = {};
+      summary.platforms.forEach(function (p) {
+        summary.byPlatform[p][dim].items.forEach(function (it) { if (!it.grouped) totals[it.label] = (totals[it.label] || 0) + it.n; });
+      });
+      var top = Object.keys(totals).sort(function (a, b) { return totals[b] - totals[a]; }).slice(0, 6);
+      legend.innerHTML = top.map(function (l, i) { return '<span><i class="key" style="background:' + PALETTE[i] + '"></i>' + esc(l) + '</span>'; }).join('') + '<span><i class="key" style="background:' + OTHER + '"></i>Other</span>';
+      host.innerHTML = summary.platforms.map(function (p) {
+        var d = summary.byPlatform[p][dim], used = 0, label;
+        // Interests are multi-label, so scale to all interest cues; other dimensions to known profiles.
+        var base = (dim === 'interest' ? d.items.reduce(function (t, x) { return t + x.n; }, 0) : d.known) || 1;
+        var segs = top.map(function (l, i) {
+          var it = d.items.filter(function (x) { return x.label === l; })[0];
+          var w = it ? 100 * it.n / base : 0; used += w;
+          return w > 0 ? '<i style="width:' + w + '%;background:' + PALETTE[i] + '" title="' + esc(l) + '"></i>' : '';
+        }).join('');
+        var rest = Math.max(0, 100 - used);
+        label = esc(p) + ' <small style="color:#8490a2">(' + fmt(summary.byPlatform[p].audience) + ')</small>';
+        return '<div class="stack-row"><span>' + label + '</span><span class="stack" role="img" aria-label="' + esc(p) + ' ' + esc(dim) + ' mix">' + segs + (rest > 0.5 ? '<i style="width:' + rest + '%;background:' + OTHER + '"></i>' : '') + '</span></div>';
+      }).join('') + (dim === 'interest' ? '<div class="na">Interests are multi-label, so each bar shows that interest&rsquo;s share of all interest cues on the platform.</div>' : '');
+    }
+
+    function render() {
+      var plat = $('platform-filter').value || 'all';
+      summary = rows.length ? P.summarize(rows, plat) : null;
+      $('download').disabled = !summary || !summary.audience;
+      if (!summary) {
+        ['k-posts', 'k-users', 'k-multi', 'k-cov'].forEach(function (id) { $(id).textContent = '–'; });
+        $('findings').innerHTML = '<li>Waiting for data.</li>';
+        ['language', 'region', 'interest', 'age'].forEach(function (d) { $('bars-' + d).innerHTML = '<div class="empty">No data loaded.</div>'; $('na-' + d).textContent = ''; });
+        $('seg-body').innerHTML = ''; $('stack').innerHTML = ''; $('stack-legend').innerHTML = '';
+        return;
+      }
+      var k = summary.k;
+      $('k-posts').textContent = fmt(summary.posts);
+      $('k-users').textContent = fmt(summary.audience);
+      $('k-users-sub').textContent = summary.organisations ? fmt(summary.organisations) + ' brand accounts excluded' : 'unique anonymised IDs';
+      $('k-multi').textContent = summary.language.known ? summary.nonEnglishShare + '%' : '–';
+      $('k-cov').textContent = summary.audience ? summary.coverage.location + '%' : '–';
+      $('k-cov-sub').textContent = 'with a stated location · ' + summary.coverage.bio + '% have a bio';
+      $('findings').innerHTML = summary.insights.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
+      bars('bars-language', summary.language, '#5369ee', k);
+      bars('bars-region', summary.region, '#13a89e', k);
+      bars('bars-interest', summary.interest, '#9b6fe8', k);
+      bars('bars-age', summary.age, '#e9ab50', k);
+      $('seg-body').innerHTML = summary.segments.length
+        ? summary.segments.map(function (s) { return '<tr><td>' + esc(s.region) + '</td><td>' + esc(s.interest) + '</td><td>' + esc(s.language) + '</td><td class="num">' + fmt(s.n) + '</td></tr>'; }).join('')
+        : '<tr><td colspan="4" class="empty">No segment reaches 5 profiles.</td></tr>';
+      stacked();
+    }
+
+    /* ---------- events ---------- */
+    $('platform-filter').addEventListener('change', render);
+    $('dim').addEventListener('change', stacked);
+
+    $('csv-file').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        manual = true;
+        var data = P.parseCSV(String(reader.result));
+        if (!data.length || !('user_id' in data[0] || 'post_id' in data[0])) {
+          notice('error', '<b>Could not read file</b><span>The CSV needs a header row with at least <code>user_id</code> (or <code>post_id</code>).</span>');
+          return;
+        }
+        var missing = P.hasProfileColumns(data) ? '' : ' &middot; no language, user_bio or user_location columns, so most results will be unavailable';
+        use(data, 'Your file', esc(f.name).slice(0, 80) + missing, false);
+      };
+      reader.onerror = function () { notice('error', '<b>Could not read file</b><span>The file could not be opened.</span>'); };
+      reader.readAsText(f);
+    });
+
+    $('download').addEventListener('click', function () {
+      if (!summary) return;
+      var blob = new Blob(['﻿' + P.csvText(P.toCsvRows(summary))], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'demographic_summary.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+
+    render();
+    loadDefault();
+  })();
+  </script>
 </body>
 </html>

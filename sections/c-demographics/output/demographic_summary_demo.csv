@@ -1,0 +1,30 @@
+﻿dimension,category,users,share_percent
+language,English,333,57.9
+language,Hinglish (English + Hindi),72,12.5
+language,Spanish,63,11
+language,Spanglish (English + Spanish),62,10.8
+language,Hindi,45,7.8
+language,Not available,0,
+region,Europe,127,27.1
+region,Latin America,126,26.9
+region,North America,109,23.2
+region,South Asia,107,22.8
+region,Not available,106,
+professional_interest,Consumer & Customer Experience,348,60.5
+professional_interest,"Marketing, Media & Brands",152,26.4
+professional_interest,Technology & Software,77,13.4
+professional_interest,Business & Entrepreneurship,75,13
+professional_interest,Students & Education,75,13
+professional_interest,Sustainability & Design,74,12.9
+professional_interest,Not available,0,
+age_stage_cue,25 to 44 (working-professional cues),152,67
+age_stage_cue,Under 25 (student cues),75,33
+age_stage_cue,Not available,348,
+segment,Europe / Consumer & Customer Experience / English,76,
+segment,Latin America / Consumer & Customer Experience / English,76,
+segment,North America / Consumer & Customer Experience / English,72,
+segment,South Asia / Consumer & Customer Experience / English,65,
+segment,"Latin America / Marketing, Media & Brands / English",33,
+segment,"Europe / Marketing, Media & Brands / English",32,
+segment,"South Asia / Marketing, Media & Brands / English",29,
+segment,"North America / Marketing, Media & Brands / English",27,
