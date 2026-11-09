@@ -7,19 +7,15 @@
 
 ## What the page does
 
-A static, dependency free GitHub Pages page (no CDN, no model download, no server). Everything is computed in the visitor's browser by `trends.js`.
+A static, dependency free GitHub Pages page in the same "field guide" look as Section C (it reuses Section C's styles, framework rail and fonts). Everything is computed in the visitor's browser by `trends.js`. The only outside request is the optional Google Fonts stylesheet, and the page falls back to system fonts without it.
 
-- **Early warnings:** topics, keywords and hashtags whose latest complete time step is at least 3 standard deviations above their normal level (and at least 5 posts).
-- **Rising topics ranked:** posts grouped into topics, each with keywords, posts, unique users, trend score, z score, confidence (High, Medium, Low), burst, momentum, status (Rising, Steady, Falling, New) and a Likely to rise prediction.
-- **Topic timeline:** posts per topic per step, a 3 step forecast and a shaded likely range. Click a legend name to hide or show a topic.
-- **Rising keywords**, **fading keywords** and **emerging terms** (absent before, now repeated), all tested for significance.
-- **Hashtags:** usage, growth and the platform where each is used most.
-- **Topics across platforms:** heatmap of each topic's platform share, the platform where it started and when.
-- **Shifting discussions:** each topic's share of the conversation in the first half vs the second half.
-- **Forecast accuracy check:** hides the last 3 steps, forecasts them and compares with what happened and with a simple guess.
-- **Topic details:** size, replies, platforms, start, busiest step, forecast with range, related topics (shared users) and example posts.
-- Filters: dataset, platform, date range, time step (auto, hour, day, week).
-- The page only reads the project's own files (no upload). Saved results are made by `node make_summary.js` into `output/`.
+- **Topic timeline:** every glowing line is one topic, with a dotted 3 step forecast and a shaded likely range. Pick the time step (auto, hour, day, week) and the platform. Press play, or drag the bar, to replay how the conversation built up. Tap a topic chip to hide or show it.
+- **Field notes:** eight headline figures with ring gauges (fastest riser, new arrival, biggest burst, cooling off, coverage, loudest tag, forecast hit rate, where talk starts), written fresh from whatever is on screen.
+- **Early warnings:** topics, keywords and hashtags whose latest complete step is at least 3 standard deviations above normal (and at least 5 posts).
+- **Eight plates:** Risers (topics by growth), Climbers (rising keywords), Faders (cooling keywords), Newcomers (emerging terms), Spread (platform share and where each topic started), Hashtags, Shift (share of talk, first half vs second half) and Forecast check (honesty test against a simple guess).
+- **Topic dossier:** one topic up close, with status, size, trend, start, busiest step, forecast, platforms, related topics and masked example posts.
+- **The ledger:** every topic and every number in one table, and a four step "how the radar works" strip.
+- The page only reads the project's own files (no upload, no download). Saved results are made by `node make_summary.js` into `output/`.
 
 ## Data
 
