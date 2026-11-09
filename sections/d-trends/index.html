@@ -73,6 +73,7 @@
   <div class="card bar">
     <div id="source">Loading data&#x2026;</div>
     <div class="controls">
+      <label>Dataset <select id="dataset"></select></label>
       <label>Platform <select id="platform"><option value="">All</option></select></label>
       <label>From <input type="date" id="from"></label>
       <label>To <input type="date" id="to"></label>
@@ -166,15 +167,16 @@
       <li><b>Predict:</b> Holt's exponential smoothing with a damped trend forecasts the next 3 steps. Its smoothing weights are tuned separately for every topic to give the smallest past error, with a range of &#xB1;1.64 standard deviations of past errors (about 90%). Likely to rise means the forecast trend is upward and the growth is significant.</li>
       <li><b>Partial steps:</b> if the newest time step is less than half complete, it is left out of the scores and forecasts so a half day does not look like a drop.</li>
     </ol>
-    <p class="note">Input: <code>data/posts.csv</code> using the shared columns (post_id, platform, user_id, timestamp, text, parent_id). Until that file exists the page uses Section A's demo file. Everything runs in your browser; no data is sent anywhere. Results are statistical estimates from word patterns, not certainties.</p>
+    <p class="note">Input: <code>data/posts.csv</code> using the shared columns (post_id, platform, user_id, timestamp, text, parent_id). Until that file exists the page uses practice data: a larger built in Section D scenario (45 days, 6 platforms, with known events so the results can be checked) or Section A's demo file, chosen from the Dataset menu. Everything runs in your browser; no data is sent anywhere. Results are statistical estimates from word patterns, not certainties.</p>
   </div>
 </main>
 <footer>Section D &#xB7; AI Social Media Analytics Framework</footer>
 
+<script src="scenario.js"></script>
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const COLORS = ["#5b6ef0","#1f9d6b","#e08a2e","#d65a5f","#8b5cf6","#0ea5b7","#c2417a","#6b8e23","#475569","#b45309"];
+const COLORS = ["#5b6ef0","#1f9d6b","#e08a2e","#d65a5f","#8b5cf6","#0ea5b7","#c2417a","#6b8e23","#475569","#b45309","#0f766e","#9333ea","#be123c","#4d7c0f"];
 const HIDDEN = new Set();
 
 // ---------- CSV ----------
@@ -201,10 +203,10 @@ function toCSV(rows){
 }
 
 // ---------- Text cleaning ----------
-const STOP = new Set(`a an the and or but if then so than too very of to in on at by for with from up down out over under again further once here there when where why how all any both each few more most other some such no nor not only own same can will just don should now is are was were be been being have has had having do does did doing i me my myself we our ours you your yours he him his she her it its they them their what which who whom this that these those am would could also into about as get got it's im i'm dont didn't doesn't isn't wasn't can't won't us one like really still much many even well back new make made way going go see know think want need say said post thread comment comments context following adding update yes okay ok thanks thank via rt amp let lets let's ive i've youre you're thats that's there's
+const STOP = new Set(`a an the and or but if then so than too very of to in on at by for with from up down out over under again further once here there when where why how all any both each few more most other some such no nor not only own same can will just don should now is are was were be been being have has had having do does did doing i me my myself we our ours you your yours he him his she her it its they them their what which who whom this that these those am would could also into about as get got it's im i'm dont didn't doesn't isn't wasn't can't won't us one like really still much many even well back new make made way going go see know think want need say said post thread comment comments context following adding update yes okay ok thanks thank via rt amp let lets let's ive i've youre you're thats that's there's per before after again every since today tonight yet everyone please inside says sharing
 que pero sobre para por con los las del una uno muy más mas está esta este esto como sus son hay ser nos les todo
 hai hain ho hota hoti tha thi the nahi nahin na kya kyu kyun kaise kab koi kuch sab bhi aur ya par pe se ko ka ki ke mein me main mai hum tum aap yeh ye woh wo is us isko usko ab abhi phir toh to bhai yaar bahut thoda jo jab tak liye wala wali raha rahi rahe gaya gayi kar karo karna kiya diya lag
-है हैं था थी थे और या पर में से को का की के यह वह ये वो कि जो तो भी नहीं ही एक कुछ सब लिए हो रहा रही रहे गया गई कर किया करना मेरा मेरी हम आप तुम इस उस अब बहुत लेकिन`.split(/\s+/));
+है हैं था थी थे और या पर में से को का की के यह वह ये वो कि जो तो भी नहीं ही एक कुछ सब लिए हो रहा रही रहे गया गई कर किया करना मेरा मेरी हम आप तुम इस उस अब बहुत लेकिन ने दी काफी`.split(/\s+/));
 const TOKEN_RE = /#[\p{L}\p{N}_]+|[\p{L}\p{M}\p{N}]+/gu;
 const DEVANAGARI = /[ऀ-ॿ]/;
 function tokens(text){
@@ -271,7 +273,7 @@ function trendStats(series){
   // Poisson test: is the recent total higher than the earlier rate predicts?
   const expected=rB*recent.length, observed=sum(recent);
   const z=recent.length? (observed-expected)/Math.sqrt(expected+1) : 0;
-  const sd=Math.sqrt(avg(before.map(x=>(x-rB)**2)))||1;
+  const sd=Math.max(Math.sqrt(avg(before.map(x=>(x-rB)**2))), Math.sqrt(rB+1));   // never below Poisson noise
   const burst=(series[n-1]-rB)/sd;
   const H=holt(series,3);
   const conf = z>=3?"High": z>=2?"Medium":"Low";
@@ -288,7 +290,23 @@ function buildTopics(docs){
   const df=new Map();
   docs.forEach(d=>d.terms.forEach(t=>df.set(t,(df.get(t)||0)+1)));
   const N=docs.length, minDf=Math.max(5,Math.round(N*0.005)), maxDf=N*0.5;
-  let cand=[...df].filter(([t,c])=>c>=minDf && c<=maxDf).sort((a,b)=>b[1]-a[1]).slice(0,70).map(x=>x[0]);
+  // candidate terms: the most frequent ones, plus the ones growing fastest recently (so new topics are found)
+  const maxStep=Math.max(...docs.map(d=>d.step)), recentFrom=Math.floor(maxStep*0.75);
+  const rdf=new Map(); docs.forEach(d=>{ if(d.step>=recentFrom) d.terms.forEach(t=>rdf.set(t,(rdf.get(t)||0)+1)); });
+  const ok=[...df].filter(([t,c])=>c>=minDf && c<=maxDf);
+  const byFreq=ok.slice().sort((a,b)=>b[1]-a[1]).slice(0,60).map(x=>x[0]);
+  const share=docs.filter(d=>d.step>=recentFrom).length/N, excess=t=>(rdf.get(t[0])||0)-t[1]*share;   // recent posts above what its overall size predicts
+  // skip terms that only repeat a phrase already picked (same posts), so different new topics all get a place
+  const growing=ok.filter(t=>excess(t)>=minDf/2).sort((a,b)=>excess(b)-excess(a)).slice(0,300).map(x=>x[0]);
+  const postsOf=new Map(growing.map(t=>[t,new Set()]));
+  docs.forEach((d,di)=>d.terms.forEach(t=>{ const s=postsOf.get(t); if(s) s.add(di); }));
+  const byGrowth=[], keptSets=[];
+  for(const t of growing){
+    const st=postsOf.get(t); let dup=false;
+    for(const k of keptSets){ let i=0; st.forEach(x=>{ if(k.has(x)) i++; }); if(i>=0.8*st.size){ dup=true; break; } }
+    if(!dup){ byGrowth.push(t); keptSets.push(st); if(byGrowth.length>=30) break; }
+  }
+  let cand=[...new Set([...byFreq,...byGrowth])];
   const idx=new Map(cand.map((t,i)=>[t,i]));
   const sets=cand.map(()=>new Set());
   docs.forEach((d,di)=>d.terms.forEach(t=>{ if(idx.has(t)) sets[idx.get(t)].add(di); }));
@@ -303,7 +321,10 @@ function buildTopics(docs){
     const [i,j]=best; const a=clusters[i], b=clusters[j];
     a.terms.push(...b.terms); b.docs.forEach(x=>a.docs.add(x)); clusters.splice(j,1);
   }
-  clusters=clusters.filter(c=>c.docs.size>=minDf && (c.terms.length>1 || c.docs.size>=N*0.03)).sort((a,b)=>b.docs.size-a.docs.size).slice(0,10);
+  // keep the biggest topics, but give extra weight to recent posts so a small new topic is not missed
+  const weight=c=>{ let r=0; c.docs.forEach(i=>{ if(docs[i].step>=recentFrom) r++; }); return c.docs.size+4*r; };
+  const growthSet=new Set(byGrowth);
+  clusters=clusters.filter(c=>c.docs.size>=minDf && (c.terms.length>1 || c.docs.size>=N*0.08 || (growthSet.has(c.terms[0]) && (rdf.get(c.terms[0])||0)>=2*minDf && (rdf.get(c.terms[0])||0)>=0.6*c.docs.size))).sort((a,b)=>weight(b)-weight(a)).slice(0,14);
   const idf=t=>Math.log(N/(df.get(t)||1));
   docs.forEach(d=>{
     let best=-1,bs=0;
@@ -314,10 +335,12 @@ function buildTopics(docs){
   return clusters.map((c,ci)=>{
     const counts=new Map();
     docs.filter(d=>d.topic===ci).forEach(d=>d.terms.forEach(t=>counts.set(t,(counts.get(t)||0)+1)));
-    const top=c.terms.slice().sort((a,b)=>(counts.get(b)||0)-(counts.get(a)||0));
-    const phrase=top.find(t=>t.includes(" ") && !used.has(t));
-    let label=phrase || top.slice(0,2).join(" / ");
+    // order terms by how often they occur in this topic times how specific they are (IDF)
+    const top=c.terms.slice().sort((a,b)=>(counts.get(b)||0)*idf(b)-(counts.get(a)||0)*idf(a));
+    const lead=top[0]||"", phrase=top.slice(0,6).find(t=>t.includes(" ") && t.includes(lead.split(" ")[0]) && !used.has(t));
+    let label=phrase || (top[1]? lead+" / "+top[1] : lead);
     used.add(label);
+    if(/^[a-z]{2,4}$/.test(label)) label=label.toUpperCase();   // short single word topics are usually acronyms (UPI, GST)
     return {id:ci, label: label.replace(/(^|\s|\/)(\p{L})/gu,(m,a,b)=>a+b.toUpperCase()), keywords: top.slice(0,8)};
   });
 }
@@ -555,13 +578,23 @@ function load(rows, label){
   analyse();
 }
 async function tryFetch(url){ try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){ const t=await r.text(); if(t.trim()) return t; } }catch(e){} return null; }
+const SOURCES={};
+async function loadSource(key){
+  if(key==="scenario") return load(window.SECTION_D_SCENARIO||[],"Section D scenario (synthetic, 45 days, 6 platforms, built in)");
+  const s=SOURCES[key]; if(s) load(parseCSV(s.text),s.label);
+}
 (async()=>{
+  const opts=[];
   const shared=await tryFetch("../../data/posts.csv");
-  if(shared) return load(parseCSV(shared),"data/posts.csv (shared project dataset)");
+  if(shared){ SOURCES.shared={text:shared,label:"data/posts.csv (shared project dataset)"}; opts.push(["shared","Shared project data (data/posts.csv)"]); }
+  if(window.SECTION_D_SCENARIO) opts.push(["scenario","Section D scenario (45 days, larger)"]);
   const demo=await tryFetch("../a-data-collection/output/demo_posts.csv");
-  if(demo) return load(parseCSV(demo),"Section A demo posts (synthetic practice data)");
+  if(demo){ SOURCES.demo={text:demo,label:"Section A demo posts (synthetic practice data)"}; opts.push(["demo","Section A demo posts"]); }
+  $("dataset").innerHTML=opts.map(([k,l])=>`<option value="${k}">${esc(l)}</option>`).join("");
+  if(opts.length) return loadSource(opts[0][0]);
   $("source").textContent="No data found. Use 'Load your own CSV'.";
 })();
+$("dataset").addEventListener("change",e=>loadSource(e.target.value));
 $("file").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; f.text().then(t=>load(parseCSV(t),f.name+" (loaded from your computer)")); });
 ["platform","bucket","from","to"].forEach(id=>$(id).addEventListener("change",analyse));
 $("topicPick").addEventListener("change",e=>showTopic(+e.target.value));
