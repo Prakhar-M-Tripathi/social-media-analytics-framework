@@ -1,50 +1,78 @@
-# Section D: Trend and Topic Detection
+# Section D: Trend and Topic Detection ("Trend Radar")
 
 - Owner team: Prinshu Somay
-- Input: `data/posts.csv` (shared six columns). Until it exists, the Dataset menu offers two practice datasets: the built in Section D scenario (`scenario.js`) and Section A's `demo_posts.csv`. Any CSV with `text` and `timestamp` can also be loaded from the page.
-- Output: interactive dashboard in `index.html` plus a downloadable CSV of ranked topics
+- Input: `data/posts.csv` (shared contract, six columns). Until it exists, Section D's own sample `sample/trend_sample.csv` or Section A's demo posts.
+- Output: an interactive trend dashboard (`index.html`) plus saved CSVs of ranked topics and keywords in `output/`
 - Status: Ready for review
 
-## What the page shows
-1. **Early warnings**: topics, keywords or hashtags whose latest complete time step is at least 3 standard deviations above normal (and at least 5 posts).
-2. **Rising topics ranked**: posts grouped into topics with keywords, posts, unique users, trend score, z score, confidence (High, Medium, Low), burst, momentum, status (Rising, Steady, Falling, New) and a Likely to rise prediction.
-3. **Topic timeline**: posts per topic per step, a 3 step forecast and a shaded likely range. Topics can be hidden from the legend.
-4. **Top rising keywords** and **fading keywords**, both tested for statistical significance.
-5. **Emerging terms**: terms that were absent before and appear repeatedly in the recent window.
-6. **Hashtags**: usage, growth and the platform where each is used most.
-7. **Topics across platforms**: heatmap of each topic's platform share, the platform where it started and when it was first seen.
-8. **Shifting discussions**: each topic's share of conversation in the first half vs second half.
-9. **Forecast accuracy check**: backtest that hides the last 3 steps, forecasts them and reports average error, volume accuracy, direction accuracy and range coverage, compared with a simple guess.
-10. **Topic details**: keywords, size, replies, platforms, start, busiest step, forecast with range, related topics (shared users) and latest example posts.
+## What the page does
 
-Filters: dataset, platform, date range, time step (auto, hour, day, week). Results can be downloaded as CSV.
+A static, dependency free GitHub Pages page (no CDN, no model download, no server). Everything is computed in the visitor's browser by `trends.js`.
 
-## Practice datasets
-- **Section D scenario** (`scenario.js`, synthetic): about 5,000 posts over 45 days on X, Telegram, Instagram, Facebook, Reddit and YouTube, from about 1,500 anonymous accounts, in English, Hinglish and Hindi. It is generated in the browser with a fixed seed, so it is the same every time. It contains known events so the results can be checked: a petrol price hike rumour that starts on Telegram and spreads, a one day UPI outage spike, an exam paper leak that peaks and fades, onion prices appearing in the last week, a growing Diwali sale topic, steady background topics, and a few accounts copy pasting the rumour.
-- **Section A demo posts** (`demo_posts.csv`, synthetic): about 2,000 posts from Section A's pipeline demo.
+- **Early warnings:** topics, keywords and hashtags whose latest complete time step is at least 3 standard deviations above their normal level (and at least 5 posts).
+- **Rising topics ranked:** posts grouped into topics, each with keywords, posts, unique users, trend score, z score, confidence (High, Medium, Low), burst, momentum, status (Rising, Steady, Falling, New) and a Likely to rise prediction.
+- **Topic timeline:** posts per topic per step, a 3 step forecast and a shaded likely range. Click a legend name to hide or show a topic.
+- **Rising keywords**, **fading keywords** and **emerging terms** (absent before, now repeated), all tested for significance.
+- **Hashtags:** usage, growth and the platform where each is used most.
+- **Topics across platforms:** heatmap of each topic's platform share, the platform where it started and when.
+- **Shifting discussions:** each topic's share of the conversation in the first half vs the second half.
+- **Forecast accuracy check:** hides the last 3 steps, forecasts them and compares with what happened and with a simple guess.
+- **Topic details:** size, replies, platforms, start, busiest step, forecast with range, related topics (shared users) and example posts.
+- Filters: dataset, platform, date range, time step (auto, hour, day, week).
+- The page only reads the project's own files (no upload). Saved results are made by `node make_summary.js` into `output/`.
+
+## Data
+
+- `sample/trend_sample.csv`: 5,072 synthetic posts from about 1,500 fictional accounts on X, Telegram, Instagram, Facebook, Reddit and YouTube over 45 days (25 Sep to 8 Nov 2026), in English, Hinglish and Hindi. It uses the six shared columns. Everything in it is fictional. It contains known events so the results can be checked: a petrol price hike rumour that starts on Telegram and spreads, a one day UPI outage, an exam paper leak that peaks and fades, onion prices appearing in the last week, a growing Diwali sale, steady background topics, and a few accounts copy pasting the rumour.
+- `sample/trend_sample.js`: the same CSV as a script, so the page also works when `index.html` is opened by double click (browsers block file reads from a file page).
+- `make_sample.js`: regenerates both files (`node make_sample.js`). It is seeded, so the output is repeatable.
+- Load order: shared `data/posts.csv`, then the Section D sample, then Section A's `demo_posts.csv` (all three can be picked from the Dataset menu).
 
 ## Method
-- Cleaning: lower case; links, mentions, numbers and stop words (English, Hindi, Hinglish, Spanish) removed. Hindi script is kept. The same text repeated by the same account is counted once.
-- Topics: frequent terms that appear in the same posts are merged by co occurrence (Jaccard similarity above 0.3). Each post goes to the topic it matches best, weighted by IDF.
-- Trend score: average posts per step in the last 25% of the period ÷ average before it (+1 smoothing).
-- Significance: Poisson z test of recent posts against the earlier rate. High confidence z ≥ 3, Medium z ≥ 2. Rising needs trend score ≥ 1.2 and z ≥ 2; Falling needs ≤ 0.83 and z ≤ −2.
-- Burst: standard deviations of the latest complete step above the earlier average.
-- Forecast: damped trend Holt exponential smoothing, with weights tuned per topic by grid search on one step ahead error; range = ±1.64 × error standard deviation (about 90%).
+
+- **Cleaning:** lower case; links, mentions, numbers and stop words (English, Hindi, Hinglish, Spanish) removed. Hindi script is kept. The same text repeated by the same account is counted once.
+- **Topics:** frequent terms, plus terms growing fastest in the recent window, are merged when they appear in the same posts (Jaccard similarity above 0.3). Each post goes to the topic it matches best, weighted by IDF. Topics are ranked by size with extra weight for recent posts, so a small new topic is not missed.
+- **Trend score:** average posts per step in the last 25% of the period ÷ average before it (+1 smoothing).
+- **Significance:** Poisson z test of recent posts against the earlier rate. High confidence z ≥ 3, Medium z ≥ 2. Rising needs trend score ≥ 1.2 and z ≥ 2; Falling needs ≤ 0.83 and z ≤ −2.
+- **Burst:** standard deviations of the latest complete step above the earlier average (never below Poisson noise).
+- **Forecast:** damped trend Holt exponential smoothing, weights tuned per topic by grid search on one step ahead error; range = ±1.64 × error standard deviation (about 90%).
 - A newest time step that is less than half complete is left out of scores and forecasts.
 
 ## Validation
-- Tested on a synthetic file with a planted rising topic (petrol price, growing after day 20), a one day spike (bank outage) and four stable topics. The page ranked petrol price first (Rising, High confidence, Likely to rise), flagged the bank outage as New with an early warning, and kept all four stable topics Steady.
-- On the Section D scenario the page finds every planted event: petrol price hike (Rising, High confidence, started on Telegram), UPI (New, early warning), onion prices and Diwali sale (Rising), paper leak (Falling), and the background topics stay Steady.
-- Forecast accuracy figures are shown live on the page for whichever dataset is selected.
 
-Everything runs in the visitor's browser with plain JavaScript. No server, API key or library download is needed, so it works on GitHub Pages.
+`node make_summary.js` checks the sample against its planted events. Current result: **8 of 8 passed**.
+
+| Planted event | Result |
+|---|---|
+| Petrol rumour rising, High confidence | PASS |
+| Petrol rumour started on Telegram | PASS |
+| UPI outage gives an early warning | PASS |
+| Onion prices rising | PASS |
+| Diwali sale rising | PASS |
+| Paper leak falling | PASS |
+| Background topics stay steady | PASS |
+| Copy pasted repeats ignored | PASS |
+
+Forecast check (last 3 days hidden): on the Section D sample the forecast error is about the same as the simple guess (5.4 vs 5.4 posts per day) with 78% of real values inside the range; on Section A's demo it is slightly better than the simple guess (2.7 vs 2.7) with 89% inside the range.
+
+## Privacy rules built into the code
+
+- Only counts, scores and group totals are shown or exported. Author IDs are the anonymised IDs from the shared data and are never displayed.
+- Example posts are shown with handles, links, e-mail addresses and phone numbers masked.
+- No demographic, sentiment or personal attributes are inferred in this section.
+
+## Files
+
+- `index.html`: the page
+- `trends.js`: analysis logic (runs in the browser and in Node)
+- `sample/`: sample data (see above)
+- `make_sample.js`, `make_summary.js`: optional helpers (`node make_sample.js`, `node make_summary.js`)
+- `output/trending_topics_sample.csv`, `output/trending_keywords_sample.csv`: results for the Section D sample
+- `output/trending_topics_demo.csv`, `output/trending_keywords_demo.csv`: results for Section A's demo data
 
 ## Limits
-- Topic labels come from the most common phrase in each topic and may need a human rename. A big topic can sometimes split into two (for example cricket posts in English and in Hindi).
-- Forecasts are short term statistical estimates, not certainties.
-- On the synthetic demo data the trends are artificial; real results come once `data/posts.csv` is published.
 
-## Files produced
-- `index.html`: Section D dashboard
-- `scenario.js`: Section D practice scenario dataset
-- `README.md`: this file
+- The method is transparent word counting and statistics, not a trained model. Topics are word patterns, so sarcasm, spelling variants and very short posts can be grouped imperfectly.
+- Topic labels come from the most common phrase in each topic and may need a human rename. A big topic can split into two (for example cricket posts in English and in Hindi).
+- Forecasts are short term statistical estimates, not certainties.
+- The samples describe fictional users and only show that the page works. Real results come once `data/posts.csv` is published.
