@@ -1,7 +1,7 @@
 # Section D: Trend and Topic Detection
 
 - Owner team: Prinshu Somay
-- Input: `data/posts.csv` (shared six columns). Until it exists, the page uses `sections/a-data-collection/output/demo_posts.csv`. Any CSV with `text` and `timestamp` can also be loaded from the page.
+- Input: `data/posts.csv` (shared six columns). Until it exists, the Dataset menu offers two practice datasets: the built in Section D scenario (`scenario.js`) and Section A's `demo_posts.csv`. Any CSV with `text` and `timestamp` can also be loaded from the page.
 - Output: interactive dashboard in `index.html` plus a downloadable CSV of ranked topics
 - Status: Ready for review
 
@@ -17,7 +17,11 @@
 9. **Forecast accuracy check**: backtest that hides the last 3 steps, forecasts them and reports average error, volume accuracy, direction accuracy and range coverage, compared with a simple guess.
 10. **Topic details**: keywords, size, replies, platforms, start, busiest step, forecast with range, related topics (shared users) and latest example posts.
 
-Filters: platform, date range, time step (auto, hour, day, week). Results can be downloaded as CSV.
+Filters: dataset, platform, date range, time step (auto, hour, day, week). Results can be downloaded as CSV.
+
+## Practice datasets
+- **Section D scenario** (`scenario.js`, synthetic): about 5,000 posts over 45 days on X, Telegram, Instagram, Facebook, Reddit and YouTube, from about 1,500 anonymous accounts, in English, Hinglish and Hindi. It is generated in the browser with a fixed seed, so it is the same every time. It contains known events so the results can be checked: a petrol price hike rumour that starts on Telegram and spreads, a one day UPI outage spike, an exam paper leak that peaks and fades, onion prices appearing in the last week, a growing Diwali sale topic, steady background topics, and a few accounts copy pasting the rumour.
+- **Section A demo posts** (`demo_posts.csv`, synthetic): about 2,000 posts from Section A's pipeline demo.
 
 ## Method
 - Cleaning: lower case; links, mentions, numbers and stop words (English, Hindi, Hinglish, Spanish) removed. Hindi script is kept. The same text repeated by the same account is counted once.
@@ -30,15 +34,17 @@ Filters: platform, date range, time step (auto, hour, day, week). Results can be
 
 ## Validation
 - Tested on a synthetic file with a planted rising topic (petrol price, growing after day 20), a one day spike (bank outage) and four stable topics. The page ranked petrol price first (Rising, High confidence, Likely to rise), flagged the bank outage as New with an early warning, and kept all four stable topics Steady.
-- On Section A's demo data the backtest shows the forecast beating the simple guess. Figures are shown live on the page.
+- On the Section D scenario the page finds every planted event: petrol price hike (Rising, High confidence, started on Telegram), UPI (New, early warning), onion prices and Diwali sale (Rising), paper leak (Falling), and the background topics stay Steady.
+- Forecast accuracy figures are shown live on the page for whichever dataset is selected.
 
 Everything runs in the visitor's browser with plain JavaScript. No server, API key or library download is needed, so it works on GitHub Pages.
 
 ## Limits
-- Topic labels come from the most common phrase in each topic and may need a human rename.
+- Topic labels come from the most common phrase in each topic and may need a human rename. A big topic can sometimes split into two (for example cricket posts in English and in Hindi).
 - Forecasts are short term statistical estimates, not certainties.
 - On the synthetic demo data the trends are artificial; real results come once `data/posts.csv` is published.
 
 ## Files produced
 - `index.html`: Section D dashboard
+- `scenario.js`: Section D practice scenario dataset
 - `README.md`: this file
