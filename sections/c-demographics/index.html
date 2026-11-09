@@ -219,6 +219,44 @@
     footer em{font:italic 14px var(--display);color:var(--muted)}
     .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 
+    .tabs{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:var(--glass);border:1px solid var(--line);flex-wrap:wrap}
+    .tabs button{border:0;background:transparent;color:var(--muted);padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600}
+    .tabs button:hover{color:var(--ink)}
+    .tabs button[aria-pressed=true]{background:linear-gradient(135deg,var(--teal),#9ff3e8);color:#05110f}
+    .opts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+    .trendbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 4px}
+    .trendbar .lab{font:italic 14px var(--display);color:#c3cde1;margin-right:4px}
+    .tagc{border:1px solid var(--line);background:var(--glass);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--muted)}
+    .tagc:hover{color:var(--ink);background:var(--glass2)}
+    .tagc[aria-pressed=true]{color:#2a1d04;background:var(--gold);border-color:transparent;font-weight:700}
+    .fchip.t{border-color:#ffc15e77}
+    .trow{display:grid;grid-template-columns:minmax(110px,190px) 1fr 62px;gap:12px;align-items:center;font-size:12px;margin-bottom:9px}
+    .trow .name{color:#d3dbec}.trow .v{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;font-size:11px}
+    .trow.wv{grid-template-columns:minmax(110px,170px) 1fr 138px}
+    .sbar{display:flex;height:16px;border-radius:6px;overflow:hidden;background:#ffffff0d}.sbar i{display:block;height:100%;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+    .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:0 0 12px}.lgd span{display:inline-flex;gap:6px;align-items:center}.lgd i{width:9px;height:9px;border-radius:3px;display:inline-block}
+    .scrollx{overflow-x:auto}
+    .fgrid{display:grid;gap:3px;min-width:760px;font-size:11px}
+    .fgrid button.h{border:0;background:none;color:var(--muted);font-size:11px;padding:6px 1px;border-radius:7px;font-family:var(--sans)}
+    .fgrid button.h:hover{color:var(--ink)}.fgrid button.h[aria-pressed=true]{background:var(--gold);color:#2a1d04;font-weight:700}
+    .fgrid .l{color:#d3dbec;font-size:12px;align-self:center;padding-right:8px}
+    .fgrid .c{height:36px;border-radius:7px;display:grid;place-items:center;color:#eef3fb;font-variant-numeric:tabular-nums;background:#ffffff08;position:relative}
+    .fgrid .c.hot{box-shadow:inset 0 0 0 1.5px var(--gold)}
+    .faceoff{padding:22px 24px}
+    .fo-pick{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin-bottom:18px}
+    .fo-pick select{width:100%;font:italic 20px var(--display);padding:10px 34px 10px 14px;border-radius:12px}
+    .fo-pick b{font:italic 400 22px var(--display);color:var(--faint)}
+    .fo-row{display:grid;grid-template-columns:1fr 160px 1fr;gap:12px;align-items:center;font-size:12px;margin-bottom:8px}
+    .fo-row .m{text-align:center;color:var(--muted)}
+    .fo-s{display:flex;align-items:center;gap:8px}.fo-s.a{flex-direction:row-reverse}
+    .fo-s .bar{flex:1;height:12px;background:#ffffff0a;border-radius:99px;overflow:hidden;display:flex}.fo-s.a .bar{justify-content:flex-end}
+    .fo-s .bar i{display:block;height:100%;border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+    .fo-s b{min-width:50px;font-weight:600;font-variant-numeric:tabular-nums}.fo-s.a b{text-align:right}
+    .fo-s.lead b{color:var(--gold)}
+    .fo-words{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .fo-words>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fo-words>div:first-child{justify-content:flex-end}
+    .fo-words span{padding:3px 10px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line);font:italic 14px var(--display);color:#dfe6f5}
+    @media(max-width:560px){.fo-pick{grid-template-columns:1fr}.fo-pick b{text-align:center}.fo-row{grid-template-columns:1fr 92px 1fr;gap:6px;font-size:11px}.fo-s b{min-width:34px}.trow{grid-template-columns:1fr 54px}.trow .name{grid-column:1/-1}.trow.wv{grid-template-columns:1fr 124px}.faceoff{padding:18px 16px}}
     @media(max-width:1000px){.hero{grid-template-columns:1fr}.personas{grid-template-columns:repeat(2,minmax(0,1fr))}.rail-label{display:none}.rhythm{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.stepc:after{display:none}}
     @media(max-width:860px){.plates{grid-template-columns:1fr}.shell{padding:0 16px}.lens-note{display:none}.hint{display:none}.date{min-width:0}.caveats{grid-template-columns:1fr}}
     @media(max-width:560px){.personas{grid-template-columns:1fr}.row{grid-template-columns:1fr 78px;grid-template-areas:"n v" "t t"}.row .name{grid-area:n}.row .val{grid-area:v}.row .track{grid-area:t}.stack-row{grid-template-columns:1fr}.stage{height:680px}.step span{display:none}.timebar{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}.lens button{padding:6px 10px}.pipeline{grid-template-columns:1fr}.hrow,.haxis{grid-template-columns:84px 1fr 34px}.note .fig{font-size:54px}}
@@ -272,6 +310,8 @@
           <button type="button" data-lens="interest" aria-pressed="false">Interest</button>
           <button type="button" data-lens="age" aria-pressed="false">Life stage</button>
           <button type="button" data-lens="platform" aria-pressed="false">Platform</button>
+          <button type="button" data-lens="mood" aria-pressed="false" data-net>Mood</button>
+          <button type="button" data-lens="manner" aria-pressed="false" data-net>Manner</button>
           <span class="lens-note" id="lens-note"></span>
         </div>
         <div class="timebar">
@@ -285,12 +325,14 @@
       </div>
     </section>
     <div class="legend" id="legend" role="group" aria-label="Groups in the constellation"></div>
+    <div class="trendbar" id="trendbar" role="group" aria-label="Light up by trend" hidden><span class="lab">Light up a trend</span><span id="trendchips" style="display:contents"></span></div>
   </div>
 
   <main class="shell">
     <section class="strip" aria-label="Dataset">
       <div><strong id="dataset-title">Loading dataset&hellip;</strong><small id="dataset-meta">Looking for data</small></div>
       <div class="actions">
+        <a class="btn" href="sample/audience_sample.csv" download="audience_sample.csv">Download the dataset</a>
         <input class="file-input" id="csv-file" type="file" accept=".csv,text/csv">
         <label class="btn" for="csv-file" role="button">Load a CSV</label>
         <button class="btn" id="download" type="button" disabled>Save this view</button>
@@ -361,6 +403,50 @@
         <div class="vocab" id="vocab"></div><div class="na" id="na-vocab" style="text-align:center"></div>
         <details class="how"><summary>How it is read</summary><p>Only words used by at least 5 profiles appear, and common filler words are dropped. Larger means more profiles. Italic words are hashtags. The bios themselves are never shown.</p></details>
       </section>
+
+      <section class="glass plate wide" data-net aria-labelledby="h-fa">
+        <div class="plate-head"><div><span class="plate-no">Plate IX</span><h3 id="h-fa">Fashions</h3></div><span class="tag">Trends</span></div>
+        <p class="cap">Which crowds wear which tags. Tap a tag to light up everyone wearing it.</p>
+        <div class="opts"><div class="tabs" id="fash-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="age" aria-pressed="false">Life stages</button><button type="button" data-d="cohort" aria-pressed="false">Account age</button></div></div>
+        <div class="scrollx"><div class="fgrid" id="fgrid"></div></div>
+        <details class="how"><summary>How it is read</summary><p>Each number is the share of a group who used that hashtag. A gold outline means the group took it up at least one and a half times as often as everyone else. Cells with fewer than 5 people stay blank.</p></details>
+      </section>
+
+      <section class="glass plate" data-net aria-labelledby="h-te">
+        <div class="plate-head"><div><span class="plate-no">Plate X</span><h3 id="h-te">Temperament</h3></div><span class="tag">Mood</span></div>
+        <p class="cap">Who runs warm, and who runs sour.</p>
+        <div class="opts"><div class="tabs" id="temp-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button></div></div>
+        <div class="lgd"><span><i style="background:#ff7a90"></i>Sour</span><span><i style="background:#566178"></i>Even</span><span><i style="background:#7be08a"></i>Warm</span></div>
+        <div id="temper"></div>
+        <details class="how"><summary>How it is read</summary><p>Groups are sorted from warmest to sourest by the share of positive minus negative posts. The number on the right is that balance, from &minus;100 to +100.</p></details>
+      </section>
+
+      <section class="glass plate" data-net aria-labelledby="h-ma">
+        <div class="plate-head"><div><span class="plate-no">Plate XI</span><h3 id="h-ma">Manners</h3></div><span class="tag">How they join in</span></div>
+        <p class="cap">Some start things, some answer, some pass it along.</p>
+        <div class="opts"><div class="tabs" id="man-dim"><button type="button" data-d="platform" aria-pressed="true">Platforms</button><button type="button" data-d="region" aria-pressed="false">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="age" aria-pressed="false">Life stages</button></div></div>
+        <div class="lgd" id="man-lgd"></div>
+        <div id="manners"></div>
+        <details class="how"><summary>How it is read</summary><p>Every post, reply, quote, repost and share by the group, as shares of what it does. The label on the right is the style this group has more of than the other groups do.</p></details>
+      </section>
+
+      <section class="glass plate wide" data-net aria-labelledby="h-ov">
+        <div class="plate-head"><div><span class="plate-no">Plate XII</span><h3 id="h-ov">Standing ovation</h3></div><span class="tag">Attention</span></div>
+        <p class="cap">How many reactions each post earns, and how far a big following carries it.</p>
+        <div class="opts"><div class="tabs" id="att-dim"><button type="button" data-d="reach" aria-pressed="true">Follower tier</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="region" aria-pressed="false">Regions</button><button type="button" data-d="cohort" aria-pressed="false">Account age</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button></div></div>
+        <div id="ovation"></div>
+        <details class="how"><summary>How it is read</summary><p>Replies, quotes, reposts and shares received from other people, divided by the group&rsquo;s own original posts. Reposts by the group itself are left out.</p></details>
+      </section>
+    </div>
+
+    <div data-net>
+      <div class="section-head"><h2>Face-off</h2><p>Pick two crowds and put them side by side.</p></div>
+      <section class="glass faceoff" aria-label="Compare two groups">
+        <div class="opts"><div class="tabs" id="fo-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button><button type="button" data-d="age" aria-pressed="false">Life stages</button></div></div>
+        <div class="fo-pick"><label class="sr" for="fo-a">First crowd</label><select id="fo-a"></select><b>versus</b><label class="sr" for="fo-b">Second crowd</label><select id="fo-b"></select></div>
+        <div id="fo-rows"></div>
+        <div class="fo-words" id="fo-words"></div>
+      </section>
     </div>
 
     <div class="section-head"><h2>Habitats</h2><p>How each platform&rsquo;s crowd differs.</p></div>
@@ -378,7 +464,7 @@
 
     <div class="section-head"><h2>How the atlas is drawn</h2><p>Four steps, and a few things it will never do.</p></div>
     <section class="pipeline" aria-label="How the atlas is drawn">
-      <div class="stepc"><div class="n">1</div><h3>Read</h3><p>Public signals only: the bio, the stated place, the language tag, posting hours, follower count and join date.</p></div>
+      <div class="stepc"><div class="n">1</div><h3>Read</h3><p>Public signals only: the bio, the stated place, the language tag, posting hours, follower count, join date, and how each profile joins the conversation.</p></div>
       <div class="stepc"><div class="n">2</div><h3>Match</h3><p>Plain keyword rules and script detection. No model is trained and nothing leaves your browser.</p></div>
       <div class="stepc"><div class="n">3</div><h3>Count</h3><p>One light is one anonymous ID. Brand and official accounts are set aside, not counted as audience.</p></div>
       <div class="stepc"><div class="n">4</div><h3>Gate</h3><p>Any group under 5 folds into Other. Any word used by fewer than 5 profiles never appears.</p></div>
@@ -409,13 +495,15 @@
 
     var PALETTE = ['#6ea8ff', '#35d0c0', '#ffc15e', '#ff7a90', '#b48cff', '#7be08a', '#ff9f6e', '#5cd1ff', '#e58cff', '#c8d46a'];
     var C_OTHER = '#8b95a9', C_NA = '#5f6b82';
-    var LENS_NAMES = { language: 'Language', region: 'Region', interest: 'Interest', age: 'Life stage', platform: 'Platform' };
+    var LENS_NAMES = { language: 'Language', region: 'Region', interest: 'Interest', age: 'Life stage', platform: 'Platform', mood: 'Mood', manner: 'Manner' };
     var LENS_NOTES = {
       language: 'The tongue each profile uses most.',
       region: 'World region, from the stated place.',
       interest: 'Each profile’s first calling.',
       age: 'Life-stage words in the bio. A faint signal.',
-      platform: 'Where each profile posts.'
+      platform: 'Where each profile posts.',
+      mood: 'How each profile usually sounds.',
+      manner: 'Starts things, answers, or passes it on.'
     };
     var ARCH = {
       'Technology & Software': 'The Builder', 'Marketing, Media & Brands': 'The Storyteller',
@@ -429,7 +517,7 @@
     var FONT = getComputedStyle(document.body).fontFamily;
 
     var S = {
-      aud: [], orgCount: 0, lens: 'region', selIdx: -1, word: null, t: 1, tMin: 0, tMax: 1, playing: false,
+      aud: [], orgCount: 0, lens: 'region', selIdx: -1, word: null, tag: null, hasNet: false, t: 1, tMin: 0, tMax: 1, playing: false,
       grouping: null, colors: {}, parts: [], layout: null, hover: -1, mouse: null,
       W: 0, H: 0, dpr: 1, ctx: null, onscreen: true, vc: [], agg: null, manual: false, last: 0, rq: 0, gi: [], platCount: 0
     };
@@ -520,7 +608,12 @@
       if (S.tMax <= S.tMin) S.tMax = S.tMin + 1;
       S.aud.forEach(function (p) { if (!isFinite(p.first)) p.first = S.tMin; });
       var intro = !reduce && S.aud.length && !/[?&]intro=0/.test(location.search);   // ?intro=0 skips the arrival replay
-      S.parts = []; S.selIdx = -1; S.word = null; S.t = intro ? 0 : 1; S.playing = false;
+      S.parts = []; S.selIdx = -1; S.word = null; S.tag = null; S.t = intro ? 0 : 1; S.playing = false;
+      S.hasNet = rows.some(function (r) { return r.interaction || r.sentiment; });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-net]'), function (el) { el.hidden = !S.hasNet; });
+      if (!S.hasNet && (S.lens === 'mood' || S.lens === 'manner')) S.lens = 'region';
+      X.foA = X.foB = '';
+      renderTrendbar();
       $('time').value = intro ? 0 : 1000;
       $('dataset-title').textContent = title;
       $('dataset-meta').innerHTML = fmt(rows.length) + ' posts &middot; ' + fmt(profiles.length) + ' anonymous profiles &middot; ' + meta;
@@ -533,6 +626,7 @@
 
     /* ============================== grouping + layout ============================== */
     function groupColor(label, idx) {
+      if (label === 'Warm') return '#7be08a'; if (label === 'Even') return '#ffc15e'; if (label === 'Sour') return '#ff7a90';
       if (label === P.OTHER_LABEL) return C_OTHER;
       if (label === P.NA_LABEL) return C_NA;
       return PALETTE[idx % PALETTE.length];
@@ -642,7 +736,7 @@
             p.vis = true; p.born = now;
             var nd = S.layout.nodes[S.gi[i]]; if (!reduce) { p.x = nd.x; p.y = nd.y; } else { p.x = p.tx; p.y = p.ty; }
           } else if (!seen && p.vis) { p.vis = false; }
-          if (p.vis && (!S.word || S.aud[i].words.has(S.word))) vc[S.gi[i]]++;
+          if (p.vis && textHit(S.aud[i])) vc[S.gi[i]]++;
           var wx = reduce ? 0 : Math.sin(now * 0.0007 + p.ph) * 1.6, wy = reduce ? 0 : Math.cos(now * 0.0006 + p.ph * 1.3) * 1.6;
           var tx = p.tx + wx, ty = p.ty + wy;
           if (!reduce) { var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy; if (d2 < 5600 && d2 > 0.01) { var d = Math.sqrt(d2), f = (75 - d) / 75 * 16; tx += dx / d * f; ty += dy / d * f; } }
@@ -670,7 +764,7 @@
       // constellation lines (a web inside each cluster)
       ctx.lineWidth = 1;
       L.members.forEach(function (list, gi) {
-        var dim = (sel >= 0 && sel !== gi) || !!word;
+        var dim = (sel >= 0 && sel !== gi) || !!(word || S.tag);
         ctx.strokeStyle = hexA(S.colors[groups[gi].label], dim ? 0.02 : 0.1);
         ctx.beginPath();
         for (j = 1; j < list.length; j++) {
@@ -687,8 +781,8 @@
       for (i = 0; i < S.parts.length; i++) {
         p = S.parts[i]; if (!p.vis) continue;
         var gi = S.gi[i], col = S.colors[groups[gi].label];
-        var hit = word && S.aud[i].words.has(word);
-        var dim = (sel >= 0 && sel !== gi) || (word && !hit);
+        var filt = word || S.tag, hit = filt && textHit(S.aud[i]);
+        var dim = (sel >= 0 && sel !== gi) || (filt && !hit);
         var age = reduce ? 1 : (now - p.born) / 700, sc = age >= 1 ? 1 : easeOutBack(Math.max(0, age));
         var s = (hit ? 22 : 15) * sc;
         ctx.globalAlpha = dim ? 0.14 : 0.9;
@@ -746,6 +840,7 @@
       var box = $('fchips'), h = '';
       if (S.selIdx >= 0) { var g = S.grouping.groups[S.selIdx]; h += '<span class="fchip">Following <b>' + esc(LENS_NAMES[S.lens]) + ': ' + esc(g.label) + '</b><button type="button" data-clear="sel" aria-label="Stop following this group">&times;</button></span>'; }
       if (S.word) h += '<span class="fchip w">Bios saying <b>&ldquo;' + esc(S.word) + '&rdquo;</b><button type="button" data-clear="word" aria-label="Clear word filter">&times;</button></span>';
+      if (S.tag) h += '<span class="fchip t">Wearing <b>' + esc(S.tag) + '</b><button type="button" data-clear="tag" aria-label="Clear trend filter">&times;</button></span>';
       var was = box.hidden;
       box.innerHTML = h; box.hidden = !h; $('hint').hidden = !!h;
       if (was !== box.hidden) layout();
@@ -757,13 +852,15 @@
       S.rq = setTimeout(function () { S.rq = 0; refresh(); }, S.playing ? 160 : 30);
     }
 
-    function inView(p, i, cut) { return p.first <= cut && (S.selIdx < 0 || S.gi[i] === S.selIdx) && (!S.word || p.words.has(S.word)); }
+    function textHit(p) { return (!S.word || p.words.has(S.word)) && (!S.tag || p.tags.has(S.tag)); }
+    function inView(p, i, cut) { return p.first <= cut && (S.selIdx < 0 || S.gi[i] === S.selIdx) && textHit(p); }
     function visible() { var cut = cutTime() + 0.5; return S.aud.filter(function (p, i) { return inView(p, i, cut); }); }
 
     function countVisible() {
       var cut = cutTime() + 0.5, vc = S.vc, n = S.grouping ? S.grouping.groups.length : 0, i;
+      vc.length = n;       // a lens with fewer groups must not keep the old counts
       for (i = 0; i < n; i++) vc[i] = 0;
-      for (i = 0; i < S.aud.length; i++) if (S.aud[i].first <= cut && (!S.word || S.aud[i].words.has(S.word))) vc[S.gi[i]]++;
+      for (i = 0; i < S.aud.length; i++) if (S.aud[i].first <= cut && textHit(S.aud[i])) vc[S.gi[i]]++;
     }
 
     function refresh() {
@@ -796,6 +893,7 @@
       bubbles(agg.reach);
       tenure(agg.tenure);
       vocab(agg);
+      if (S.hasNet) { fashions(agg, vis); temper(vis); manners(vis); ovation(vis); faceoff(vis); syncTrend(); }
       segTable(agg);
       stacked(vis);
       legend();
@@ -878,7 +976,7 @@
           '<h3>' + esc(ARCH[s.interest] || 'The Regular') + '</h3>' +
           '<div class="meta">' + esc(s.interest) + ' &middot; ' + esc(s.region) + '</div>' +
           '<div class="big">' + fmt(s.n) + '<small>' + share + '% of view</small></div>' +
-          '<div class="row2"><span>Mostly ' + esc(s.language) + ' &middot; found on ' + esc(s.platform) + ' &middot; busiest near ' + pad2(s.peak) + ':00 UTC</span>' + sig + '</div></article>';
+          '<div class="row2"><span>Mostly ' + esc(s.language) + ' &middot; found on ' + esc(s.platform) + ' &middot; busiest near ' + pad2(s.peak) + ':00 UTC</span>' + (s.moodLabel ? '<span>Runs ' + s.moodLabel.toLowerCase() + ' &middot; mostly ' + esc(STYLE_WORD[s.style] || s.style) + (s.tag ? ' &middot; wears ' + esc(s.tag) : '') + '</span>' : '') + sig + '</div></article>';
       }).join('');
     }
 
@@ -1003,6 +1101,118 @@
       }).join('');
     }
 
+    /* ============================== mood, manner, trends ============================== */
+    var X = { fash: 'region', temp: 'region', man: 'platform', att: 'reach', fo: 'region', foA: '', foB: '' };
+    var STYLE_WORD = { post: 'original posts', reply: 'replies', quote: 'quotes', repost: 'reposts', share: 'shares' };
+    var ACT = [['post', 'Starts', '#6ea8ff'], ['reply', 'Answers', '#35d0c0'], ['quote', 'Quotes', '#b48cff'], ['repost', 'Reposts', '#ffc15e'], ['share', 'Shares across', '#ff7a90']];
+    var ORDERED = { reach: P.REACH_TIERS, cohort: P.COHORTS };
+    function short(l) { return String(l).replace(/ \(.*\)$/, ''); }
+    function sortOrdered(list, dim) { var o = ORDERED[dim]; return o ? list.slice().sort(function (a, b) { return o.indexOf(a.label) - o.indexOf(b.label); }) : list; }
+
+    function renderTrendbar() {
+      var c = {}; S.aud.forEach(function (p) { p.tags.forEach(function (t) { c[t] = (c[t] || 0) + 1; }); });
+      S.tagList = Object.keys(c).filter(function (t) { return c[t] >= K; }).sort(function (a, b) { return c[b] - c[a]; }).slice(0, 12);
+      $('trendbar').hidden = !S.tagList.length;
+      $('trendchips').innerHTML = S.tagList.map(function (t) { return '<button type="button" class="tagc" data-t="' + esc(t) + '" aria-pressed="false">' + esc(t) + '</button>'; }).join('');
+    }
+    function syncTrend() { Array.prototype.forEach.call(document.querySelectorAll('#trendchips button, #fgrid button.h'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-t') === S.tag)); }); }
+    function pickTag(t) { S.tag = S.tag === t ? null : t; updateChips(); queueRefresh(true); }
+
+    function fashions(agg, vis) {
+      var host = $('fgrid'), tags = (S.tagList || []).slice(0, 11), list = P.compareGroups(vis, X.fash, K).slice(0, 8);
+      list = sortOrdered(list, X.fash);
+      if (!tags.length || !list.length) { host.innerHTML = '<div class="empty">No trend is shared by 5 profiles in this view.</div>'; host.style.gridTemplateColumns = '1fr'; return; }
+      host.style.gridTemplateColumns = '150px repeat(' + tags.length + ', minmax(0, 1fr))';
+      var overall = {}; agg.tags.forEach(function (t) { overall[t.tag] = t.share; });
+      var mx = 1; list.forEach(function (g) { tags.forEach(function (t) { var n = g.tags.get(t) || 0; if (n >= K) mx = Math.max(mx, 100 * n / g.n); }); });
+      var o = '<div></div>' + tags.map(function (t) { return '<button type="button" class="h" data-t="' + esc(t) + '" aria-pressed="false" title="' + esc(t) + '">' + esc(t.replace('#', '')) + '</button>'; }).join('');
+      list.forEach(function (g) {
+        o += '<div class="l">' + esc(short(g.label)) + '</div>' + tags.map(function (t) {
+          var n = g.tags.get(t) || 0;
+          if (n < K) return '<div class="c"></div>';
+          var up = 100 * n / g.n, hot = overall[t] && up / overall[t] >= 1.5;
+          return '<div class="c' + (hot ? ' hot' : '') + '" style="background:rgba(180,140,255,' + (0.1 + 0.8 * Math.pow(up / mx, 0.7)).toFixed(2) + ')" title="' + esc(short(g.label)) + ', ' + esc(t) + ': ' + Math.round(up) + '%">' + Math.round(up) + '</div>';
+        }).join('');
+      });
+      host.innerHTML = o;
+    }
+
+    function temper(vis) {
+      var list = P.compareGroups(vis, X.temp, K).filter(function (e) { return e.moodN >= K; }).sort(function (a, b) { return b.net - a.net; }).slice(0, 12), host = $('temper');
+      host.innerHTML = list.length ? list.map(function (e) {
+        var v = Math.round(e.net * 100);
+        return '<div class="trow"><span class="name">' + esc(short(e.label)) + '</span><span class="sbar"><i style="width:' + e.neg + '%;background:#ff7a90"></i><i style="width:' + e.neu + '%;background:#566178"></i><i style="width:' + e.pos + '%;background:#7be08a"></i></span><span class="v">' + (v > 0 ? '+' : '') + v + '</span></div>';
+      }).join('') : '<div class="empty">Not enough mood data in this view.</div>';
+    }
+
+    function manners(vis) {
+      $('man-lgd').innerHTML = ACT.map(function (a) { return '<span><i style="background:' + a[2] + '"></i>' + a[1] + '</span>'; }).join('');
+      var list = P.compareGroups(vis, X.man, K).slice(0, 10), host = $('manners'), all = {}, allN = 0;
+      list.forEach(function (e) { e.manners.forEach(function (n, m) { all[m] = (all[m] || 0) + n; allN += n; }); });
+      function leaning(e) {            // the style this group has more of than the others do
+        var best = '', lift = 0, tot = 0;
+        e.manners.forEach(function (n) { tot += n; });
+        e.manners.forEach(function (n, m) { var l = (n / tot) / (all[m] / allN); if (n >= K && l > lift) { lift = l; best = m; } });
+        return best;
+      }
+      host.innerHTML = list.length ? list.map(function (e) {
+        var segs = ACT.map(function (a) { var w = e.actTotal ? 100 * (e.acts[a[0]] || 0) / e.actTotal : 0; return w ? '<i style="width:' + w.toFixed(1) + '%;background:' + a[2] + '" title="' + a[1] + ': ' + Math.round(w) + '%"></i>' : ''; }).join('');
+        return '<div class="trow wv"><span class="name">' + esc(short(e.label)) + '</span><span class="sbar">' + segs + '</span><span class="v">' + (leaning(e) ? 'leans ' + esc(leaning(e)) : '') + '</span></div>';
+      }).join('') : '<div class="empty">Not enough activity in this view.</div>';
+    }
+
+    function ovation(vis) {
+      var list = sortOrdered(P.compareGroups(vis, X.att, K), X.att), host = $('ovation');
+      if (!ORDERED[X.att]) list = list.slice().sort(function (a, b) { return b.reactions - a.reactions; });
+      list = list.slice(0, 12);
+      var mx = Math.max.apply(null, list.map(function (e) { return e.reactions; })) || 1;
+      host.innerHTML = list.length ? '<div class="bars">' + list.map(function (e) {
+        return '<div class="row"><span class="name">' + esc(short(e.label)) + '</span><span class="track"><i class="fill" style="width:' + Math.max(2, Math.round(100 * e.reactions / mx)) + '%;background:linear-gradient(90deg,#ffc15e,#ff7a90)"></i></span><span class="val">' + e.reactions.toFixed(2) + ' per post</span></div>';
+      }).join('') + '</div>' : '<div class="empty">Not enough activity in this view.</div>';
+    }
+
+    function faceoff(vis) {
+      var groups = P.compareGroups(S.aud, X.fo, K), a = $('fo-a'), b = $('fo-b');
+      var sig = X.fo + '|' + groups.map(function (g) { return g.label; }).join('|');
+      if (a.dataset.sig !== sig) {
+        var opts = groups.map(function (g) { return '<option value="' + esc(g.label) + '">' + esc(short(g.label)) + '</option>'; }).join('');
+        a.innerHTML = opts; b.innerHTML = opts; a.dataset.sig = sig;
+        X.foA = groups[0] ? groups[0].label : ''; X.foB = groups[1] ? groups[1].label : X.foA;
+      }
+      a.value = X.foA; b.value = X.foB;
+      function side(label) {
+        var list = vis.filter(function (p) { return P.dimValue(p, X.fo) === label; });
+        return list.length >= K ? { agg: P.aggregate(list, K), c: P.compareGroups(list, X.fo, 1)[0], n: list.length } : null;
+      }
+      var A = side(X.foA), B = side(X.foB), rows = $('fo-rows'), words = $('fo-words');
+      if (!A || !B) { rows.innerHTML = '<div class="empty">One of these crowds has fewer than 5 profiles in this view.</div>'; words.innerHTML = ''; return; }
+      function pctv(v) { return Math.round(v) + '%'; }
+      function small(ag) { var r = ag.reach; return r.known ? 100 * (r.items[0].n + r.items[1].n) / r.known : 0; }
+      function fresh(ag) { var t = ag.tenure; return t.known ? 100 * t.items[5].n / t.known : 0; }
+      var M = [
+        ['People', A.n, B.n, fmt], ['Posts per person', A.c.perPerson, B.c.perPerson, function (v) { return v.toFixed(1); }],
+        ['Warm posts', A.c.pos, B.c.pos, pctv], ['Sour posts', A.c.neg, B.c.neg, pctv],
+        ['Answering others', A.c.replyShare, B.c.replyShare, pctv], ['Passing things on', A.c.passShare, B.c.passShare, pctv],
+        ['Reactions per post', A.c.reactions, B.c.reactions, function (v) { return v.toFixed(2); }],
+        ['Beyond plain English', A.agg.nonEnglishShare, B.agg.nonEnglishShare, pctv],
+        ['Under 1K followers', small(A.agg), small(B.agg), pctv], ['Joined since 2024', fresh(A.agg), fresh(B.agg), pctv]
+      ];
+      rows.innerHTML = M.map(function (m) {
+        var mx = Math.max(m[1], m[2]) || 1;
+        function s(v, cls, col) { return '<div class="fo-s ' + cls + ((cls === 'a' ? m[1] > m[2] : m[2] > m[1]) ? ' lead' : '') + '"><b>' + m[3](v) + '</b><span class="bar"><i style="width:' + (100 * v / mx).toFixed(1) + '%;background:' + col + '"></i></span></div>'; }
+        return '<div class="fo-row">' + s(m[1], 'a', '#35d0c0') + '<div class="m">' + m[0] + '</div>' + s(m[2], 'b', '#b48cff') + '</div>';
+      }).join('');
+      function own(x, y) { var other = {}; y.agg.words.slice(0, 24).forEach(function (w) { other[w.word] = 1; }); return x.agg.words.filter(function (w) { return !other[w.word]; }).slice(0, 5).map(function (w) { return '<span>' + esc(w.word) + '</span>'; }).join(''); }
+      words.innerHTML = '<div>' + own(A, B) + '</div><div>' + own(B, A) + '</div>';
+    }
+
+    function bindTabs(id, key) { $(id).addEventListener('click', function (e) { var b = e.target.closest('button[data-d]'); if (!b) return; X[key] = b.getAttribute('data-d'); Array.prototype.forEach.call($(id).querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x === b)); }); queueRefresh(true); }); }
+    bindTabs('fash-dim', 'fash'); bindTabs('temp-dim', 'temp'); bindTabs('man-dim', 'man'); bindTabs('att-dim', 'att'); bindTabs('fo-dim', 'fo');
+    $('trendchips').addEventListener('click', function (e) { var b = e.target.closest('button[data-t]'); if (b) pickTag(b.getAttribute('data-t')); });
+    $('fgrid').addEventListener('click', function (e) { var b = e.target.closest('button[data-t]'); if (b) { pickTag(b.getAttribute('data-t')); window.scrollTo({ top: $('stage').offsetTop - 20, behavior: reduce ? 'auto' : 'smooth' }); } });
+    $('fo-a').addEventListener('change', function () { X.foA = this.value; queueRefresh(true); });
+    $('fo-b').addEventListener('change', function () { X.foB = this.value; queueRefresh(true); });
+
     /* ============================== timeline ============================== */
     function setPlayUI() {
       var b = $('play');
@@ -1033,7 +1243,7 @@
     $('fchips').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-clear]'); if (!b) return;
       e.stopPropagation();   // the chips are rebuilt below, so this click must not also reach the stage
-      if (b.getAttribute('data-clear') === 'sel') S.selIdx = -1; else S.word = null;
+      var what = b.getAttribute('data-clear'); if (what === 'sel') S.selIdx = -1; else if (what === 'tag') S.tag = null; else S.word = null;
       updateChips(); queueRefresh(true);
     });
     $('play').addEventListener('click', function () { S.playing ? pause() : play(); });

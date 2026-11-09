@@ -45,6 +45,24 @@ age_stage_cue,25 to 44 (working-professional cues),268,69.6
 age_stage_cue,Under 25 (student cues),93,24.2
 age_stage_cue,45 and over (retirement or seniority cues),24,6.2
 age_stage_cue,Not available,495,
+manner,Originators,525,59.7
+manner,Conversationalists,309,35.1
+manner,Amplifiers,46,5.2
+manner,Not available,0,
+post_mood,positive,1610,
+post_mood,neutral,2048,
+post_mood,negative,1476,
+trend_uptake,#BatteryGate,130,14.8
+trend_uptake,#LumenLaunch,105,11.9
+trend_uptake,#RefundQueue,101,11.5
+trend_uptake,#CameraWars,85,9.7
+trend_uptake,#SupportStory,81,9.2
+trend_uptake,#PriceCheck,56,6.4
+trend_uptake,#GreenBox,55,6.3
+trend_uptake,#UnboxDay,54,6.1
+trend_uptake,#NightShift,51,5.8
+trend_uptake,#RightToRepair,47,5.3
+trend_uptake,#EarlyAccess,20,2.3
 reach_tier,Under 100,187,21.3
 reach_tier,100 to 1K,373,42.4
 reach_tier,1K to 10K,273,31

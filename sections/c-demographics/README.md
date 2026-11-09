@@ -9,11 +9,12 @@
 
 A static, dependency-free GitHub Pages page. Everything is computed in the visitor's browser. The only outside request is the optional Google Fonts stylesheet, and the page falls back to system fonts without it.
 
-- **Audience constellation:** every glowing dot is one anonymous profile. Switch the lens to regroup the dots by language, region, interest, life stage or platform. Hover a cluster for its size, click it to follow that group across the whole page.
+- **Audience constellation:** every glowing dot is one anonymous profile. Switch the lens to regroup the dots by language, region, interest, life stage, platform, mood or manner. Tap a trend and everyone who used that hashtag lights up. Hover a cluster for its size, click it to follow that group across the whole page.
 - **Arrival replay:** a timeline with an arrival curve replays how the audience first appeared. Every number follows the playhead. Add `?intro=0` to the page address to skip the opening replay.
-- **Field notes:** eight headline figures with ring gauges, written fresh from whatever is on screen.
+- **Field notes:** twelve headline figures with ring gauges, written fresh from whatever is on screen.
 - **Cast of characters:** group-level personas (for example "The Storyteller, Marketing, Media & Brands, Europe") with their signature bio words and busiest hour.
-- **Eight plates:** Tongues (language), Territories (region), Callings (interest), Seasons (life stage), Rhythm (a 24-hour posting clock and a "who is awake when" heat strip), Reach (follower tiers), Tenure (account age) and Vocabulary (a bio-word cloud). Tap a word and the profiles that use it light up in the constellation.
+- **Twelve plates:** Tongues (language), Territories (region), Callings (interest), Seasons (life stage), Rhythm (a 24-hour posting clock and a "who is awake when" heat strip), Reach (follower tiers), Tenure (account age) and Vocabulary (a bio-word cloud). Tap a word and the profiles that use it light up in the constellation. Then Fashions (which groups took up which trends), Temperament (who runs warm or sour), Manners (who starts, answers or passes things on) and Standing ovation (reactions earned per post).
+- **Face-off:** pick any two crowds and compare them side by side on ten measures and their own bio words.
 - **Habitats** (platform comparison), **Tribes** (largest region and calling pairings) and a four-step "how the atlas is drawn" strip.
 - **Save this view** saves the aggregate numbers for whatever is on screen.
 

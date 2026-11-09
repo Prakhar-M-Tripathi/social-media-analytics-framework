@@ -20,6 +20,16 @@ professional_interest,Not available,0,
 age_stage_cue,25 to 44 (working-professional cues),152,67
 age_stage_cue,Under 25 (student cues),75,33
 age_stage_cue,Not available,348,
+manner,Originators,343,59.7
+manner,Conversationalists,232,40.3
+manner,Not available,0,
+post_mood,positive,0,
+post_mood,neutral,0,
+post_mood,negative,0,
+trend_uptake,#iPhone17,55,9.6
+trend_uptake,#AppleiPhone,51,8.9
+trend_uptake,#CocaColaZeroSugar,49,8.5
+trend_uptake,#CokeZeroSugar,37,6.4
 reach_tier,Under 100,0,0
 reach_tier,100 to 1K,0,0
 reach_tier,1K to 10K,0,0
