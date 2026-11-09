@@ -1,0 +1,13 @@
+rank,topic,keywords,posts,users,trend_score,z_score,confidence,burst,momentum_per_step,status,likely_to_rise,started_on,first_seen,forecast_next_3,forecast_range
+1,Quiero Ver,quiero | ver | quiero ver | idea,136,117,1.490,3.35,High,1.93,0.04,rise,true,Telegram,2026-10-07T23:53:38.000Z,5.8 | 5.8 | 5.9,+/- 4.3
+2,Apple Intelligence,intelligence | apple intelligence,74,60,1.564,3.27,High,3.51,0.05,rise,true,X,2026-10-09T09:36:04.000Z,3.6 | 3.6 | 3.7,+/- 3.7
+3,Cola Company,company | cola company | company coca | cola zero | coca | coca cola | cola | zero,674,268,1.195,2.62,Medium,2.07,0.17,steady,true,Reddit,2026-10-07T20:37:54.000Z,29.5 | 29.6 | 29.8,+/- 9.2
+4,Gusta,gusta,12,12,1.540,3.18,High,-0.20,0.00,rise,false,YouTube,2026-10-10T23:51:19.000Z,0.6 | 0.6 | 0.6,+/- 1.2
+5,Launch Details,launch | launch details | feature | achha | clear | feature achha | achha launch | details clear,214,171,1.173,1.43,Low,3.95,1.23,steady,false,Telegram,2026-10-08T02:17:42.000Z,19.9 | 20.9 | 21.8,+/- 7.9
+6,Replying Earlier,replying | earlier | replying earlier,112,105,1.196,1.30,Low,1.72,0.04,steady,false,YouTube,2026-10-08T19:47:27.000Z,5.6 | 5.7 | 5.7,+/- 3.2
+7,Quoting Campaign,quoting | discussion | quoting campaign | campaign,105,94,1.198,1.29,Low,2.28,0.03,steady,false,Reddit,2026-10-09T02:35:04.000Z,4.2 | 4.2 | 4.2,+/- 3.6
+8,Iphone Camera,camera | iphone camera,78,67,1.195,1.17,Low,-0.19,-0.06,steady,false,X,2026-10-09T18:10:31.000Z,2.8 | 2.7 | 2.7,+/- 2.8
+9,Iphone Battery,battery | iphone battery,82,70,1.087,0.53,Low,2.35,0.04,steady,false,Facebook,2026-10-07T21:12:15.000Z,3.2 | 3.2 | 3.3,+/- 3.6
+10,Price High,high | otherwise | help | price high | high otherwise | otherwise help | price | design,170,144,1.030,0.23,Low,1.41,0.42,steady,false,X,2026-10-07T22:15:50.000Z,7.9 | 8.3 | 8.6,+/- 4.6
+11,Apple Iphone,apple iphone | apple | iphone,289,174,0.974,-0.24,Low,0.15,0.10,steady,false,Instagram,2026-10-08T06:07:48.000Z,9.2 | 9.3 | 9.4,+/- 8.8
+12,Good,good,20,20,0.885,-0.61,Low,-0.53,-0.06,steady,false,Telegram,2026-10-08T01:45:22.000Z,0.1 | 0.1 | 0.0,+/- 1.9
