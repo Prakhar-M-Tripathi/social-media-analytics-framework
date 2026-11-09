@@ -1,119 +1,122 @@
 ﻿dimension,category,users,share_percent
-language,English,477,55
-language,Spanish,95,11
-language,Hinglish (English + Hindi),42,4.8
-language,Spanglish (English + Spanish),41,4.7
-language,Portuguese,36,4.2
-language,French,30,3.5
-language,Hindi,29,3.3
-language,German,21,2.4
-language,Arabic,20,2.3
+language,English,490,56.1
+language,Spanish,84,9.6
+language,Hinglish (English + Hindi),34,3.9
+language,Portuguese,34,3.9
+language,French,33,3.8
+language,Spanglish (English + Spanish),26,3
+language,Arabic,25,2.9
+language,German,25,2.9
+language,Hindi,22,2.5
 language,Italian,11,1.3
-language,Turkish,10,1.2
-language,Swahili,9,1
-language,Filipino,8,0.9
-language,Japanese,7,0.8
-language,Chinese,6,0.7
-language,Swedish,6,0.7
-language,Bangla,5,0.6
-language,Indonesian,5,0.6
-language,Other (grouped for privacy),9,1
-language,Not available,13,
-region,North America,168,23.5
-region,Europe,160,22.3
-region,South Asia,124,17.3
-region,Latin America,118,16.5
-region,Middle East & Africa,63,8.8
-region,East Asia & Pacific,53,7.4
-region,Other region,30,4.2
-region,Not available,164,
-professional_interest,Consumer & Customer Experience,138,18.2
-professional_interest,Technology & Software,117,15.4
-professional_interest,"Marketing, Media & Brands",110,14.5
-professional_interest,Business & Entrepreneurship,101,13.3
-professional_interest,Students & Education,96,12.6
-professional_interest,Travel & Food,89,11.7
-professional_interest,Entertainment & Sports,75,9.9
-professional_interest,Finance & Economics,68,8.9
-professional_interest,Sustainability & Design,51,6.7
-professional_interest,Health & Wellness,41,5.4
-professional_interest,Not available,120,
-age_stage_cue,25 to 44 (working-professional cues),292,70.7
-age_stage_cue,Under 25 (student cues),97,23.5
-age_stage_cue,45 and over (retirement or seniority cues),24,5.8
-age_stage_cue,Not available,467,
-reach_tier,Under 100,203,23.1
-reach_tier,100 to 1K,374,42.5
-reach_tier,1K to 10K,271,30.8
-reach_tier,10K to 100K,31,3.5
+language,Chinese,10,1.1
+language,Japanese,9,1
+language,Polish,8,0.9
+language,Turkish,8,0.9
+language,Urdu,8,0.9
+language,Bangla,7,0.8
+language,Filipino,7,0.8
+language,Indonesian,7,0.8
+language,Korean,7,0.8
+language,Swahili,7,0.8
+language,Tamil,7,0.8
+language,Swedish,5,0.6
+language,Not available,6,
+region,North America,168,23.7
+region,Europe,159,22.4
+region,South Asia,117,16.5
+region,Latin America,108,15.2
+region,East Asia & Pacific,70,9.9
+region,Middle East & Africa,60,8.5
+region,Other region,27,3.8
+region,Not available,171,
+professional_interest,Consumer & Customer Experience,124,17
+professional_interest,Technology & Software,115,15.8
+professional_interest,Students & Education,99,13.6
+professional_interest,"Marketing, Media & Brands",96,13.2
+professional_interest,Business & Entrepreneurship,87,12
+professional_interest,Travel & Food,81,11.1
+professional_interest,Entertainment & Sports,79,10.9
+professional_interest,Finance & Economics,60,8.2
+professional_interest,Health & Wellness,49,6.7
+professional_interest,Sustainability & Design,45,6.2
+professional_interest,Not available,152,
+age_stage_cue,25 to 44 (working-professional cues),268,69.6
+age_stage_cue,Under 25 (student cues),93,24.2
+age_stage_cue,45 and over (retirement or seniority cues),24,6.2
+age_stage_cue,Not available,495,
+reach_tier,Under 100,187,21.3
+reach_tier,100 to 1K,373,42.4
+reach_tier,1K to 10K,273,31
+reach_tier,10K to 100K,46,5.2
 reach_tier,100K and up,<5,0.1
 reach_tier,Not available,0,
-account_cohort,2015 or earlier,96,10.9
-account_cohort,2016 to 2017,86,9.8
-account_cohort,2018 to 2019,89,10.1
-account_cohort,2020 to 2021,116,13.2
-account_cohort,2022 to 2023,169,19.2
-account_cohort,2024 to now,324,36.8
+account_cohort,2015 or earlier,84,9.5
+account_cohort,2016 to 2017,60,6.8
+account_cohort,2018 to 2019,101,11.5
+account_cohort,2020 to 2021,136,15.5
+account_cohort,2022 to 2023,173,19.7
+account_cohort,2024 to now,326,37
 account_cohort,Not available,0,
-bio_word,nerd,53,6.5
-bio_word,student,50,6.2
-bio_word,developer,48,5.9
-bio_word,analyst,47,5.8
-bio_word,projects,38,4.7
-bio_word,customer,35,4.3
-bio_word,spreadsheets,35,4.3
-bio_word,media,34,4.2
-bio_word,product,34,4.2
-bio_word,travel,33,4.1
-bio_word,parent,30,3.7
-bio_word,engineer,29,3.6
-bio_word,packaging,29,3.6
-bio_word,honest,25,3.1
-bio_word,reviewer,25,3.1
-bio_word,coffee,23,2.8
-bio_word,fair,23,2.8
-bio_word,market,23,2.8
-bio_word,price,23,2.8
-bio_word,making,22,2.7
-bio_word,owner,22,2.7
-bio_word,writer,22,2.7
-bio_word,creative,21,2.6
-bio_word,hiring,21,2.6
-bio_word,slowly,21,2.6
-bio_word,boring,20,2.5
+bio_word,student,52,6.6
+bio_word,nerd,49,6.2
+bio_word,developer,43,5.5
+bio_word,analyst,40,5.1
+bio_word,projects,37,4.7
+bio_word,travel,34,4.3
+bio_word,customer,33,4.2
+bio_word,parent,32,4.1
+bio_word,nights,31,3.9
+bio_word,media,30,3.8
+bio_word,product,30,3.8
+bio_word,writer,30,3.8
+bio_word,engineer,28,3.6
+bio_word,honest,27,3.4
+bio_word,making,27,3.4
+bio_word,packaging,27,3.4
+bio_word,spreadsheets,24,3
+bio_word,creative,22,2.8
+bio_word,coffee,21,2.7
+bio_word,brands,20,2.5
 bio_word,designer,20,2.5
-bio_word,food,20,2.5
-bio_word,living,20,2.5
-bio_word,low-waste,20,2.5
-posts_by_hour_utc,00,82,
-posts_by_hour_utc,01,84,
-posts_by_hour_utc,02,88,
-posts_by_hour_utc,03,78,
-posts_by_hour_utc,04,76,
-posts_by_hour_utc,05,92,
-posts_by_hour_utc,06,75,
-posts_by_hour_utc,07,81,
-posts_by_hour_utc,08,64,
-posts_by_hour_utc,09,57,
-posts_by_hour_utc,10,56,
-posts_by_hour_utc,11,66,
-posts_by_hour_utc,12,72,
-posts_by_hour_utc,13,85,
-posts_by_hour_utc,14,101,
-posts_by_hour_utc,15,106,
-posts_by_hour_utc,16,82,
-posts_by_hour_utc,17,124,
-posts_by_hour_utc,18,112,
-posts_by_hour_utc,19,112,
-posts_by_hour_utc,20,104,
-posts_by_hour_utc,21,112,
-posts_by_hour_utc,22,97,
-posts_by_hour_utc,23,159,
-segment,Europe / Technology & Software / English,28,
-segment,Latin America / Consumer & Customer Experience / Spanish,28,
-segment,North America / Technology & Software / English,25,
-segment,North America / Consumer & Customer Experience / English,23,
-segment,North America / Business & Entrepreneurship / English,22,
-segment,Europe / Consumer & Customer Experience / English,20,
-segment,"Europe / Marketing, Media & Brands / English",20,
-segment,"North America / Marketing, Media & Brands / English",19,
+bio_word,fair,20,2.5
+bio_word,human,20,2.5
+bio_word,owner,20,2.5
+bio_word,price,20,2.5
+bio_word,asked,19,2.4
+bio_word,bootstrapped,19,2.4
+bio_word,dashboards,19,2.4
+bio_word,dreams,19,2.4
+bio_word,nobody,19,2.4
+posts_by_hour_utc,00,176,
+posts_by_hour_utc,01,168,
+posts_by_hour_utc,02,195,
+posts_by_hour_utc,03,196,
+posts_by_hour_utc,04,206,
+posts_by_hour_utc,05,161,
+posts_by_hour_utc,06,196,
+posts_by_hour_utc,07,250,
+posts_by_hour_utc,08,209,
+posts_by_hour_utc,09,171,
+posts_by_hour_utc,10,147,
+posts_by_hour_utc,11,165,
+posts_by_hour_utc,12,222,
+posts_by_hour_utc,13,274,
+posts_by_hour_utc,14,279,
+posts_by_hour_utc,15,264,
+posts_by_hour_utc,16,281,
+posts_by_hour_utc,17,251,
+posts_by_hour_utc,18,242,
+posts_by_hour_utc,19,230,
+posts_by_hour_utc,20,220,
+posts_by_hour_utc,21,197,
+posts_by_hour_utc,22,168,
+posts_by_hour_utc,23,266,
+segment,Europe / Consumer & Customer Experience / English,29,
+segment,Europe / Technology & Software / English,26,
+segment,North America / Consumer & Customer Experience / English,24,
+segment,North America / Technology & Software / English,23,
+segment,North America / Entertainment & Sports / English,22,
+segment,Latin America / Students & Education / Spanish,19,
+segment,"Europe / Marketing, Media & Brands / English",17,
+segment,South Asia / Consumer & Customer Experience / Hinglish (English + Hindi),17,

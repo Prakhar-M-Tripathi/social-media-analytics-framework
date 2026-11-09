@@ -19,7 +19,7 @@ A static, dependency-free GitHub Pages page. Everything is computed in the visit
 
 ## Data
 
-`sample/audience_sample.csv` has 2,221 synthetic posts from 892 fictional profiles on X, Telegram, Instagram, Facebook, YouTube and Reddit over 30 days. Everything in it is fictional. It uses the six shared columns plus optional profile columns:
+`sample/audience_sample.csv` has 5,221 synthetic posts from 892 fictional profiles on X, Telegram, Instagram, Facebook, YouTube and Reddit over 30 days. Everything in it is fictional. The same file also feeds Section E. It uses the six shared columns plus optional columns:
 
 | Column | Meaning |
 |---|---|
@@ -28,6 +28,9 @@ A static, dependency-free GitHub Pages page. Everything is computed in the visit
 | `user_location` | place as people write it (cities, countries, blanks, a few jokes) |
 | `followers` | public follower count |
 | `joined` | public join date |
+| `interaction` | what the row is: post, reply, quote, repost or share (Section E) |
+| `ref_post_id` | the post this one reacts to, for every kind of interaction. `parent_id` stays reply-only, as the contract says (Section E) |
+| `sentiment` | positive, neutral or negative, matching the wording of the post (Section E) |
 
 Posting hours follow each profile's local time zone, so activity rhythms differ by region.
 
