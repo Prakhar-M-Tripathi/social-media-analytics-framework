@@ -1,16 +1,862 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Section C: Demographic Profiling</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Audience Atlas: an interactive constellation of anonymous profiles, grouped by language, region, interest, life stage and platform.">
+  <meta name="color-scheme" content="dark">
+  <title>Audience Atlas | Demographic Profiling</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
-    .placeholder { background: #eef2f7; border: 2px dashed #9aa8bb; padding: 30px; text-align: center; }
+    :root{color-scheme:dark;--bg:#050813;--bg2:#0a1022;--ink:#e9eef9;--muted:#97a4bd;--faint:#66738d;--line:rgba(255,255,255,.09);--glass:rgba(255,255,255,.045);--glass2:rgba(255,255,255,.075);--teal:#35d0c0;--violet:#b48cff;--gold:#ffc15e;--rose:#ff7a90;--blue:#6ea8ff;--display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(1200px 700px at 78% -10%,#14234a 0,transparent 60%),radial-gradient(900px 600px at -5% 30%,#0f2b33 0,transparent 55%),radial-gradient(900px 700px at 50% 120%,#1d1540 0,transparent 60%),var(--bg)}
+    .aurora{position:fixed;inset:-20% -10% auto -10%;height:70vh;z-index:-1;pointer-events:none;filter:blur(70px);opacity:.55}
+    .aurora i{position:absolute;border-radius:50%;animation:drift 26s ease-in-out infinite alternate}
+    .aurora i:nth-child(1){left:8%;top:10%;width:34vw;height:30vh;background:#35d0c022;animation-duration:30s}
+    .aurora i:nth-child(2){left:45%;top:0;width:38vw;height:34vh;background:#b48cff22;animation-duration:24s;animation-delay:-8s}
+    .aurora i:nth-child(3){left:68%;top:22%;width:28vw;height:26vh;background:#ffc15e18;animation-duration:34s;animation-delay:-14s}
+    @keyframes drift{to{transform:translate3d(6vw,5vh,0) scale(1.15)}}
+    a{color:inherit}
+    .shell{max-width:1280px;margin:auto;padding:0 28px}
+    button,select,input{font:inherit;color:inherit}button{cursor:pointer}
+    :focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:8px}
+
+    /* top bar + framework rail */
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 6px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.02em}
+    .brand svg{width:30px;height:30px}
+    .brand small{display:block;font-weight:500;color:var(--muted);letter-spacing:.14em;font-size:10px;text-transform:uppercase}
+    .rail{display:flex;align-items:center;gap:0;font-size:12px}
+    .rail-label{color:var(--faint);letter-spacing:.14em;text-transform:uppercase;font-size:10px;margin-right:14px}
+    .step{display:flex;align-items:center;gap:7px;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:99px;position:relative}
+    .step b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-size:10px;background:var(--glass)}
+    .step+.step:before{content:"";position:absolute;left:-6px;top:50%;width:10px;height:1px;background:var(--line)}
+    a.step:hover{color:var(--ink);background:var(--glass)}
+    .step.on{color:#04110f;background:linear-gradient(135deg,var(--teal),#8ff0e4);font-weight:700}
+    .step.on b{background:#04110f;color:var(--teal);border-color:transparent}
+    .back{color:var(--muted);text-decoration:none;font-size:12px}.back:hover{color:var(--ink)}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:end;padding:34px 0 22px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:#8fe6dc;font-weight:700}
+    .live{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 #35d0c077;animation:pulse 2.2s infinite}
+    @keyframes pulse{70%{box-shadow:0 0 0 9px #35d0c000}100%{box-shadow:0 0 0 0 #35d0c000}}
+    h1{font:400 clamp(34px,5vw,60px)/1.02 var(--display);letter-spacing:-.02em;margin:12px 0 14px}
+    h1 em{font-style:italic;background:linear-gradient(100deg,var(--teal),var(--blue) 45%,var(--violet) 75%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 9s linear infinite}
+    @keyframes shine{to{background-position:-200% 0}}
+    .lede{color:var(--muted);max-width:610px;margin:0;font-size:15px}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi{padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px);position:relative;overflow:hidden}
+    .kpi:before{content:"";position:absolute;right:-24px;top:-24px;width:84px;height:84px;border-radius:50%;background:var(--c,#35d0c0);opacity:.13;filter:blur(8px)}
+    .kpi span{display:block;color:var(--muted);font-size:11px;letter-spacing:.05em}
+    .kpi strong{display:block;font:400 32px/1.1 var(--display);margin:4px 0 0;font-variant-numeric:tabular-nums}
+    .kpi small{color:var(--faint);font-size:11px}
+
+    /* stage */
+    .stage{position:relative;height:clamp(500px,74vh,720px);border-radius:26px;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 38%,#0e1a38 0,#080d1d 62%,#060a16 100%);box-shadow:0 30px 90px #00000066,inset 0 0 0 1px #ffffff05;overflow:hidden;touch-action:pan-y}
+    .stage:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff14 1px,transparent 1.2px);background-size:34px 34px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 78%);pointer-events:none}
+    #sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .tip{position:absolute;pointer-events:none;z-index:4;padding:10px 13px;border-radius:12px;background:#0b1226ee;border:1px solid var(--line);backdrop-filter:blur(10px);box-shadow:0 12px 34px #0008;font-size:12px;max-width:240px;transform:translate(-50%,-125%)}
+    .tip b{display:block;font-size:13px}.tip span{color:var(--muted)}.tip i{display:block;color:var(--faint);font-style:normal;font-size:11px;margin-top:3px}
+    .selchip{position:absolute;left:16px;top:14px;z-index:5;display:flex;align-items:center;gap:8px;padding:7px 8px 7px 13px;border-radius:99px;background:#0b1226dd;border:1px solid #35d0c066;font-size:12px;backdrop-filter:blur(8px)}
+    .selchip button{border:0;width:22px;height:22px;border-radius:50%;background:var(--glass2);line-height:1}
+    .selchip button:hover{background:#ffffff26}
+    .hint{position:absolute;right:16px;top:14px;z-index:3;color:var(--faint);font-size:11px;letter-spacing:.04em;pointer-events:none}
+    .controls{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;display:grid;gap:10px;padding:12px;border-radius:18px;background:#0a1122cc;border:1px solid var(--line);backdrop-filter:blur(14px)}
+    .lens{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .lens-label{color:var(--faint);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-right:4px}
+    .lens button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;transition:.18s}
+    .lens button:hover{color:var(--ink);background:var(--glass)}
+    .lens button[aria-pressed=true]{color:#05110f;background:linear-gradient(135deg,var(--teal),#9ff3e8);border-color:transparent;box-shadow:0 6px 20px #35d0c033}
+    .lens-note{margin-left:auto;color:var(--faint);font-size:11px}
+    .timebar{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+    .play{width:36px;height:36px;border-radius:50%;border:1px solid #35d0c055;background:#35d0c014;display:grid;place-items:center;transition:.18s}
+    .play:hover{background:#35d0c033}.play svg{width:14px;height:14px;fill:var(--teal)}
+    .scrub{position:relative;height:36px}
+    .scrub svg{position:absolute;inset:3px 0 7px;width:100%;height:calc(100% - 10px);overflow:visible}
+    input[type=range]{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;background:transparent}
+    input[type=range]::-webkit-slider-runnable-track{height:36px;background:transparent}
+    input[type=range]::-moz-range-track{height:36px;background:transparent}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:4px;height:36px;border-radius:2px;background:var(--gold);box-shadow:0 0 14px 3px #ffc15e88}
+    input[type=range]::-moz-range-thumb{width:4px;height:36px;border:0;border-radius:2px;background:var(--gold);box-shadow:0 0 14px 3px #ffc15e88}
+    .date{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);text-align:right;min-width:150px}
+    .date b{color:var(--ink);font-weight:600}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font-size:12px;color:var(--muted);transition:.18s}
+    .chip:hover{color:var(--ink);background:var(--glass2)}
+    .chip i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+    .chip b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+    .chip[aria-pressed=true]{border-color:var(--c);color:var(--ink);background:#ffffff10}
+
+    /* content */
+    main{padding:14px 0 60px}
+    .strip{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:18px 0 12px;padding:14px 18px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+    .strip strong{display:block;font-size:13px}.strip small{color:var(--muted);font-size:12px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid var(--line);background:var(--glass);color:var(--ink);border-radius:10px;padding:8px 14px;font-weight:600;font-size:12px;transition:.18s}
+    .btn:hover{background:var(--glass2)}.btn:disabled{opacity:.4;cursor:not-allowed}
+    .file-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .file-input:focus-visible+.btn{outline:2px solid var(--teal);outline-offset:2px}
+    .banner{margin:10px 0;padding:11px 15px;border-radius:12px;font-size:12px;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line)}
+    .banner b{white-space:nowrap}
+    .banner.privacy{background:#35d0c010;border-color:#35d0c033;color:#bfeee9}
+    .banner.demo{background:#ffc15e10;border-color:#ffc15e33;color:#f3dba9}
+    .banner.error{background:#ff7a9012;border-color:#ff7a9040;color:#ffc4cd}
+    h2{font:400 26px/1.15 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+    h3{font-size:14px;margin:0 0 2px}
+    .section-head{margin:40px 0 14px}.section-head p{margin:0;color:var(--muted)}
+    .glass{background:var(--glass);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(10px)}
+    .findings{padding:6px 24px}
+    .findings ol{list-style:none;margin:0;padding:0;counter-reset:f}
+    .findings li{counter-increment:f;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:15px 0;border-top:1px solid var(--line);font:400 18px/1.4 var(--display);color:#dfe6f5}
+    .findings li:first-child{border-top:0}
+    .findings li:before{content:counter(f,decimal-leading-zero);font:600 12px/2.2 var(--sans);color:var(--teal);letter-spacing:.08em}
+    .personas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .persona{padding:16px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),var(--glass) 55%);position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+    .persona:hover{transform:translateY(-4px);border-color:var(--c)}
+    .persona svg{display:block;margin-bottom:8px;overflow:visible}
+    .persona h3{font:400 21px/1.15 var(--display)}
+    .persona .meta{color:var(--muted);font-size:12px;margin:3px 0 10px}
+    .persona .big{font:400 30px/1 var(--display);font-variant-numeric:tabular-nums}
+    .persona .big small{font:500 12px var(--sans);color:var(--faint);margin-left:6px}
+    .persona .row2{margin-top:10px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:9px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .panel{padding:20px 22px;min-width:0}
+    .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .badge{border:1px solid var(--line);color:var(--muted);padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.04em}
+    .badge.warn{border-color:#ffc15e55;color:#ffd488}
+    .desc{color:var(--muted);font-size:12px;margin:5px 0 15px}
+    .bars{display:grid;gap:10px}
+    .row{display:grid;grid-template-columns:minmax(110px,200px) 1fr 86px;align-items:center;gap:12px;font-size:12px}
+    .row .name{color:#d3dbec}
+    .track{height:8px;background:#ffffff0d;border-radius:99px;overflow:hidden}
+    .fill{display:block;height:100%;border-radius:99px;width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+    .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;font-size:11px}
+    .na{margin-top:12px;font-size:11px;color:var(--faint)}
+    .empty{padding:30px 8px;text-align:center;color:var(--faint);font-size:12px}
+    .legend2{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:2px 0 12px}
+    .legend2 span{display:inline-flex;align-items:center;gap:6px}.key{height:9px;width:9px;border-radius:3px;display:inline-block}
+    .stack-row{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;margin-bottom:10px;font-size:12px}
+    .stack{display:flex;height:20px;border-radius:7px;overflow:hidden;background:#ffffff0d}.stack i{display:block;height:100%;transition:width .5s}
+    select{border:1px solid var(--line);background:#0c1326;border-radius:9px;padding:7px 28px 7px 11px;font-size:12px}
+    .full{margin-top:14px}
+    .table-scroll{overflow:auto}
+    table{border-collapse:collapse;width:100%;font-size:12px;min-width:520px}
+    th,td{padding:11px 12px;border-top:1px solid var(--line);text-align:left}
+    th{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);font-weight:600}
+    td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+    .method{padding:22px 26px;font-size:13px;color:#b7c2d9}
+    .method ul{margin:10px 0 0;padding-left:18px}.method li{margin:5px 0}.method code{background:#ffffff10;padding:1px 6px;border-radius:6px;font-size:12px}
+    footer{padding:26px 0 40px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
+
+    @media(max-width:1000px){.hero{grid-template-columns:1fr}.personas{grid-template-columns:repeat(2,minmax(0,1fr))}.rail-label{display:none}}
+    @media(max-width:860px){.grid2{grid-template-columns:1fr}.shell{padding:0 16px}.lens-note{display:none}.hint{display:none}.date{min-width:0}}
+    @media(max-width:560px){.personas{grid-template-columns:1fr}.row{grid-template-columns:1fr 78px;grid-template-areas:"n v" "t t"}.row .name{grid-area:n}.row .val{grid-area:v}.row .track{grid-area:t}.stack-row{grid-template-columns:1fr}.stage{height:680px}.step span{display:none}.timebar{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}.lens button{padding:6px 10px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <p><a href="../../index.html">Back to home</a></p>
-  <h1>Section C: Demographic Profiling</h1>
-  <div class="placeholder">This section is under construction. The assigned team adds its work here.</div>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <div class="shell">
+    <header class="nav">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#35d0c0"/><stop offset="1" stop-color="#b48cff"/></linearGradient></defs><g stroke="url(#lg)" stroke-width="1.2" fill="none" opacity=".7"><path d="M6 22 12 12 20 17 26 7M12 12 14 25 20 17"/></g><g fill="url(#lg)"><circle cx="6" cy="22" r="2.6"/><circle cx="12" cy="12" r="3"/><circle cx="20" cy="17" r="2.6"/><circle cx="26" cy="7" r="2.2"/><circle cx="14" cy="25" r="1.8"/></g></svg>
+        <div>Audience Atlas<small>Section C &middot; Demographics</small></div>
+      </div>
+      <nav class="rail" aria-label="Framework sections">
+        <span class="rail-label">The framework</span>
+        <span class="step" title="Section A runs as the backend collection pipeline"><b>A</b><span>Collect</span></span>
+        <a class="step" href="../b-sentiment/index.html"><b>B</b><span>Feel</span></a>
+        <span class="step on" aria-current="page"><b>C</b><span>Know</span></span>
+        <a class="step" href="../d-trends/index.html"><b>D</b><span>Trend</span></a>
+        <a class="step" href="../e-network/index.html"><b>E</b><span>Connect</span></a>
+      </nav>
+      <a class="back" href="../../index.html">&larr; Back to framework</a>
+    </header>
+
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <div class="eyebrow"><i class="live"></i> Section C &middot; Demographic profiling</div>
+        <h1 id="title">Meet the <em>audience</em> behind the numbers</h1>
+        <p class="lede">Every glowing dot is one anonymous profile. Regroup them by language, region, interest, life stage or platform, replay how the audience arrived, and click any cluster to focus the whole page on it.</p>
+      </div>
+      <div class="kpis" aria-label="Summary">
+        <div class="kpi" style="--c:#35d0c0"><span>Audience profiles</span><strong id="k-users">&ndash;</strong><small id="k-users-sub">anonymised IDs</small></div>
+        <div class="kpi" style="--c:#6ea8ff"><span>Posts behind them</span><strong id="k-posts">&ndash;</strong><small>in the current view</small></div>
+        <div class="kpi" style="--c:#b48cff"><span>Languages found</span><strong id="k-langs">&ndash;</strong><small id="k-multi">&nbsp;</small></div>
+        <div class="kpi" style="--c:#ffc15e"><span>Stated a location</span><strong id="k-cov">&ndash;</strong><small id="k-cov-sub">&nbsp;</small></div>
+      </div>
+    </section>
+
+    <section class="stage" id="stage" aria-label="Audience constellation">
+      <canvas id="sky" role="img" aria-label="Constellation of anonymous audience profiles grouped by the selected lens. Group totals are listed below the chart."></canvas>
+      <div class="selchip" id="selchip" hidden></div>
+      <div class="hint" id="hint">Hover a cluster &middot; click to focus</div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="controls" id="controls">
+        <div class="lens" role="group" aria-label="Group dots by">
+          <span class="lens-label">Group by</span>
+          <button type="button" data-lens="language" aria-pressed="false">Language</button>
+          <button type="button" data-lens="region" aria-pressed="true">Region</button>
+          <button type="button" data-lens="interest" aria-pressed="false">Interest</button>
+          <button type="button" data-lens="age" aria-pressed="false">Life stage</button>
+          <button type="button" data-lens="platform" aria-pressed="false">Platform</button>
+          <span class="lens-note" id="lens-note"></span>
+        </div>
+        <div class="timebar">
+          <button type="button" class="play" id="play" aria-label="Play timeline"></button>
+          <div class="scrub">
+            <svg id="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <input type="range" id="time" min="0" max="1000" value="1000" aria-label="Timeline: when profiles first appeared">
+          </div>
+          <div class="date" id="date" aria-live="off"></div>
+        </div>
+      </div>
+    </section>
+    <div class="legend" id="legend" role="group" aria-label="Groups in the constellation"></div>
+  </div>
+
+  <main class="shell">
+    <section class="strip" aria-label="Dataset">
+      <div><strong id="dataset-title">Loading dataset&hellip;</strong><small id="dataset-meta">Looking for data</small></div>
+      <div class="actions">
+        <input class="file-input" id="csv-file" type="file" accept=".csv,text/csv">
+        <label class="btn" for="csv-file" role="button">Choose CSV</label>
+        <button class="btn" id="download" type="button" disabled>Export this view</button>
+      </div>
+    </section>
+    <div id="notice" role="status"></div>
+    <div class="banner privacy"><b>Privacy</b><span>Dots are anonymous and carry no text. Only group totals are shown. Groups with fewer than 5 profiles are merged into &ldquo;Other&rdquo; and their exact size is hidden. No handle, name or bio is displayed or exported.</span></div>
+
+    <div class="section-head reveal"><h2>What the data says</h2><p>Updates as you replay the timeline or focus a group.</p></div>
+    <section class="glass findings reveal" aria-label="Key findings"><ol id="findings"><li>Waiting for data.</li></ol></section>
+
+    <div class="section-head reveal"><h2>Audience personas</h2><p>Group-level archetypes: the largest region and interest segments, never individuals.</p></div>
+    <section class="personas reveal" id="personas" aria-label="Audience personas"></section>
+
+    <div class="section-head reveal"><h2>Under the surface</h2><p>The numbers behind each lens.</p></div>
+    <div class="grid2 reveal">
+      <section class="glass panel" aria-labelledby="h-lang">
+        <div class="panel-head"><h3 id="h-lang">Languages</h3><span class="badge">Declared or detected</span></div>
+        <p class="desc">Main language per profile, from the language code, or the writing script when no code exists.</p>
+        <div class="bars" id="bars-language"></div><div class="na" id="na-language"></div>
+      </section>
+      <section class="glass panel" aria-labelledby="h-reg">
+        <div class="panel-head"><h3 id="h-reg">Regions</h3><span class="badge">From stated location</span></div>
+        <p class="desc">Broad world region matched from location text. Exact places are never shown.</p>
+        <div class="bars" id="bars-region"></div><div class="na" id="na-region"></div>
+      </section>
+    </div>
+    <div class="grid2 reveal">
+      <section class="glass panel" aria-labelledby="h-int">
+        <div class="panel-head"><h3 id="h-int">Professional interests</h3><span class="badge">Keyword rules</span></div>
+        <p class="desc">Interest themes found in bio text. A profile can have several, so shares add up to more than 100%.</p>
+        <div class="bars" id="bars-interest"></div><div class="na" id="na-interest"></div>
+      </section>
+      <section class="glass panel" aria-labelledby="h-age">
+        <div class="panel-head"><h3 id="h-age">Life-stage cues</h3><span class="badge warn">Weak signal</span></div>
+        <p class="desc">Approximate age brackets suggested by self-described words such as &ldquo;student&rdquo;. Most profiles give no cue, and this says nothing about any one person.</p>
+        <div class="bars" id="bars-age"></div><div class="na" id="na-age"></div>
+      </section>
+    </div>
+
+    <section class="glass panel full reveal" aria-labelledby="h-plat">
+      <div class="panel-head"><h3 id="h-plat">Compare platforms</h3>
+        <div><label for="dim" class="sr">Dimension</label><select id="dim" aria-label="Choose what to compare"><option value="language">Languages</option><option value="region">Regions</option><option value="interest">Interests</option></select></div></div>
+      <p class="desc">Mix of the current view, platform by platform. The number in brackets is the audience size.</p>
+      <div class="legend2" id="stack-legend"></div><div id="stack"></div>
+    </section>
+
+    <section class="glass panel full reveal" aria-labelledby="h-seg">
+      <div class="panel-head"><h3 id="h-seg">Largest audience segments</h3><span class="badge">Region &times; interest</span></div>
+      <p class="desc">Only segments with at least 5 profiles. Language and platform are the most common in that segment.</p>
+      <div class="table-scroll"><table><thead><tr><th>Region</th><th>Interest</th><th>Main language</th><th>Main platform</th><th class="num">Profiles</th></tr></thead><tbody id="seg-body"></tbody></table></div>
+    </section>
+
+    <section class="glass method full reveal" aria-labelledby="h-m">
+      <h2 id="h-m">How it works, and its limits</h2>
+      <ul>
+        <li><b>Data:</b> the shared <code>data/posts.csv</code> when it has profile columns; otherwise Section C&rsquo;s own synthetic <code>sample/audience_sample.csv</code>. You can also load your own CSV with <code>user_id</code> and the optional <code>language</code>, <code>user_bio</code>, <code>user_location</code> columns.</li>
+        <li><b>Method:</b> transparent keyword rules and writing-script detection, run in your browser. No model is trained, nothing is uploaded, and no server is involved.</li>
+        <li><b>Unit:</b> one dot is one anonymised <code>user_id</code>. The same person on two platforms counts twice. Brand or official accounts are excluded from the audience.</li>
+        <li><b>Estimates, not facts:</b> bios and locations are self-reported, short and sometimes jokes. Rules miss many profiles (see the &ldquo;not available&rdquo; counts) and can mislabel others. Life-stage cues are the weakest signal here.</li>
+        <li><b>Not inferred:</b> gender, ethnicity, religion, politics, health or identity.</li>
+      </ul>
+    </section>
+
+    <footer><span>AI Social Media Analytics Framework &middot; Section C</span><span>Synthetic sample data unless a real dataset is loaded</span></footer>
+  </main>
+
+  <script src="profiler.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var P = window.Profiler, K = P.K_MIN;
+    var $ = function (id) { return document.getElementById(id); };
+    var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    var SHARED = '../../data/posts.csv';
+    var SAMPLE_CSV = 'sample/audience_sample.csv';
+    var SAMPLE_JS = 'sample/audience_sample.js';
+    var A = '../a-data-collection/output/';
+    var SIDECARS = [A + 'live_post_metadata.csv', A + 'demo_post_metadata.csv'];
+
+    var PALETTE = ['#6ea8ff', '#35d0c0', '#ffc15e', '#ff7a90', '#b48cff', '#7be08a', '#ff9f6e', '#5cd1ff', '#e58cff', '#c8d46a'];
+    var C_OTHER = '#8b95a9', C_NA = '#5f6b82';
+    var LENS_NAMES = { language: 'Language', region: 'Region', interest: 'Interest', age: 'Life stage', platform: 'Platform' };
+    var LENS_NOTES = {
+      language: 'Main language of each profile.',
+      region: 'Broad world region from the stated location.',
+      interest: 'Primary interest per profile (a profile can have several).',
+      age: 'Self-described life-stage words. A weak signal.',
+      platform: 'Where each profile posts.'
+    };
+    var ARCH = {
+      'Technology & Software': 'The Builder', 'Marketing, Media & Brands': 'The Storyteller',
+      'Business & Entrepreneurship': 'The Founder', 'Students & Education': 'The Learner',
+      'Sustainability & Design': 'The Steward', 'Consumer & Customer Experience': 'The Everyday Voice',
+      'Finance & Economics': 'The Analyst', 'Health & Wellness': 'The Caretaker',
+      'Entertainment & Sports': 'The Fan', 'Travel & Food': 'The Explorer'
+    };
+    var INTEREST_ORDER = Object.keys(ARCH);
+    var PLAY_MS = 14000;
+    var FONT = getComputedStyle(document.body).fontFamily;
+
+    var S = {
+      aud: [], orgCount: 0, lens: 'region', selIdx: -1, t: 1, tMin: 0, tMax: 1, playing: false,
+      grouping: null, colors: {}, parts: [], layout: null, hover: -1, mouse: null,
+      W: 0, H: 0, dpr: 1, ctx: null, onscreen: true, vc: [], agg: null, manual: false, last: 0, rq: 0
+    };
+
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function fmt(n) { return Number(n).toLocaleString('en-US'); }
+    function nText(it) { return it.hidden ? '<' + K : fmt(it.n); }
+    function notice(kind, html) { $('notice').innerHTML = html ? '<div class="banner ' + kind + '">' + html + '</div>' : ''; }
+    function hexA(hex, a) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+    function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+    function easeOutBack(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+
+    /* ============================== data loading ============================== */
+    function fetchText(url) {
+      return fetch(url, { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error(url + ' returned ' + r.status);
+        return r.text();
+      });
+    }
+    function tryText(url) { return fetchText(url).catch(function () { return null; }); }
+
+    function loadSampleText() {
+      if (window.SAMPLE_AUDIENCE_CSV) return Promise.resolve(window.SAMPLE_AUDIENCE_CSV);
+      return fetchText(SAMPLE_CSV).catch(function () {
+        // Opened straight from disk (file://), where fetch is blocked: load the same data as a script.
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = SAMPLE_JS;
+          s.onload = function () { window.SAMPLE_AUDIENCE_CSV ? resolve(window.SAMPLE_AUDIENCE_CSV) : reject(new Error('empty')); };
+          s.onerror = function () { reject(new Error('sample missing')); };
+          document.head.appendChild(s);
+        });
+      });
+    }
+
+    function enrich(posts) {
+      return Promise.all(SIDECARS.map(tryText)).then(function (texts) {
+        var total = 0;
+        texts.forEach(function (t) { if (t) total += P.mergeProfileFields(posts, P.parseCSV(t)); });
+        return total;
+      });
+    }
+
+    function loadDefault() {
+      return tryText(SHARED).then(function (shared) {
+        var parsed = shared ? P.parseCSV(shared) : [];
+        if (!parsed.length) return null;
+        if (P.hasProfileColumns(parsed)) return { rows: parsed, title: 'Shared project dataset', meta: 'data/posts.csv', demo: false };
+        return enrich(parsed).then(function (n) {
+          return n ? { rows: parsed, title: 'Shared project dataset', meta: 'data/posts.csv &middot; profile fields joined from Section A sidecar files', demo: false } : null;
+        });
+      }).then(function (found) {
+        if (found) return found;
+        return loadSampleText().then(function (t) {
+          return { rows: P.parseCSV(t), title: 'Section C sample audience', meta: 'sample/audience_sample.csv', demo: true };
+        });
+      }).then(function (d) {
+        if (S.manual) return;
+        setData(d.rows, d.title, d.meta, d.demo);
+      }).catch(function () {
+        if (S.manual) return;
+        $('dataset-title').textContent = 'No dataset found';
+        $('dataset-meta').textContent = 'Use Choose CSV to load a file with user_id and the optional language, user_bio and user_location columns.';
+        notice('error', '<b>No data</b><span>Neither the shared dataset nor the Section C sample could be loaded. Choose a CSV to begin.</span>');
+      });
+    }
+
+    function setData(rows, title, meta, demo) {
+      var profiles = P.buildProfiles(rows);
+      S.aud = profiles.filter(function (p) { return !p.org; });
+      S.orgCount = profiles.length - S.aud.length;
+      var ts = S.aud.map(function (p) { return p.first; }).filter(isFinite);
+      S.tMin = ts.length ? Math.min.apply(null, ts) : 0;
+      S.tMax = ts.length ? Math.max.apply(null, ts) : 1;
+      if (S.tMax <= S.tMin) S.tMax = S.tMin + 1;
+      S.aud.forEach(function (p) { if (!isFinite(p.first)) p.first = S.tMin; });
+      var intro = !reduce && S.aud.length && !/[?&]intro=0/.test(location.search);   // ?intro=0 skips the arrival replay
+      S.parts = []; S.selIdx = -1; S.t = intro ? 0 : 1; S.playing = false;
+      $('time').value = intro ? 0 : 1000;
+      $('dataset-title').textContent = title;
+      $('dataset-meta').innerHTML = fmt(rows.length) + ' posts &middot; ' + fmt(profiles.length) + ' anonymised profiles &middot; ' + meta;
+      notice(demo ? 'demo' : '', demo ? '<b>Synthetic data</b><span>These profiles are fictional and generated for the demo. The charts show how the page works, not a real audience.</span>' : '');
+      drawSpark();
+      regroup(true);
+      refresh();
+      if (intro) setTimeout(play, 500);   // intro: replay the audience arriving
+    }
+
+    /* ============================== grouping + layout ============================== */
+    function groupColor(label, idx) {
+      if (label === P.OTHER_LABEL) return C_OTHER;
+      if (label === P.NA_LABEL) return C_NA;
+      return PALETTE[idx % PALETTE.length];
+    }
+
+    function regroup(first) {
+      S.grouping = P.mapGroups(S.aud, S.lens, K);
+      S.colors = {};
+      var ci = 0;
+      S.grouping.groups.forEach(function (g) {
+        S.colors[g.label] = groupColor(g.label, ci);
+        if (g.label !== P.OTHER_LABEL && g.label !== P.NA_LABEL) ci++;
+      });
+      var index = {};
+      S.grouping.groups.forEach(function (g, i) { index[g.label] = i; });
+      S.gi = S.aud.map(function (p, i) { return index[S.grouping.labels[i]]; });
+      if (S.selIdx >= S.grouping.groups.length) S.selIdx = -1;
+      if (!S.parts.length || S.parts.length !== S.aud.length) {
+        S.parts = S.aud.map(function () { return { x: S.W / 2 + (Math.random() - .5) * 60, y: S.H / 2 + (Math.random() - .5) * 60, tx: 0, ty: 0, ph: Math.random() * 6.28, vis: false, born: 0, a: 1 }; });
+      }
+      layout();
+      $('lens-note').textContent = LENS_NOTES[S.lens];
+      var btns = document.querySelectorAll('.lens button');
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-lens') === S.lens ? 'true' : 'false');
+    }
+
+    function layout() {
+      var W = S.W, H = S.H, groups = S.grouping && S.grouping.groups;
+      if (!W || !groups || !groups.length) { S.layout = null; return; }
+      var ctrlH = $('controls').offsetHeight || 110;
+      var rect = { x0: W * 0.04, x1: W * 0.96, y0: H * 0.09, y1: H - ctrlH - 22 };
+      var rw = rect.x1 - rect.x0, rh = rect.y1 - rect.y0, total = 0;
+      groups.forEach(function (g) { total += g.n; });
+      var kk = Math.sqrt(rw * rh * 0.27 / (Math.PI * Math.max(1, total)));
+      var cx = (rect.x0 + rect.x1) / 2, cy = (rect.y0 + rect.y1) / 2;
+      var nodes = groups.map(function (g, i) {
+        var a = i * 2.4, f = Math.sqrt((i + 0.5) / groups.length);
+        return { x: cx + Math.cos(a) * rw * 0.34 * f, y: cy + Math.sin(a) * rh * 0.34 * f, r: Math.max(15, kk * Math.sqrt(g.n)) };
+      });
+      var pad = 30, it, i, j;
+      for (it = 0; it < 220; it++) {
+        for (i = 0; i < nodes.length; i++) {
+          for (j = i + 1; j < nodes.length; j++) {
+            var dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y, d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+            var min = nodes[i].r + nodes[j].r + pad + 14;      // +14: room for the label under each cluster
+            if (d < min) { var push = (min - d) / 2 * 0.9, ux = dx / d, uy = dy / d; nodes[i].x -= ux * push; nodes[i].y -= uy * push; nodes[j].x += ux * push; nodes[j].y += uy * push; }
+          }
+        }
+        for (i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.x += (cx - n.x) * 0.004; n.y += (cy - n.y) * 0.004;
+          n.x = Math.max(rect.x0 + n.r, Math.min(rect.x1 - n.r, n.x));
+          n.y = Math.max(rect.y0 + n.r * 1.1, Math.min(rect.y1 - n.r * 1.1 - 34, n.y));   // leave room for the label under each cluster
+        }
+      }
+      var members = groups.map(function () { return []; });
+      S.gi.forEach(function (gi, pi) { members[gi].push(pi); });
+      members.forEach(function (list, gi) {
+        var nd = nodes[gi], n = list.length, c = nd.r * 0.94 / Math.sqrt(Math.max(1, n - 0.5));
+        list.forEach(function (pi, j) {
+          var ang = j * 2.39996323, rad = c * Math.sqrt(j + 0.5), p = S.parts[pi];
+          p.tx = nd.x + Math.cos(ang) * rad; p.ty = nd.y + Math.sin(ang) * rad;
+        });
+      });
+      S.layout = { nodes: nodes, members: members };
+    }
+
+    /* ============================== canvas ============================== */
+    var SPRITES = {};
+    function sprite(color) {
+      if (SPRITES[color]) return SPRITES[color];
+      var c = document.createElement('canvas'); c.width = c.height = 48;
+      var g = c.getContext('2d'), gr = g.createRadialGradient(24, 24, 0, 24, 24, 24);
+      gr.addColorStop(0, 'rgba(255,255,255,.95)'); gr.addColorStop(0.13, color); gr.addColorStop(0.38, hexA(color, 0.3)); gr.addColorStop(1, hexA(color, 0));
+      g.fillStyle = gr; g.fillRect(0, 0, 48, 48);
+      return (SPRITES[color] = c);
+    }
+
+    function resize() {
+      var st = $('stage'), cv = $('sky'), r = st.getBoundingClientRect();
+      S.dpr = Math.min(2, window.devicePixelRatio || 1);
+      S.W = Math.round(r.width); S.H = Math.round(r.height);
+      cv.width = Math.round(S.W * S.dpr); cv.height = Math.round(S.H * S.dpr);
+      S.ctx = cv.getContext ? cv.getContext('2d') : null;
+      if (S.ctx) S.ctx.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
+      if (S.grouping) layout();
+    }
+
+    function cutTime() { return S.tMin + (S.tMax - S.tMin) * S.t; }
+
+    function step(now) {
+      var dt = Math.min(64, now - (S.last || now)); S.last = now;
+      if (S.playing) {
+        S.t = Math.min(1, S.t + dt / PLAY_MS);
+        $('time').value = Math.round(S.t * 1000);
+        if (S.t >= 1) { S.playing = false; setPlayUI(); }
+        queueRefresh();
+      }
+      if (S.layout && S.onscreen) {
+        var cut = cutTime(), i, p, ease = reduce ? 1 : 0.085, vc = S.vc;
+        for (i = 0; i < S.layout.nodes.length; i++) vc[i] = 0;
+        var mx = S.mouse ? S.mouse.x : -1e4, my = S.mouse ? S.mouse.y : -1e4;
+        for (i = 0; i < S.parts.length; i++) {
+          p = S.parts[i];
+          var seen = S.aud[i].first <= cut + 0.5;
+          if (seen && !p.vis) {
+            p.vis = true; p.born = now;
+            var nd = S.layout.nodes[S.gi[i]]; if (!reduce) { p.x = nd.x; p.y = nd.y; } else { p.x = p.tx; p.y = p.ty; }
+          } else if (!seen && p.vis) { p.vis = false; }
+          if (p.vis) vc[S.gi[i]]++;
+          var wx = reduce ? 0 : Math.sin(now * 0.0007 + p.ph) * 1.6, wy = reduce ? 0 : Math.cos(now * 0.0006 + p.ph * 1.3) * 1.6;
+          var tx = p.tx + wx, ty = p.ty + wy;
+          if (!reduce) { var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy; if (d2 < 5600 && d2 > 0.01) { var d = Math.sqrt(d2), f = (75 - d) / 75 * 16; tx += dx / d * f; ty += dy / d * f; } }
+          p.x += (tx - p.x) * ease; p.y += (ty - p.y) * ease;
+        }
+        draw(now);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function draw(now) {
+      var ctx = S.ctx; if (!ctx) return;
+      var L = S.layout, groups = S.grouping.groups, sel = S.selIdx, hov = S.hover, i, j, p;
+      ctx.clearRect(0, 0, S.W, S.H);
+      // soft cluster halos and rings
+      L.nodes.forEach(function (nd, gi) {
+        var col = S.colors[groups[gi].label], dim = sel >= 0 && sel !== gi, hot = hov === gi || sel === gi;
+        var g = ctx.createRadialGradient(nd.x, nd.y, nd.r * 0.2, nd.x, nd.y, nd.r * 1.5);
+        g.addColorStop(0, hexA(col, dim ? 0.015 : hot ? 0.13 : 0.06)); g.addColorStop(1, hexA(col, 0));
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(nd.x, nd.y, nd.r * 1.5, 0, 6.2832); ctx.fill();
+        ctx.beginPath(); ctx.arc(nd.x, nd.y, nd.r * 1.1, 0, 6.2832);
+        ctx.setLineDash(hot ? [] : [2, 6]); ctx.lineWidth = hot ? 1.4 : 1;
+        ctx.strokeStyle = hexA(col, hot ? 0.6 : dim ? 0.05 : 0.2); ctx.stroke(); ctx.setLineDash([]);
+      });
+      // constellation lines (a web inside each cluster)
+      ctx.lineWidth = 1;
+      L.members.forEach(function (list, gi) {
+        var dim = sel >= 0 && sel !== gi;
+        ctx.strokeStyle = hexA(S.colors[groups[gi].label], dim ? 0.02 : 0.1);
+        ctx.beginPath();
+        for (j = 1; j < list.length; j++) {
+          var a = S.parts[list[j]];
+          if (!a.vis) continue;
+          var b = S.parts[list[j - 1]], c = j >= 5 ? S.parts[list[j - 5]] : null;
+          if (b.vis) { ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); }
+          if (c && c.vis) { ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); }
+        }
+        ctx.stroke();
+      });
+      // glowing dots + birth ripples
+      ctx.globalCompositeOperation = 'lighter';
+      for (i = 0; i < S.parts.length; i++) {
+        p = S.parts[i]; if (!p.vis) continue;
+        var gi = S.gi[i], col = S.colors[groups[gi].label], dim = sel >= 0 && sel !== gi;
+        var age = reduce ? 1 : (now - p.born) / 700, sc = age >= 1 ? 1 : easeOutBack(Math.max(0, age));
+        var s = 15 * sc;
+        ctx.globalAlpha = dim ? 0.16 : 0.9;
+        ctx.drawImage(sprite(col), p.x - s / 2, p.y - s / 2, s, s);
+        if (age < 1 && !dim) {
+          ctx.globalAlpha = (1 - age) * 0.55; ctx.strokeStyle = col; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, 3 + age * 22, 0, 6.2832); ctx.stroke();
+        }
+      }
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+      // labels
+      ctx.textAlign = 'center';
+      L.nodes.forEach(function (nd, gi) {
+        var g = groups[gi], dim = sel >= 0 && sel !== gi, hot = hov === gi || sel === gi;
+        var maxW = Math.max(120, nd.r * 2.6), label = g.label;
+        ctx.font = '600 12px ' + FONT;
+        while (ctx.measureText(label).width > maxW && label.length > 6) label = label.slice(0, -2);
+        if (label !== g.label) label += '…';
+        var y = nd.y + nd.r * 1.1 + 16, lw = ctx.measureText(label).width;
+        var lx = Math.max(lw / 2 + 8, Math.min(S.W - lw / 2 - 8, nd.x));     // keep the label inside the canvas
+        ctx.fillStyle = dim ? 'rgba(233,238,249,.22)' : hot ? '#ffffff' : 'rgba(233,238,249,.86)';
+        ctx.fillText(label, lx, y);
+        var v = S.vc[gi] || 0;
+        ctx.font = '500 11px ' + FONT;
+        ctx.fillStyle = dim ? 'rgba(151,164,189,.2)' : 'rgba(151,164,189,.95)';
+        ctx.fillText(v === 0 ? '0' : (v < K ? '<' + K : fmt(v)), lx, y + 14);
+      });
+    }
+
+    function hitTest(x, y) {
+      if (!S.layout) return -1;
+      var best = -1, bd = 1e9;
+      S.layout.nodes.forEach(function (nd, gi) {
+        var d = Math.sqrt((nd.x - x) * (nd.x - x) + (nd.y - y) * (nd.y - y));
+        if (d < nd.r * 1.2 + 6 && d < bd) { bd = d; best = gi; }
+      });
+      return best;
+    }
+    function localXY(e) { var r = $('stage').getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+
+    function showTip(gi, pos) {
+      var tip = $('tip');
+      if (gi < 0) { tip.hidden = true; return; }
+      var g = S.grouping.groups[gi], v = S.vc[gi] || 0, tot = S.vc.reduce(function (a, b) { return a + (b || 0); }, 0);
+      tip.innerHTML = '<b>' + esc(g.label) + '</b><span>' + (v < K && v > 0 ? '<' + K : fmt(v)) + ' profiles' + (v >= K && tot ? ' &middot; ' + (Math.round(1000 * v / tot) / 10) + '%' : '') + '</span><i>' + (S.selIdx === gi ? 'Click to clear focus' : 'Click to focus the page on this group') + '</i>';
+      tip.hidden = false;
+      var w = S.W; tip.style.left = Math.max(110, Math.min(w - 110, pos.x)) + 'px'; tip.style.top = Math.max(60, pos.y) + 'px';
+    }
+
+    /* ============================== selection + refresh ============================== */
+    function select(gi) {
+      S.selIdx = (gi === S.selIdx) ? -1 : gi;
+      updateChip();
+      queueRefresh(true);
+    }
+    function updateChip() {
+      var chip = $('selchip');
+      if (S.selIdx < 0) { chip.hidden = true; $('hint').hidden = false; return; }
+      var g = S.grouping.groups[S.selIdx];
+      chip.innerHTML = '<span>Focused on <b>' + esc(LENS_NAMES[S.lens]) + ': ' + esc(g.label) + '</b></span><button type="button" aria-label="Clear focus">&times;</button>';
+      chip.hidden = false; $('hint').hidden = true;
+    }
+
+    function queueRefresh(now) {
+      if (now) { clearTimeout(S.rq); S.rq = 0; refresh(); return; }
+      if (S.rq) return;
+      S.rq = setTimeout(function () { S.rq = 0; refresh(); }, S.playing ? 160 : 30);
+    }
+
+    function visible() {
+      var cut = cutTime() + 0.5;
+      return S.aud.filter(function (p, i) { return p.first <= cut && (S.selIdx < 0 || S.gi[i] === S.selIdx); });
+    }
+
+    function countVisible() {
+      var cut = cutTime() + 0.5, vc = S.vc, n = S.grouping ? S.grouping.groups.length : 0, i;
+      for (i = 0; i < n; i++) vc[i] = 0;
+      for (i = 0; i < S.aud.length; i++) if (S.aud[i].first <= cut) vc[S.gi[i]]++;
+    }
+
+    function refresh() {
+      if (!S.grouping) return;
+      countVisible();
+      var vis = visible(), agg = P.aggregate(vis, K);
+      S.agg = agg;
+      $('k-users').textContent = fmt(agg.audience);
+      $('k-users-sub').textContent = S.orgCount ? fmt(S.orgCount) + ' brand accounts excluded' : 'anonymised IDs';
+      $('k-posts').textContent = fmt(agg.posts);
+      var nl = agg.language.items.filter(function (i) { return !i.grouped; }).length + (agg.language.items.some(function (i) { return i.grouped; }) ? 1 : 0);
+      $('k-langs').textContent = agg.language.known ? fmt(nl) : '–';
+      $('k-multi').textContent = agg.language.known ? agg.nonEnglishShare + '% not plain English' : ' ';
+      $('k-cov').textContent = agg.audience ? agg.coverage.location + '%' : '–';
+      $('k-cov-sub').textContent = agg.audience ? agg.coverage.bio + '% have a bio' : ' ';
+      $('download').disabled = !agg.audience;
+
+      var d = new Date(cutTime());
+      $('date').innerHTML = '<b>' + d.toUTCString().slice(5, 16) + '</b> &middot; ' + fmt(S.aud.filter(function (p) { return p.first <= cutTime() + 0.5; }).length) + ' of ' + fmt(S.aud.length);
+      $('play').innerHTML = '';
+      setPlayUI();
+
+      var ins = P.insights(agg);
+      $('findings').innerHTML = ins.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
+      bars('bars-language', agg.language, 'linear-gradient(90deg,#6ea8ff,#8fe0ff)', 'language');
+      bars('bars-region', agg.region, 'linear-gradient(90deg,#35d0c0,#8ff0e4)', 'region');
+      bars('bars-interest', agg.interest, 'linear-gradient(90deg,#b48cff,#e58cff)', 'interest');
+      bars('bars-age', agg.age, 'linear-gradient(90deg,#ffc15e,#ff9f6e)', 'age');
+      personas(agg);
+      segTable(agg);
+      stacked(vis);
+      legend();
+      updateChip();
+    }
+
+    /* ============================== panels ============================== */
+    function bars(hostId, dist, bg, key) {
+      var host = $(hostId), rows = host._rows || (host._rows = {}), na = $('na-' + key);
+      var items = dist.items;
+      if (!items.length) {
+        Object.keys(rows).forEach(function (l) { rows[l].el.remove(); delete rows[l]; });
+        if (!host._empty) { host._empty = document.createElement('div'); host._empty.className = 'empty'; }
+        host._empty.textContent = 'Not enough profiles for this view.'; host.appendChild(host._empty);
+        na.textContent = ''; return;
+      }
+      if (host._empty && host._empty.parentNode) host._empty.remove();
+      var max = Math.max.apply(null, items.map(function (i) { return i.share; })) || 1, seen = {};
+      items.forEach(function (it, idx) {
+        seen[it.label] = 1;
+        var r = rows[it.label];
+        if (!r) {
+          var el = document.createElement('div'); el.className = 'row';
+          el.innerHTML = '<span class="name"></span><span class="track"><i class="fill"></i></span><span class="val"></span>';
+          r = rows[it.label] = { el: el, name: el.children[0], fill: el.children[1].firstChild, val: el.children[2] };
+          r.name.textContent = it.label; host.appendChild(el);
+        }
+        r.fill.style.width = Math.max(2, Math.round(100 * it.share / max)) + '%';
+        r.fill.style.background = it.grouped ? C_OTHER : bg;
+        r.val.textContent = it.share + '% · ' + nText(it);
+        r.el.style.order = idx;
+      });
+      Object.keys(rows).forEach(function (l) { if (!seen[l]) { rows[l].el.remove(); delete rows[l]; } });
+      na.textContent = dist.unknown ? 'Not available for ' + fmt(dist.unknown) + ' of ' + fmt(S.agg.audience) + ' profiles (no stated value, or no rule matched).' : '';
+    }
+
+    function avatar(seedStr, color) {
+      var h = hash(seedStr), pts = [], i, out = '<svg viewBox="-32 -32 64 64" width="58" height="58" aria-hidden="true"><g stroke="' + color + '" stroke-opacity=".4" fill="none">';
+      for (i = 0; i < 14; i++) { var a = i * 2.39996 + (h % 628) / 100, r = 3 + Math.sqrt(i) * 7.8; pts.push([Math.cos(a) * r, Math.sin(a) * r]); }
+      for (i = 1; i < pts.length; i++) out += '<path d="M' + pts[i - 1][0].toFixed(1) + ' ' + pts[i - 1][1].toFixed(1) + 'L' + pts[i][0].toFixed(1) + ' ' + pts[i][1].toFixed(1) + '"/>';
+      out += '</g>';
+      pts.forEach(function (q, k) { out += '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + (k % 4 === 0 ? 2.8 : 1.8) + '" fill="' + color + '"/>'; });
+      return out + '</svg>';
+    }
+
+    function personas(agg) {
+      var host = $('personas');
+      if (!agg.segments.length) { host.innerHTML = '<div class="glass empty" style="grid-column:1/-1">No segment reaches 5 profiles in this view.</div>'; return; }
+      host.innerHTML = agg.segments.slice(0, 4).map(function (s) {
+        var color = PALETTE[Math.max(0, INTEREST_ORDER.indexOf(s.interest)) % PALETTE.length];
+        var share = agg.audience ? Math.round(1000 * s.n / agg.audience) / 10 : 0;
+        return '<article class="persona" style="--c:' + color + '">' + avatar(s.interest + s.region, color) +
+          '<h3>' + esc(ARCH[s.interest] || 'The Regular') + '</h3>' +
+          '<div class="meta">' + esc(s.interest) + ' &middot; ' + esc(s.region) + '</div>' +
+          '<div class="big">' + fmt(s.n) + '<small>' + share + '% of view</small></div>' +
+          '<div class="row2">Mostly ' + esc(s.language) + ' &middot; most active on ' + esc(s.platform) + '</div></article>';
+      }).join('');
+    }
+
+    function segTable(agg) {
+      $('seg-body').innerHTML = agg.segments.length
+        ? agg.segments.map(function (s) { return '<tr><td>' + esc(s.region) + '</td><td>' + esc(s.interest) + '</td><td>' + esc(s.language) + '</td><td>' + esc(s.platform) + '</td><td class="num">' + fmt(s.n) + '</td></tr>'; }).join('')
+        : '<tr><td colspan="5" class="empty">No segment reaches 5 profiles in this view.</td></tr>';
+    }
+
+    function stacked(vis) {
+      var dim = $('dim').value, host = $('stack'), leg = $('stack-legend'), plats = {};
+      vis.forEach(function (p) { (plats[p.platform] = plats[p.platform] || []).push(p); });
+      var names = Object.keys(plats).sort();
+      if (!names.length) { host.innerHTML = '<div class="empty">No platform data in this view.</div>'; leg.innerHTML = ''; return; }
+      var per = {}, totals = {};
+      names.forEach(function (n) {
+        per[n] = P.aggregate(plats[n], K)[dim];
+        per[n].items.forEach(function (it) { if (!it.grouped) totals[it.label] = (totals[it.label] || 0) + it.n; });
+      });
+      var top = Object.keys(totals).sort(function (a, b) { return totals[b] - totals[a]; }).slice(0, 6);
+      leg.innerHTML = top.map(function (l, i) { return '<span><i class="key" style="background:' + PALETTE[i] + '"></i>' + esc(l) + '</span>'; }).join('') + '<span><i class="key" style="background:' + C_OTHER + '"></i>Other</span>';
+      host.innerHTML = names.map(function (n) {
+        var d = per[n], base = (dim === 'interest' ? d.items.reduce(function (t, x) { return t + x.n; }, 0) : d.known) || 1, used = 0;
+        var segs = top.map(function (l, i) {
+          var it = d.items.filter(function (x) { return x.label === l; })[0], w = it ? 100 * it.n / base : 0; used += w;
+          return w > 0 ? '<i style="width:' + w + '%;background:' + PALETTE[i] + '" title="' + esc(l) + '"></i>' : '';
+        }).join('');
+        var rest = Math.max(0, 100 - used);
+        return '<div class="stack-row"><span>' + esc(n) + ' <small style="color:var(--faint)">(' + fmt(plats[n].length) + ')</small></span><span class="stack" role="img" aria-label="' + esc(n) + ' ' + esc(dim) + ' mix">' + segs + (rest > 0.5 ? '<i style="width:' + rest + '%;background:' + C_OTHER + '"></i>' : '') + '</span></div>';
+      }).join('') + (dim === 'interest' ? '<div class="na">Interests are multi-label, so each bar shows that interest&rsquo;s share of all interest cues on the platform.</div>' : '');
+    }
+
+    function legend() {
+      var host = $('legend'), groups = S.grouping.groups;
+      var tot = S.vc.reduce(function (a, b) { return a + (b || 0); }, 0);
+      host.innerHTML = groups.map(function (g, i) {
+        var v = S.vc[i] || 0;
+        return '<button type="button" class="chip" data-gi="' + i + '" aria-pressed="' + (S.selIdx === i) + '" style="--c:' + S.colors[g.label] + '"><i></i>' + esc(g.label) + ' <b>' + (v === 0 ? '0' : v < K ? '<' + K : (tot ? Math.round(100 * v / tot) + '%' : '')) + '</b></button>';
+      }).join('');
+    }
+
+    /* ============================== timeline ============================== */
+    function setPlayUI() {
+      var b = $('play');
+      b.setAttribute('aria-label', S.playing ? 'Pause timeline' : 'Play timeline');
+      b.innerHTML = S.playing
+        ? '<svg viewBox="0 0 14 14"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>'
+        : '<svg viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg>';
+    }
+    function play() { if (!S.aud.length) return; if (S.t >= 0.999) { S.t = 0; $('time').value = 0; } S.playing = true; S.last = performance.now(); setPlayUI(); }
+    function pause() { S.playing = false; setPlayUI(); queueRefresh(true); }
+
+    function drawSpark() {
+      var svg = $('spark'), bins = 60, c = new Array(bins).fill(0);
+      S.aud.forEach(function (p) { c[Math.min(bins - 1, Math.floor((p.first - S.tMin) / (S.tMax - S.tMin) * bins))]++; });
+      var mx = Math.max.apply(null, c) || 1, d = 'M0 30', i;
+      for (i = 0; i < bins; i++) d += ' L' + (i / (bins - 1) * 100).toFixed(2) + ' ' + (30 - 26 * c[i] / mx).toFixed(2);
+      d += ' L100 30 Z';
+      svg.innerHTML = '<defs><linearGradient id="sg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#35d0c0" stop-opacity=".55"/><stop offset="1" stop-color="#35d0c0" stop-opacity="0"/></linearGradient></defs><path d="' + d + '" fill="url(#sg)" stroke="#35d0c0" stroke-opacity=".7" stroke-width="1" vector-effect="non-scaling-stroke"/>';
+    }
+
+    /* ============================== events ============================== */
+    document.querySelector('.lens').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-lens]'); if (!b) return;
+      S.lens = b.getAttribute('data-lens'); S.selIdx = -1; regroup(); queueRefresh(true);
+    });
+    $('legend').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-gi]'); if (b) select(parseInt(b.getAttribute('data-gi'), 10));
+    });
+    $('selchip').addEventListener('click', function (e) { if (e.target.closest('button')) { S.selIdx = -1; updateChip(); queueRefresh(true); } });
+    $('play').addEventListener('click', function () { S.playing ? pause() : play(); });
+    $('time').addEventListener('input', function () { S.playing = false; setPlayUI(); S.t = this.value / 1000; queueRefresh(); });
+    $('dim').addEventListener('change', function () { stacked(visible()); });
+
+    var stage = $('stage');
+    stage.addEventListener('pointermove', function (e) {
+      if (e.target.closest && e.target.closest('.controls')) { S.mouse = null; S.hover = -1; showTip(-1); return; }
+      var pos = localXY(e); S.mouse = pos; S.hover = hitTest(pos.x, pos.y);
+      stage.style.cursor = S.hover >= 0 ? 'pointer' : 'default'; showTip(S.hover, pos);
+    });
+    stage.addEventListener('pointerleave', function () { S.mouse = null; S.hover = -1; showTip(-1); });
+    stage.addEventListener('click', function (e) {
+      if (e.target.closest('.controls') || e.target.closest('.selchip')) return;
+      var pos = localXY(e), gi = hitTest(pos.x, pos.y);
+      if (gi >= 0) select(gi); else if (S.selIdx >= 0) { S.selIdx = -1; updateChip(); queueRefresh(true); }
+    });
+
+    $('csv-file').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        S.manual = true;
+        var data = P.parseCSV(String(reader.result));
+        if (!data.length || !('user_id' in data[0] || 'post_id' in data[0])) { notice('error', '<b>Could not read file</b><span>The CSV needs a header row with at least <code>user_id</code> (or <code>post_id</code>).</span>'); return; }
+        var missing = P.hasProfileColumns(data) ? '' : ' &middot; no language, user_bio or user_location columns, so most results will be unavailable';
+        setData(data, 'Your file', esc(f.name).slice(0, 80) + missing, false);
+      };
+      reader.onerror = function () { notice('error', '<b>Could not read file</b><span>The file could not be opened.</span>'); };
+      reader.readAsText(f);
+    });
+
+    $('download').addEventListener('click', function () {
+      if (!S.agg) return;
+      var blob = new Blob(['﻿' + P.csvText(P.toCsvRows(S.agg))], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'demographic_summary_view.csv';
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { S.onscreen = en[0].isIntersecting; }, { threshold: 0 }).observe(stage);
+      var rv = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); rv.unobserve(x.target); } }); }, { threshold: 0.08 });
+      Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) { rv.observe(el); });
+    } else { Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) { el.classList.add('in'); }); }
+
+    if (window.ResizeObserver) { var ro = new ResizeObserver(function () { resize(); }); ro.observe(stage); ro.observe($('controls')); }   // controls wrap on phones, so re-measure
+    else window.addEventListener('resize', resize);
+
+    resize(); setPlayUI(); $('lens-note').textContent = LENS_NOTES[S.lens];
+    requestAnimationFrame(step);
+    loadDefault();
+  })();
+  </script>
 </body>
 </html>
