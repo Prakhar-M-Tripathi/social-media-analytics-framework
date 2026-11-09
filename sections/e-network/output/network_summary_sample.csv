@@ -1,0 +1,68 @@
+﻿dimension,category,value,share_percent
+network,voices_connected,746,
+network,voices_silent,146,
+network,threads,2588,
+network,interactions,2952,
+network,avg_path_hops,4.8,
+network,longest_path_hops,10,
+network,clustering,0.2,
+network,reciprocity_percent,24.7,
+network,communities,12,
+network,largest_connected_group,744,
+network,cascades,422,
+network,deepest_cascade_hops,10,
+role,Regular,447,60.9
+role,Hub,52,7.1
+role,Spark,22,3
+role,Bridge,58,7.9
+role,Listener,131,17.8
+role,Amplifier,24,3.3
+circle,YouTube Fans,122,16.4
+circle,Telegram Builders,106,14.2
+circle,Reddit Builders,96,12.9
+circle,Facebook Everyday Voices,90,12.1
+circle,Instagram Storytellers,60,8
+circle,Instagram Everyday Voices,58,7.8
+circle,X Storytellers,55,7.4
+circle,X Builders,55,7.4
+circle,Reddit Caretakers,30,4
+circle,Facebook Storytellers,29,3.9
+circle,X Everyday Voices,27,3.6
+circle,Instagram Founders,16,2.1
+trend_posts,#BatteryGate,240,
+trend_voices,#BatteryGate,130,
+trend_posts,#LumenLaunch,190,
+trend_voices,#LumenLaunch,106,
+trend_posts,#RefundQueue,180,
+trend_voices,#RefundQueue,101,
+trend_posts,#SupportStory,170,
+trend_voices,#SupportStory,81,
+trend_posts,#CameraWars,150,
+trend_voices,#CameraWars,85,
+trend_posts,#GreenBox,80,
+trend_voices,#GreenBox,55,
+trend_posts,#NightShift,79,
+trend_voices,#NightShift,51,
+trend_posts,#PriceCheck,73,
+trend_voices,#PriceCheck,56,
+trend_posts,#RightToRepair,73,
+trend_voices,#RightToRepair,47,
+trend_posts,#UnboxDay,70,
+trend_voices,#UnboxDay,55,
+trend_posts,#EarlyAccess,23,
+trend_voices,#EarlyAccess,21,
+top_voice_codename,Meadow Lantern,0.944,
+top_voice_codename,Ember Pike,0.737,
+top_voice_codename,Clover Jackdaw,0.677,
+top_voice_codename,Jade Curlew,0.64,
+top_voice_codename,Maple Thrush,0.607,
+top_voice_codename,Indigo Swift,0.554,
+top_voice_codename,Copper Harbor,0.547,
+top_voice_codename,Ashen Lynx II,0.537,
+top_voice_codename,Coral Bramble,0.509,
+top_voice_codename,Brass Cricket,0.504,
+top_voice_codename,Ashen Jackdaw,0.503,
+top_voice_codename,Raven Gannet,0.501,
+top_voice_codename,Fennel Heron,0.498,
+top_voice_codename,Cinder Ferret,0.495,
+top_voice_codename,Tawny Warbler,0.471,
