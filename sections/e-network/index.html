@@ -1,16 +1,418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Section E: Network and Influence Analysis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Grapevine: who answers whom, who holds a community together, and how word travels from one crowd to the next. An interactive network and influence atlas.">
+  <meta name="color-scheme" content="dark">
+  <title>The Grapevine | Network and Influence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
-    .placeholder { background: #eef2f7; border: 2px dashed #9aa8bb; padding: 30px; text-align: center; }
+    /* A vineyard at night: aubergine dark, vine green, grape violet, a little amber light. */
+    :root{color-scheme:dark;--bg:#0b0711;--ink:#f0ebf5;--muted:#a79db5;--faint:#75698a;--line:rgba(255,255,255,.09);--glass:rgba(255,255,255,.042);--glass2:rgba(255,255,255,.08);--vine:#a3de76;--grape:#b48cff;--amber:#ffc266;--rose:#ff7f9e;--sky:#78c8ff;--display:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Manrope",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(1100px 700px at 82% -12%,#2c1745 0,transparent 60%),radial-gradient(900px 640px at -8% 26%,#16321f 0,transparent 56%),radial-gradient(1000px 700px at 50% 122%,#34163a 0,transparent 60%),var(--bg)}
+    a{color:inherit}
+    .shell{max-width:1320px;margin:auto;padding:0 28px}
+    button,select,input{font:inherit;color:inherit}button{cursor:pointer}
+    :focus-visible{outline:2px solid var(--vine);outline-offset:2px;border-radius:8px}
+
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 6px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.02em}
+    .brand svg{width:32px;height:32px}
+    .brand small{display:block;font-weight:500;color:var(--muted);letter-spacing:.14em;font-size:10px;text-transform:uppercase}
+    .rail{display:flex;align-items:center;font-size:12px}
+    .rail-label{color:var(--faint);letter-spacing:.14em;text-transform:uppercase;font-size:10px;margin-right:14px}
+    .step{display:flex;align-items:center;gap:7px;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:99px;position:relative}
+    .step b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-size:10px;background:var(--glass)}
+    .step+.step:before{content:"";position:absolute;left:-6px;top:50%;width:10px;height:1px;background:var(--line)}
+    a.step:hover{color:var(--ink);background:var(--glass)}
+    .step.on{color:#0f1a07;background:linear-gradient(135deg,var(--vine),#d6f0a8);font-weight:700}
+    .step.on b{background:#0f1a07;color:var(--vine);border-color:transparent}
+    .back{color:var(--muted);text-decoration:none;font-size:12px}.back:hover{color:var(--ink)}
+
+    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:end;padding:30px 0 20px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:#c6ec9f;font-weight:700}
+    .live{width:7px;height:7px;border-radius:50%;background:var(--vine);animation:pulse 2.2s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 #a3de7677}70%{box-shadow:0 0 0 9px #a3de7600}100%{box-shadow:0 0 0 0 #a3de7600}}
+    h1{font:400 clamp(52px,8vw,104px)/.92 var(--display);letter-spacing:-.03em;margin:12px 0 16px}
+    h1 em{font-style:italic;font-weight:300;background:linear-gradient(100deg,var(--vine),#e7e089 40%,var(--amber) 62%,var(--grape));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:220% 100%;animation:shine 10s linear infinite;padding-right:.08em}
+    @keyframes shine{to{background-position:-220% 0}}
+    .lede{color:var(--muted);max-width:540px;margin:0;font-size:15px;line-height:1.65}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi{padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);position:relative;overflow:hidden}
+    .kpi:before{content:"";position:absolute;right:-24px;top:-24px;width:84px;height:84px;border-radius:50%;background:var(--c);opacity:.14;filter:blur(8px)}
+    .kpi span{display:block;color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+    .kpi strong{display:block;font:400 34px/1.1 var(--display);margin:4px 0 0;font-variant-numeric:tabular-nums}
+    .kpi small{color:var(--faint);font-size:11px}
+
+    /* stage */
+    .stage{border-radius:26px;border:1px solid var(--line);background:#0e0916;box-shadow:0 30px 90px #0000007a;overflow:hidden}
+    .sky{position:relative;height:clamp(460px,66vh,680px);background:radial-gradient(ellipse at 50% 42%,#21123a 0,#120b20 60%,#0c0814 100%);touch-action:pan-y;cursor:grab}
+    .sky.drag{cursor:grabbing}
+    #web{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .tip{position:absolute;pointer-events:none;z-index:6;padding:9px 12px;border-radius:12px;background:#120b20f2;border:1px solid var(--line);box-shadow:0 12px 34px #0009;font-size:12px;max-width:230px;transform:translate(-50%,-128%);white-space:nowrap}
+    .tip b{display:block;font:italic 400 15px var(--display)}.tip span{color:var(--muted)}
+    .hud{position:absolute;left:14px;top:14px;z-index:5;display:flex;flex-direction:column;gap:7px}
+    .pills{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:#120b20d9;border:1px solid var(--line);align-items:center}
+    .pills label,.pills>span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding:0 8px}
+    .pills button{border:0;background:transparent;color:var(--muted);padding:4px 11px;border-radius:99px;font-size:12px;font-weight:600}
+    .pills button:hover{color:var(--ink)}
+    .pills button[aria-pressed=true]{background:#ffffff1a;color:var(--ink)}
+    .zoom{position:absolute;right:14px;bottom:14px;z-index:5;display:flex;flex-direction:column;gap:4px}
+    .zoom button{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#120b20d9;font-size:15px;line-height:1}
+    .zoom button:hover{background:#2a1a40}
+    .dossier{position:absolute;right:14px;top:14px;z-index:6;width:256px;padding:16px;border-radius:18px;background:#120b20ee;border:1px solid var(--line);box-shadow:0 18px 44px #000a}
+    .dossier h4{font:italic 400 24px/1.1 var(--display);margin:0 0 4px}
+    .dossier .x{position:absolute;right:10px;top:10px;border:0;width:24px;height:24px;border-radius:50%;background:var(--glass2);line-height:1}
+    .dossier .sub{font-size:12px;color:var(--muted);margin-bottom:10px}
+    .rolechip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#120b20;background:var(--c,#fff)}
+    .dl{display:grid;grid-template-columns:1fr auto;gap:5px 10px;font-size:12px;margin:12px 0;color:var(--muted)}
+    .dl b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+    .dossier .acts{display:flex;gap:6px}
+    .tools{display:flex;gap:4px;flex-wrap:wrap;padding:10px 12px 0;border-top:1px solid var(--line)}
+    .tools button{border:1px solid transparent;background:transparent;color:var(--muted);padding:7px 14px;border-radius:12px 12px 0 0;font-weight:600;font-size:13px;display:flex;gap:8px;align-items:center}
+    .tools button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6}
+    .tools button:hover{color:var(--ink)}
+    .tools button[aria-selected=true]{background:var(--glass2);color:var(--ink);box-shadow:inset 0 -2px 0 var(--vine)}
+    .toolbar{padding:14px 16px 16px;background:var(--glass2);display:grid;gap:12px;min-height:92px}
+    .row-t{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .timebar{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+    .play{width:36px;height:36px;border-radius:50%;border:1px solid #a3de7666;background:#a3de7618;display:grid;place-items:center}
+    .play:hover{background:#a3de7633}.play svg{width:14px;height:14px;fill:var(--vine)}
+    .scrub{position:relative;height:36px}
+    .scrub svg{position:absolute;inset:3px 0 7px;width:100%;height:calc(100% - 10px);overflow:visible}
+    .scrub input[type=range]{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;background:transparent}
+    .scrub input::-webkit-slider-runnable-track{height:36px;background:transparent}
+    .scrub input::-moz-range-track{height:36px;background:transparent}
+    .scrub input::-webkit-slider-thumb{-webkit-appearance:none;width:4px;height:36px;border-radius:2px;background:var(--amber);box-shadow:0 0 14px 3px #ffc26688}
+    .scrub input::-moz-range-thumb{width:4px;height:36px;border:0;border-radius:2px;background:var(--amber);box-shadow:0 0 14px 3px #ffc26688}
+    .read{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:170px;text-align:right}
+    .read b{color:var(--ink);font-weight:600}
+    .tagchips{display:flex;flex-wrap:wrap;gap:6px}
+    .tagc{border:1px solid var(--line);background:var(--glass);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--muted)}
+    .tagc:hover{color:var(--ink)}
+    .tagc[aria-pressed=true]{color:#0f1a07;background:var(--vine);border-color:transparent;font-weight:700}
+    .slider{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);flex:1;min-width:220px}
+    .slider input{flex:1;accent-color:var(--vine);min-width:90px}
+    .slider output{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;min-width:40px;text-align:right}
+    .result{display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+    .result div b{display:block;font:400 26px/1.05 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+    .hint{font:italic 14px var(--display);color:#c9bdd8}
+    .minibars{display:flex;gap:2px;align-items:flex-end;height:38px}
+    .minibars i{display:block;width:7px;border-radius:2px 2px 0 0;background:#ffffff26}
+    .minibars i.on{background:var(--amber)}
+    .legend{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 4px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font-size:12px;color:var(--muted)}
+    .chip:hover{color:var(--ink);background:var(--glass2)}
+    .chip i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 9px var(--c)}
+    .chip b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+    .chip[aria-pressed=true]{border-color:var(--c);color:var(--ink);background:#ffffff12}
+
+    main{padding:10px 0 60px}
+    .strip{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:18px 0 12px;padding:14px 18px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+    .strip strong{display:block;font-size:13px}.strip small{color:var(--muted);font-size:12px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{display:inline-block;border:1px solid var(--line);background:var(--glass);color:var(--ink);border-radius:10px;padding:8px 14px;font-weight:600;font-size:12px;text-decoration:none}
+    .btn:hover{background:var(--glass2)}.btn:disabled{opacity:.4;cursor:not-allowed}
+    .btn.go{background:var(--vine);color:#0f1a07;border-color:transparent}
+    .btn.go:hover{background:#bcea96}
+    .file-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .file-input:focus-visible+.btn{outline:2px solid var(--vine);outline-offset:2px}
+    .banner{margin:10px 0;padding:11px 15px;border-radius:12px;font-size:12px;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line)}
+    .banner b{white-space:nowrap}
+    .banner.demo{background:#ffc26610;border-color:#ffc26633;color:#f6dfb0}
+    .banner.error{background:#ff7f9e12;border-color:#ff7f9e40;color:#ffc9d6}
+    .gate{display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 8px;border-radius:99px;background:#a3de7612;border:1px solid #a3de7633;color:#d5efbb;font-size:12px}
+    .gate b{display:grid;place-items:center;min-width:34px;height:24px;border-radius:99px;background:#a3de7622;color:var(--vine);font-size:11px}
+    h2{font:400 clamp(30px,3.6vw,44px)/1.08 var(--display);margin:0;letter-spacing:-.015em}
+    h3{font:400 24px/1.1 var(--display);margin:0;letter-spacing:-.01em}
+    .section-head{margin:26px 0 18px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+    .section-head p{margin:0;color:var(--muted);font:italic 15px var(--display)}
+    .rule{display:block;width:100%;height:46px;margin-top:40px;overflow:visible}
+    .rule path.s{fill:none;stroke:#a3de7655;stroke-width:1.4;stroke-dasharray:1;animation:grow 2.4s ease both}
+    .rule path.l{fill:#a3de7640;transform-box:fill-box;transform-origin:left center;animation:pop .5s ease both}
+    @keyframes grow{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+    @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+    .glass{background:var(--glass);border:1px solid var(--line);border-radius:20px}
+
+    /* overheard */
+    .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px}
+    .note{position:relative;padding:18px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 13%,transparent),var(--glass) 62%);overflow:hidden}
+    .note svg.waffle{position:absolute;right:14px;top:14px;width:48px;height:48px}
+    .note .kick{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);font-weight:700}
+    .note .fig{font:300 58px/1 var(--display);margin:10px 0 4px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+    .note .fig small{font:400 20px var(--display);color:var(--muted);margin-left:3px}
+    .note .head{font:italic 400 17px/1.3 var(--display);color:#ece4f2;max-width:22ch}
+    .note p{margin:10px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+    /* whisperers */
+    .tabs{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:var(--glass);border:1px solid var(--line);flex-wrap:wrap}
+    .tabs button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600}
+    .tabs button[aria-pressed=true]{background:var(--vine);color:#0f1a07}
+    .voices{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:14px}
+    .voice{text-align:left;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--glass);transition:transform .2s,border-color .2s;position:relative;color:inherit}
+    .voice:hover{transform:translateY(-3px);border-color:var(--c)}
+    .voice .rk{position:absolute;right:12px;top:8px;font:300 32px var(--display);color:#ffffff24}
+    .voice svg{display:block;margin-bottom:8px}
+    .voice h4{font:italic 400 18px/1.15 var(--display);margin:0 0 6px;min-height:42px}
+    .voice .m{font:300 26px/1 var(--display);margin-top:9px;font-variant-numeric:tabular-nums}
+    .voice small{display:block;color:var(--faint);font-size:11px;margin-top:2px}
+    .censusbar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+    .censusbar i{display:block}
+    .roles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+    .rolec{padding:12px;border-radius:14px;background:var(--glass);border:1px solid var(--line);font-size:12px;color:var(--muted)}
+    .rolec b{display:block;font:italic 400 18px var(--display);color:var(--c)}
+    .rolec span{display:block;font:300 24px var(--display);color:var(--ink);margin:2px 0}
+
+    /* plates */
+    .plates{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .plate{padding:22px 24px;min-width:0;display:flex;flex-direction:column}
+    .plate.wide{grid-column:1/-1}
+    .plate-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .plate-no{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+    .tag{border:1px solid var(--line);color:var(--muted);padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase}
+    .cap{font:italic 400 15px/1.45 var(--display);color:#d3c8df;margin:8px 0 14px;max-width:60ch}
+    .opts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .how{margin-top:auto;padding-top:14px;font-size:12px;color:var(--muted)}
+    .how summary{cursor:pointer;color:var(--faint);letter-spacing:.06em;font-size:11px;text-transform:uppercase;list-style:none;display:inline-flex;gap:8px;align-items:center}
+    .how summary::-webkit-details-marker{display:none}
+    .how summary:before{content:"+";display:grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid var(--line);font-size:12px;line-height:1}
+    .how[open] summary:before{content:"\2212"}
+    .how p{margin:8px 0 0;max-width:68ch}
+    svg.viz{width:100%;height:auto;display:block;overflow:visible}
+    svg text{font-family:var(--sans)}
+    .t{fill:var(--muted);font-size:12px}.t.b{fill:var(--ink);font-weight:600}.t.f{fill:var(--faint);font-size:11px}.t.d{font-family:var(--display);font-style:italic;fill:var(--ink)}
+    .scrollx{overflow-x:auto}.scrollx svg{min-width:640px}
+    .ribbon{transition:opacity .2s}
+    .chord.hot .ribbon{opacity:.06}.chord.hot .ribbon.on{opacity:.92}
+    .slope path{transition:opacity .15s}
+    .slope.hot g.ln{opacity:.12}.slope.hot g.ln.on{opacity:1}
+    .slope g.ln{cursor:pointer}
+    .vine-s{fill:none;stroke:#a3de76;stroke-opacity:.6;stroke-dasharray:1;animation:grow .7s ease both}
+    .vine-n{transform-box:fill-box;transform-origin:center;animation:pop .35s ease both}
+    .vine-l{fill:#a3de7688;transform-box:fill-box;transform-origin:left center;animation:pop .4s ease both}
+    .statchips{display:flex;gap:18px;flex-wrap:wrap;margin:10px 0 2px;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+    .statchips b{display:block;font:300 24px var(--display);color:var(--ink);text-transform:none;letter-spacing:0}
+    select{border:1px solid var(--line);background:#160e24;border-radius:9px;padding:7px 28px 7px 11px;font-size:12px}
+    .moodgrid{display:grid;grid-template-columns:74px repeat(3,1fr);gap:6px;align-items:center;font-size:12px;color:var(--muted);text-align:center}
+    .moodgrid .h{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+    .moodgrid .rl{text-align:right}
+    .mcell{position:relative;height:88px;display:grid;place-items:center;border-radius:12px;background:#ffffff06}
+    .mcell i{position:absolute;border-radius:50%;background:var(--c);opacity:.5}
+    .mcell b{position:relative;font:400 19px var(--display);color:var(--ink)}
+    .mcell small{position:absolute;bottom:5px;font-size:10px;color:var(--ink);opacity:.72}
+
+    .pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .stepc{padding:18px;border-radius:18px;border:1px solid var(--line);background:var(--glass);position:relative}
+    .stepc .n{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#a3de7614;border:1px solid #a3de7644;color:var(--vine);font:500 15px var(--display);margin-bottom:12px}
+    .stepc h3{font-size:20px;margin-bottom:6px}
+    .stepc p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .never{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;font-size:12px;color:var(--muted)}
+    .never .lab{font:italic 15px var(--display);color:#d3c8df;margin-right:6px}
+    .never span.x{padding:4px 12px;border-radius:99px;border:1px dashed #ffffff26;text-decoration:line-through;text-decoration-color:var(--rose);text-decoration-thickness:1.5px;color:#b9aec9}
+    .caveats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .caveat{padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--glass);font-size:12.5px;color:var(--muted)}
+    .caveat b{display:block;font:italic 400 17px var(--display);color:var(--ink);margin-bottom:3px}
+    footer{margin-top:60px;padding:26px 0 40px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    footer em{font:italic 14px var(--display);color:var(--muted)}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .empty{padding:30px 8px;text-align:center;color:var(--faint);font-size:12px}
+
+    @media(max-width:1080px){.hero{grid-template-columns:1fr}.voices{grid-template-columns:repeat(3,minmax(0,1fr))}.roles{grid-template-columns:repeat(3,minmax(0,1fr))}.rail-label{display:none}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:860px){.plates{grid-template-columns:1fr}.shell{padding:0 16px}.caveats{grid-template-columns:1fr}.dossier{left:10px;right:10px;width:auto;top:auto;bottom:10px}.read{min-width:0}}
+    @media(max-width:560px){.voices{grid-template-columns:repeat(2,minmax(0,1fr))}.roles{grid-template-columns:repeat(2,minmax(0,1fr))}.step span{display:none}.pipeline{grid-template-columns:1fr}.timebar{grid-template-columns:auto 1fr}.read{grid-column:1/-1;text-align:left}.hud{right:14px}.pills{flex-wrap:wrap;border-radius:14px}.tools button{padding:7px 9px;font-size:12px}.note .fig{font-size:52px}.sky{height:440px}.plate{padding:18px 16px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
-  <p><a href="../../index.html">Back to home</a></p>
-  <h1>Section E: Network and Influence Analysis</h1>
-  <div class="placeholder">This section is under construction. The assigned team adds its work here.</div>
+  <div class="shell">
+    <header class="nav">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 28C10 22 9 15 15 12S25 9 28 4" fill="none" stroke="#a3de76" stroke-width="1.6" stroke-linecap="round"/><path d="M14 13c-3-3-7-3-9-2 1 3 5 5 9 2zM21 9c0-4 3-6 5-6 1 3-1 6-5 6z" fill="#a3de76" opacity=".75"/><g fill="#b48cff"><circle cx="17" cy="19" r="2.6"/><circle cx="22" cy="18" r="2.6"/><circle cx="19.5" cy="23" r="2.6"/></g></svg>
+        <div>The Grapevine<small>Section E &middot; Network</small></div>
+      </div>
+      <nav class="rail" aria-label="Framework sections">
+        <span class="rail-label">The framework</span>
+        <span class="step" title="Section A runs as the backend collection pipeline"><b>A</b><span>Collect</span></span>
+        <a class="step" href="../b-sentiment/index.html"><b>B</b><span>Feel</span></a>
+        <a class="step" href="../c-demographics/index.html"><b>C</b><span>Know</span></a>
+        <a class="step" href="../d-trends/index.html"><b>D</b><span>Trend</span></a>
+        <span class="step on" aria-current="page"><b>E</b><span>Connect</span></span>
+      </nav>
+      <a class="back" href="../../index.html">&larr; Back to framework</a>
+    </header>
+
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <div class="eyebrow"><i class="live"></i> Section E &middot; Who told whom</div>
+        <h1 id="title">Word <em>travels</em></h1>
+        <p class="lede">Follow a rumour from its first whisper to the far side of the crowd. Find the few voices everyone answers, and the quiet ones holding it all together.</p>
+      </div>
+      <div class="kpis" aria-label="Summary">
+        <div class="kpi" style="--c:#a3de76"><span>Voices on the vine</span><strong id="k-voices">&ndash;</strong><small id="k-silent">&nbsp;</small></div>
+        <div class="kpi" style="--c:#b48cff"><span>Threads between them</span><strong id="k-threads">&ndash;</strong><small id="k-inter">&nbsp;</small></div>
+        <div class="kpi" style="--c:#ffc266"><span>Circles found</span><strong id="k-circles">&ndash;</strong><small id="k-inside">&nbsp;</small></div>
+        <div class="kpi" style="--c:#ff7f9e"><span>Degrees apart</span><strong id="k-hops">&ndash;</strong><small id="k-far">&nbsp;</small></div>
+      </div>
+    </section>
+
+    <section class="stage" aria-label="Interactive network">
+      <div class="sky" id="sky">
+        <canvas id="web" role="img" aria-label="Network of anonymous voices connected by replies, quotes, reposts and shares. Totals are listed in the panels below."></canvas>
+        <div class="hud">
+          <div class="pills" role="group" aria-label="Arrange"><span>Arrange</span><button type="button" data-arr="web" aria-pressed="true">Web</button><button type="button" data-arr="orbit" aria-pressed="false">Orbits</button><button type="button" data-arr="isles" aria-pressed="false">Islands</button></div>
+          <div class="pills" role="group" aria-label="Colour by"><span>Colour</span><button type="button" data-col="circle" aria-pressed="true">Circle</button><button type="button" data-col="platform" aria-pressed="false">Platform</button><button type="button" data-col="role" aria-pressed="false">Role</button><button type="button" data-col="mood" aria-pressed="false">Mood</button></div>
+        </div>
+        <div class="tip" id="tip" hidden></div>
+        <div class="dossier" id="dossier" hidden></div>
+        <div class="zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">&minus;</button><button type="button" id="zfit" aria-label="Reset view">&#8634;</button></div>
+      </div>
+      <div class="tools" role="tablist" aria-label="Tools" id="tools">
+        <button type="button" role="tab" data-tool="explore" aria-selected="true"><svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>Explore</button>
+        <button type="button" role="tab" data-tool="replay" aria-selected="false"><svg viewBox="0 0 16 16"><path d="M2 14C5 11 5 7 8 6s5-2 6-5"/><circle cx="8" cy="6" r="1.6"/></svg>Replay a trend</button>
+        <button type="button" role="tab" data-tool="whisper" aria-selected="false"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="1.8"/><circle cx="8" cy="8" r="4.4"/><circle cx="8" cy="8" r="7"/></svg>Whisper</button>
+        <button type="button" role="tab" data-tool="cut" aria-selected="false"><svg viewBox="0 0 16 16"><circle cx="4" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><path d="M5.5 5.5L14 13M5.5 10.5L14 3"/></svg>Cut the wires</button>
+        <button type="button" role="tab" data-tool="path" aria-selected="false"><svg viewBox="0 0 16 16"><circle cx="3" cy="13" r="2"/><circle cx="13" cy="3" r="2"/><path d="M4.5 11.5l3-1 1-4 3-1.5"/></svg>Six degrees</button>
+      </div>
+      <div class="toolbar" id="toolbar"></div>
+    </section>
+    <div class="legend" id="legend" role="group" aria-label="Groups in the network"></div>
+  </div>
+
+  <main class="shell">
+    <section class="strip" aria-label="Dataset">
+      <div><strong id="dataset-title">Listening&hellip;</strong><small id="dataset-meta">Looking for data</small></div>
+      <div class="actions">
+        <a class="btn go" href="../c-demographics/sample/audience_sample.csv" download="audience_sample.csv">Download the dataset</a>
+        <input class="file-input" id="csv-file" type="file" accept=".csv,text/csv">
+        <label class="btn" for="csv-file" role="button">Load a CSV</label>
+        <button class="btn" id="download" type="button" disabled>Save the summary</button>
+      </div>
+    </section>
+    <div id="notice" role="status"></div>
+    <div class="gate" title="Every voice appears only under a generated codename. Groups under 5 people are folded away."><b>k = 5</b><span>Codenames only. No bios, handles or places, and small groups fold away.</span></div>
+
+    <svg class="rule" data-rule aria-hidden="true"></svg>
+    <div class="section-head"><h2>Overheard</h2><p>What the vine gave away.</p></div>
+    <section class="notes" id="notes" aria-label="Key findings"></section>
+
+    <svg class="rule" data-rule aria-hidden="true"></svg>
+    <div class="section-head"><h2>The whisperers</h2><p>Four ways to matter, and they rarely agree.</p></div>
+    <div class="tabs" id="metric-tabs" role="group" aria-label="Rank voices by">
+      <button type="button" data-m="pr" aria-pressed="true">Weight</button><button type="button" data-m="inW" aria-pressed="false">Most answered</button><button type="button" data-m="bc" aria-pressed="false">Bridges</button><button type="button" data-m="spark" aria-pressed="false">Sparks</button>
+    </div>
+    <section class="voices" id="voices" aria-label="Top voices"></section>
+    <div class="plates" style="margin-top:14px">
+      <section class="glass plate" aria-labelledby="h-slope">
+        <div class="plate-head"><div><span class="plate-no">Plate I</span><h3 id="h-slope">Four ways to matter</h3></div><span class="tag">Rank</span></div>
+        <p class="cap">Each line is one voice. Watch it climb in one column and fall in the next.</p>
+        <svg class="viz slope" id="slope" viewBox="0 0 620 430" role="img" aria-label="Ranks of top voices across four measures"></svg>
+        <details class="how"><summary>How it is read</summary><p>Weight is PageRank on who answers whom. Most answered counts incoming replies, quotes, reposts and shares. Bridges is betweenness: how often a voice sits on the shortest route between two others. Sparks counts everything that grew from posts they started.</p></details>
+      </section>
+      <section class="glass plate" aria-labelledby="h-roles">
+        <div class="plate-head"><div><span class="plate-no">Plate II</span><h3 id="h-roles">The cast</h3></div><span class="tag">Roles</span></div>
+        <p class="cap">Everyone plays a part. Click a dot to find it on the vine.</p>
+        <div class="censusbar" id="census"></div>
+        <svg class="viz" id="scatter" viewBox="0 0 620 300" role="img" aria-label="Scatter of attention against bridging"></svg>
+        <details class="how"><summary>How it is read</summary><p>Bridges are the top 8% by betweenness and touch at least two circles. Hubs are the top 10% by PageRank. Sparks are the top 8% by downstream reach. Amplifiers pass things on far more than they are answered. Listeners are never answered.</p></details>
+      </section>
+    </div>
+    <section class="roles" id="roles" style="margin-top:14px" aria-label="Role census"></section>
+
+    <svg class="rule" data-rule aria-hidden="true"></svg>
+    <div class="section-head"><h2>The plates</h2><p>The vine, cut open and labelled.</p></div>
+    <div class="plates">
+      <section class="glass plate wide" aria-labelledby="h-vine">
+        <div class="plate-head"><div><span class="plate-no">Plate III</span><h3 id="h-vine">Anatomy of a vine</h3></div><span class="tag">Cascades</span></div>
+        <p class="cap">One post, and everything that grew from it. Leaves mark where the word stopped.</p>
+        <div class="opts"><div class="tagchips" id="vine-picks"></div><div class="tabs" id="vine-x"><button type="button" data-x="hops" aria-pressed="true">By hops</button><button type="button" data-x="hours" aria-pressed="false">By time</button></div><button type="button" class="btn" id="vine-grow">Grow it again</button></div>
+        <svg class="viz" id="vine" viewBox="0 0 1000 420" role="img" aria-label="Tree of one cascade"></svg>
+        <div class="statchips" id="vine-stats"></div>
+        <details class="how"><summary>How it is read</summary><p>Each branch is a reply, quote, repost or share of the post before it. Dots are coloured by mood: green positive, amber neutral, rose negative. Virality is the average number of hops between any two posts in the tree: a broadcast scores low, a true person-to-person spread scores high.</p></details>
+      </section>
+
+      <section class="glass plate wide" aria-labelledby="h-relay">
+        <div class="plate-head"><div><span class="plate-no">Plate IV</span><h3 id="h-relay">The relay</h3></div><span class="tag">Spread over time</span></div>
+        <p class="cap">Who passed the baton to whom. The bright line joins each group&rsquo;s first post on the trend.</p>
+        <div class="opts"><div class="tagchips" id="relay-tags"></div></div>
+        <div class="opts"><div class="tabs" id="relay-dim"><button type="button" data-d="platform" aria-pressed="true">Platforms</button><button type="button" data-d="circle" aria-pressed="false">Circles</button><button type="button" data-d="region" aria-pressed="false">Regions</button><button type="button" data-d="calling" aria-pressed="false">Callings</button></div><div class="tabs" id="relay-view"><button type="button" data-v="volume" aria-pressed="true">Volume</button><button type="button" data-v="mood" aria-pressed="false">Mood</button></div></div>
+        <div class="scrollx"><svg class="viz" id="relay" viewBox="0 0 1000 340" role="img" aria-label="Trend spreading between groups by day"></svg></div>
+        <details class="how"><summary>How it is read</summary><p>Rows are ordered by who picked the trend up first. In Volume view brighter means more posts that day. In Mood view green is positive and rose is negative. The strip underneath shows the trend&rsquo;s overall mood drifting day by day.</p></details>
+      </section>
+
+      <section class="glass plate" aria-labelledby="h-chord">
+        <div class="plate-head"><div><span class="plate-no">Plate V</span><h3 id="h-chord">Neighbourhoods</h3></div><span class="tag">Circles</span></div>
+        <p class="cap">Circles the algorithm found by itself, and the few ropes between them.</p>
+        <svg class="viz chord" id="chord" viewBox="-385 -345 770 690" role="img" aria-label="Chord diagram of exchanges between circles"></svg>
+        <details class="how"><summary>How it is read</summary><p>Louvain community detection groups voices that talk to each other more than chance would predict. Each circle is named after its usual platform and calling. Ribbons show exchanges between circles; chatter inside a circle is left out so the rare crossings can be seen.</p></details>
+      </section>
+      <section class="glass plate" aria-labelledby="h-mix">
+        <div class="plate-head"><div><span class="plate-no">Plate VI</span><h3 id="h-mix">Who answers whom</h3></div><span class="tag" id="mix-tag">Mixing</span></div>
+        <p class="cap">Read across: of everything a group says, how much goes to each other group.</p>
+        <div class="opts"><div class="tabs" id="mix-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="calling" aria-pressed="false">Callings</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button></div></div>
+        <div class="scrollx"><svg class="viz" id="mix" viewBox="0 0 640 520" role="img" aria-label="Mixing matrix"></svg></div>
+        <details class="how"><summary>How it is read</summary><p>The diagonal is a group talking to itself. A bright diagonal means an echo chamber. The tag above compares the share of exchanges inside groups with what random mixing would give.</p></details>
+      </section>
+
+      <section class="glass plate wide" aria-labelledby="h-border">
+        <div class="plate-head"><div><span class="plate-no">Plate VII</span><h3 id="h-border">Border crossings</h3></div><span class="tag">Cross-platform</span></div>
+        <p class="cap">Word leaving one platform for another. Arcs above run left to right, arcs below run back.</p>
+        <svg class="viz" id="border" viewBox="0 0 1000 340" role="img" aria-label="Arcs between platforms"></svg>
+        <details class="how"><summary>How it is read</summary><p>A crossing is a post shared from one platform to another. Thicker arcs carry more of them. Direction follows the word: from the platform it was first said on to the one that picked it up.</p></details>
+      </section>
+
+      <section class="glass plate" aria-labelledby="h-mood">
+        <div class="plate-head"><div><span class="plate-no">Plate VIII</span><h3 id="h-mood">Mood is catching</h3></div><span class="tag">Sentiment spread</span></div>
+        <p class="cap">Row is the post being answered. Column is the answer it got.</p>
+        <div class="moodgrid" id="moodgrid"></div>
+        <details class="how"><summary>How it is read</summary><p>Each cell is the share of answers to that kind of post. The multiplier compares it with how common that mood is overall, so 1.8&times; means nearly twice as likely as usual. Reposts are left out because they copy the original.</p></details>
+      </section>
+      <section class="glass plate" aria-labelledby="h-speed">
+        <div class="plate-head"><div><span class="plate-no">Plate IX</span><h3 id="h-speed">The waiting room</h3></div><span class="tag">Reaction time</span></div>
+        <p class="cap">How long a post waits before someone reacts.</p>
+        <div class="opts"><div class="tabs" id="speed-type"><button type="button" data-t="all" aria-pressed="true">All</button><button type="button" data-t="reply" aria-pressed="false">Replies</button><button type="button" data-t="quote" aria-pressed="false">Quotes</button><button type="button" data-t="repost" aria-pressed="false">Reposts</button><button type="button" data-t="share" aria-pressed="false">Shares</button></div></div>
+        <svg class="viz" id="speed" viewBox="0 0 620 280" role="img" aria-label="Histogram of reaction times"></svg>
+        <details class="how"><summary>How it is read</summary><p>Time between a post and each reaction to it, in widening buckets.</p></details>
+      </section>
+
+      <section class="glass plate" aria-labelledby="h-tail">
+        <div class="plate-head"><div><span class="plate-no">Plate X</span><h3 id="h-tail">The long tail</h3></div><span class="tag" id="tail-tag">Degree</span></div>
+        <p class="cap">Many voices heard by a few. A few voices heard by many.</p>
+        <svg class="viz" id="tail" viewBox="0 0 620 300" role="img" aria-label="Log-log plot of how many voices answer each voice"></svg>
+        <details class="how"><summary>How it is read</summary><p>Both axes are logarithmic. A straight, falling line is the mark of a heavy-tailed network, and the tag above shows its estimated slope.</p></details>
+      </section>
+      <section class="glass plate" aria-labelledby="h-break">
+        <div class="plate-head"><div><span class="plate-no">Plate XI</span><h3 id="h-break">The breaking point</h3></div><span class="tag">Robustness</span></div>
+        <p class="cap">Remove voices one by one. How much of the vine still holds together?</p>
+        <svg class="viz" id="break" viewBox="0 0 620 300" role="img" aria-label="How the largest connected group shrinks as voices are removed"></svg>
+        <details class="how"><summary>How it is read</summary><p>The height of each line is the share of the largest connected group that survives. Targeted cuts usually fall faster than random ones. Try it live with the Cut the wires tool above.</p></details>
+      </section>
+    </div>
+
+    <svg class="rule" data-rule aria-hidden="true"></svg>
+    <div class="section-head"><h2>How the vine is grown</h2><p>Four steps, and a few things it refuses to do.</p></div>
+    <section class="pipeline" aria-label="Method">
+      <div class="stepc"><div class="n">1</div><h3>Thread</h3><p>Every reply, quote, repost and share becomes a line from one anonymous voice to another.</p></div>
+      <div class="stepc"><div class="n">2</div><h3>Weigh</h3><p>PageRank, betweenness and k-core score each voice, right here in your browser.</p></div>
+      <div class="stepc"><div class="n">3</div><h3>Group</h3><p>Louvain finds the circles. Nobody tells it what to look for.</p></div>
+      <div class="stepc"><div class="n">4</div><h3>Trace</h3><p>Cascades rebuild each trend hop by hop, and every group under 5 people is folded away.</p></div>
+    </section>
+    <div class="never"><span class="lab">Left out on purpose</span><span class="x">Names</span><span class="x">Handles</span><span class="x">Bios</span><span class="x">Locations</span><span class="x">Follower lists</span><span class="x">Private messages</span></div>
+    <div class="caveats">
+      <div class="caveat"><b>A reply is not a friendship</b>A line records one public event, nothing about how two people feel.</div>
+      <div class="caveat"><b>The vine has edges</b>Only what was collected appears. Conversations elsewhere stay invisible.</div>
+      <div class="caveat"><b>Whispers are models</b>Simulated spread shows what could happen, never what did.</div>
+    </div>
+    <footer><span>The Grapevine &middot; Section E of the AI Social Media Analytics Framework &middot; Utsav</span><em>Sample data is synthetic unless a real dataset is loaded.</em></footer>
+  </main>
+
+  <script src="../c-demographics/profiler.js"></script>
+  <script src="network.js"></script>
+  <script src="grapevine.js"></script>
 </body>
 </html>
