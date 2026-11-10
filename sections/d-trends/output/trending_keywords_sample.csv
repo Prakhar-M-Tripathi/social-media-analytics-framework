@@ -1,0 +1,71 @@
+type,term,mentions,trend_score,z_score
+rising,price hike,320,12.364,72.17
+rising,petrol price,282,11.571,66.94
+rising,petrolpricehike,77,6.568,44.95
+rising,upi,81,6.615,42.15
+rising,fuelprice,93,6.675,41.44
+rising,onion prices,85,6.000,38.78
+rising,price,447,5.790,38.53
+rising,hike transport,51,4.971,35.89
+rising,oil companies,80,5.214,29.50
+rising,onionprice,53,4.417,28.99
+rising,hike monday,53,4.541,28.59
+rising,heard petrol,51,4.297,26.62
+rising,upioutage,25,3.273,25.00
+rising,fuel price,38,3.333,19.80
+rising,upi morning,18,2.636,18.00
+rising,companies decision,42,3.385,17.90
+rising,prices onionprice,23,2.824,17.90
+rising,upi outage,32,3.162,17.46
+rising,पेट्रोल कीमत,46,3.439,17.41
+rising,jayega petrolpricehike,17,2.545,17.00
+rising,hike forward,33,3.081,16.80
+rising,hike news,52,3.419,16.65
+rising,प्याज दाम,27,2.829,16.52
+rising,prices rising,18,2.455,16.00
+rising,pyaz daam,30,2.833,15.56
+fading,paper leak,307,0.153,-9.35
+fading,exam,237,0.170,-8.29
+fading,students,134,0.258,-6.06
+fading,board,126,0.269,-5.86
+fading,paperleak,85,0.336,-4.79
+fading,examleak,82,0.345,-4.69
+fading,students protest,70,0.386,-4.25
+fading,exam paper,64,0.379,-4.23
+fading,leak hua,54,0.379,-4.13
+fading,leak case,63,0.415,-3.97
+fading,exam board,56,0.409,-3.94
+fading,परीक्षा पेपर,51,0.476,-3.44
+fading,office paperleak,18,0.647,-2.27
+fading,safe weather,24,0.643,-2.26
+fading,office examleak,22,0.667,-2.12
+fading,started examleak,15,0.688,-2.04
+emerging,fuelprice,85,,
+emerging,upi,81,,
+emerging,petrolpricehike,74,,
+emerging,onion prices,70,,
+emerging,hike transport,49,,
+emerging,hike monday,49,,
+emerging,heard petrol,46,,
+emerging,onionprice,45,,
+emerging,upioutage,25,,
+emerging,प्याज दाम,24,,
+emerging,prices onionprice,22,,
+emerging,bank upi,19,,
+hashtag,#phonereview,278,1.143,1.34
+hashtag,#metroupdate,241,0.917,-0.76
+hashtag,#cricket,224,1.123,1.08
+hashtag,#indvsaus,222,0.826,-1.56
+hashtag,#festiveoffers,150,1.840,6.12
+hashtag,#ott,140,1.007,0.06
+hashtag,#monsoon,137,1.276,2.05
+hashtag,#weather,132,0.692,-2.39
+hashtag,#diwalisale,131,1.691,4.91
+hashtag,#webseries,126,1.048,0.35
+hashtag,#fuelprice,93,6.675,41.44
+hashtag,#paperleak,85,0.336,-4.79
+hashtag,#examleak,82,0.345,-4.69
+hashtag,#petrolpricehike,77,6.568,44.95
+hashtag,#onionprice,53,4.417,28.99
+hashtag,#upidown,30,2.842,14.29
+hashtag,#upioutage,25,3.273,25.00

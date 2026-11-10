@@ -1,0 +1,13 @@
+rank,topic,keywords,posts,users,trend_score,z_score,confidence,burst,momentum_per_step,status,likely_to_rise,started_on,first_seen,forecast_next_3,forecast_range
+1,Price Hike,hike | price hike | petrol | petrol price | price,320,273,12.364,72.17,High,19.17,1.30,rise,true,Telegram,2026-09-28T10:40:42.000Z,37.1 | 38.2 | 39.1,+/- 5.1
+2,UPI,upi,81,79,6.615,42.15,High,67.90,0.01,new,true,Reddit,2026-09-26T11:37:05.000Z,59.2 | 59.2 | 59.2,+/- 18.7
+3,Diwali Sale,diwali | sale | diwali sale,529,403,2.121,12.35,High,3.03,0.73,rise,true,Instagram,2026-09-25T02:52:42.000Z,24.8 | 25.4 | 25.9,+/- 6.1
+4,Prices / Onion,prices | onion,216,186,2.568,11.83,High,7.50,0.01,rise,true,Instagram,2026-09-25T09:01:42.000Z,18.5 | 18.5 | 18.5,+/- 4.9
+5,क्रिकेट / मैच,क्रिकेट | मैच | शानदार | जीत | गेंदबाजों | कमाल | क्रिकेट मैच | मैच शानदार,196,180,1.207,1.71,Low,1.50,0.26,steady,false,Facebook,2026-09-25T12:24:09.000Z,7.3 | 7.5 | 7.7,+/- 5.6
+6,Metro / Metroupdate,metro | metroupdate,480,368,1.036,0.43,Low,0.10,-0.10,steady,false,X,2026-09-25T03:52:57.000Z,10.3 | 10.2 | 10.2,+/- 5.2
+7,Phone Launch,phone | launch | phone launch | phonereview | battery,526,406,1.012,0.15,Low,1.19,0.50,steady,false,YouTube,2026-09-25T00:11:43.000Z,15.5 | 15.9 | 16.3,+/- 7.8
+8,Web Series,series | web | web series | ott,390,313,0.939,-0.67,Low,-0.60,-0.32,steady,false,Instagram,2026-09-25T01:20:11.000Z,6.8 | 6.6 | 6.3,+/- 7.7
+9,Match / Night,match | night | team | showed | real | fight | match last | last night,217,196,0.905,-0.84,Low,-0.42,-0.02,steady,false,Instagram,2026-09-25T00:49:51.000Z,4.2 | 4.2 | 4.1,+/- 4.7
+10,Rain Weather,weather | alert | rain weather | rain,522,400,0.906,-1.18,Low,-1.70,-0.78,steady,false,YouTube,2026-09-25T01:16:11.000Z,5.7 | 5.1 | 4.5,+/- 9.0
+11,Cricket,cricket,561,417,0.884,-1.49,Low,-0.02,-0.01,steady,false,Telegram,2026-09-25T01:59:48.000Z,13.0 | 13.0 | 13.0,+/- 7.2
+12,Paper Leak,paper | leak | paper leak | exam,307,247,0.153,-9.35,Low,-0.75,-0.07,fall,false,Reddit,2026-09-25T04:10:55.000Z,0.1 | 0.1 | 0.0,+/- 6.5
