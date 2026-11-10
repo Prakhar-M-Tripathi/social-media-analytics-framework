@@ -20,6 +20,78 @@ professional_interest,Not available,0,
 age_stage_cue,25 to 44 (working-professional cues),152,67
 age_stage_cue,Under 25 (student cues),75,33
 age_stage_cue,Not available,348,
+manner,Originators,343,59.7
+manner,Conversationalists,232,40.3
+manner,Not available,0,
+post_mood,positive,0,
+post_mood,neutral,0,
+post_mood,negative,0,
+trend_uptake,#iPhone17,55,9.6
+trend_uptake,#AppleiPhone,51,8.9
+trend_uptake,#CocaColaZeroSugar,49,8.5
+trend_uptake,#CokeZeroSugar,37,6.4
+reach_tier,Under 100,0,0
+reach_tier,100 to 1K,0,0
+reach_tier,1K to 10K,0,0
+reach_tier,10K to 100K,0,0
+reach_tier,100K and up,0,0
+reach_tier,Not available,575,
+account_cohort,2015 or earlier,0,0
+account_cohort,2016 to 2017,0,0
+account_cohort,2018 to 2019,0,0
+account_cohort,2020 to 2021,0,0
+account_cohort,2022 to 2023,0,0
+account_cohort,2024 to now,0,0
+account_cohort,Not available,575,
+bio_word,product,214,37.2
+bio_word,customer,140,24.3
+bio_word,experience,140,24.3
+bio_word,examples,77,13.4
+bio_word,marketing,77,13.4
+bio_word,professional,77,13.4
+bio_word,services,77,13.4
+bio_word,technology,77,13.4
+bio_word,useful,77,13.4
+bio_word,brands,75,13
+bio_word,business,75,13
+bio_word,culture,75,13
+bio_word,online,75,13
+bio_word,owner,75,13
+bio_word,public,75,13
+bio_word,student,75,13
+bio_word,design,74,12.9
+bio_word,sustainability,74,12.9
+bio_word,personal,72,12.5
+bio_word,follows,68,11.8
+bio_word,launches,68,11.8
+bio_word,community,57,9.9
+bio_word,everyday,57,9.9
+bio_word,member,57,9.9
+bio_word,products,57,9.9
+posts_by_hour_utc,00,69,
+posts_by_hour_utc,01,73,
+posts_by_hour_utc,02,78,
+posts_by_hour_utc,03,67,
+posts_by_hour_utc,04,62,
+posts_by_hour_utc,05,74,
+posts_by_hour_utc,06,67,
+posts_by_hour_utc,07,74,
+posts_by_hour_utc,08,82,
+posts_by_hour_utc,09,56,
+posts_by_hour_utc,10,71,
+posts_by_hour_utc,11,72,
+posts_by_hour_utc,12,79,
+posts_by_hour_utc,13,72,
+posts_by_hour_utc,14,61,
+posts_by_hour_utc,15,83,
+posts_by_hour_utc,16,83,
+posts_by_hour_utc,17,86,
+posts_by_hour_utc,18,82,
+posts_by_hour_utc,19,82,
+posts_by_hour_utc,20,127,
+posts_by_hour_utc,21,82,
+posts_by_hour_utc,22,71,
+posts_by_hour_utc,23,79,
 segment,Europe / Consumer & Customer Experience / English,76,
 segment,Latin America / Consumer & Customer Experience / English,76,
 segment,North America / Consumer & Customer Experience / English,72,

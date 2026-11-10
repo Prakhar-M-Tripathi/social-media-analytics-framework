@@ -1,46 +1,140 @@
 ﻿dimension,category,users,share_percent
-language,English,354,56.5
-language,Spanish,70,11.2
-language,Hinglish (English + Hindi),30,4.8
-language,Portuguese,25,4
-language,Spanglish (English + Spanish),25,4
-language,Hindi,22,3.5
-language,German,17,2.7
-language,French,16,2.6
-language,Arabic,14,2.2
-language,Chinese,9,1.4
-language,Japanese,9,1.4
-language,Urdu,7,1.1
-language,Other (grouped for privacy),28,4.5
-language,Not available,14,
-region,North America,134,26.5
-region,Europe,105,20.8
-region,South Asia,88,17.4
-region,Latin America,76,15
-region,East Asia & Pacific,48,9.5
-region,Middle East & Africa,35,6.9
-region,Other region,19,3.8
-region,Not available,135,
-professional_interest,Consumer & Customer Experience,116,21
-professional_interest,"Marketing, Media & Brands",97,17.6
-professional_interest,Students & Education,83,15
-professional_interest,Business & Entrepreneurship,81,14.7
-professional_interest,Technology & Software,76,13.8
-professional_interest,Entertainment & Sports,72,13
-professional_interest,Travel & Food,53,9.6
-professional_interest,Finance & Economics,45,8.2
-professional_interest,Sustainability & Design,43,7.8
-professional_interest,Health & Wellness,35,6.3
-professional_interest,Not available,88,
-age_stage_cue,25 to 44 (working-professional cues),187,70.6
-age_stage_cue,Under 25 (student cues),60,22.6
-age_stage_cue,45 and over (retirement or seniority cues),18,6.8
-age_stage_cue,Not available,375,
-segment,Europe / Consumer & Customer Experience / English,21,
-segment,"Europe / Marketing, Media & Brands / English",20,
-segment,North America / Technology & Software / English,20,
-segment,"North America / Marketing, Media & Brands / English",19,
-segment,"Latin America / Marketing, Media & Brands / Spanish",17,
-segment,North America / Business & Entrepreneurship / English,17,
-segment,North America / Consumer & Customer Experience / English,17,
-segment,Latin America / Consumer & Customer Experience / Spanish,16,
+language,English,490,56.1
+language,Spanish,84,9.6
+language,Hinglish (English + Hindi),34,3.9
+language,Portuguese,34,3.9
+language,French,33,3.8
+language,Spanglish (English + Spanish),26,3
+language,Arabic,25,2.9
+language,German,25,2.9
+language,Hindi,22,2.5
+language,Italian,11,1.3
+language,Chinese,10,1.1
+language,Japanese,9,1
+language,Polish,8,0.9
+language,Turkish,8,0.9
+language,Urdu,8,0.9
+language,Bangla,7,0.8
+language,Filipino,7,0.8
+language,Indonesian,7,0.8
+language,Korean,7,0.8
+language,Swahili,7,0.8
+language,Tamil,7,0.8
+language,Swedish,5,0.6
+language,Not available,6,
+region,North America,168,23.7
+region,Europe,159,22.4
+region,South Asia,117,16.5
+region,Latin America,108,15.2
+region,East Asia & Pacific,70,9.9
+region,Middle East & Africa,60,8.5
+region,Other region,27,3.8
+region,Not available,171,
+professional_interest,Consumer & Customer Experience,124,17
+professional_interest,Technology & Software,115,15.8
+professional_interest,Students & Education,99,13.6
+professional_interest,"Marketing, Media & Brands",96,13.2
+professional_interest,Business & Entrepreneurship,87,12
+professional_interest,Travel & Food,81,11.1
+professional_interest,Entertainment & Sports,79,10.9
+professional_interest,Finance & Economics,60,8.2
+professional_interest,Health & Wellness,49,6.7
+professional_interest,Sustainability & Design,45,6.2
+professional_interest,Not available,152,
+age_stage_cue,25 to 44 (working-professional cues),268,69.6
+age_stage_cue,Under 25 (student cues),93,24.2
+age_stage_cue,45 and over (retirement or seniority cues),24,6.2
+age_stage_cue,Not available,495,
+manner,Originators,525,59.7
+manner,Conversationalists,309,35.1
+manner,Amplifiers,46,5.2
+manner,Not available,0,
+post_mood,positive,1610,
+post_mood,neutral,2048,
+post_mood,negative,1476,
+trend_uptake,#BatteryGate,130,14.8
+trend_uptake,#LumenLaunch,105,11.9
+trend_uptake,#RefundQueue,101,11.5
+trend_uptake,#CameraWars,85,9.7
+trend_uptake,#SupportStory,81,9.2
+trend_uptake,#PriceCheck,56,6.4
+trend_uptake,#GreenBox,55,6.3
+trend_uptake,#UnboxDay,54,6.1
+trend_uptake,#NightShift,51,5.8
+trend_uptake,#RightToRepair,47,5.3
+trend_uptake,#EarlyAccess,20,2.3
+reach_tier,Under 100,187,21.3
+reach_tier,100 to 1K,373,42.4
+reach_tier,1K to 10K,273,31
+reach_tier,10K to 100K,46,5.2
+reach_tier,100K and up,<5,0.1
+reach_tier,Not available,0,
+account_cohort,2015 or earlier,84,9.5
+account_cohort,2016 to 2017,60,6.8
+account_cohort,2018 to 2019,101,11.5
+account_cohort,2020 to 2021,136,15.5
+account_cohort,2022 to 2023,173,19.7
+account_cohort,2024 to now,326,37
+account_cohort,Not available,0,
+bio_word,student,52,6.6
+bio_word,nerd,49,6.2
+bio_word,developer,43,5.5
+bio_word,analyst,40,5.1
+bio_word,projects,37,4.7
+bio_word,travel,34,4.3
+bio_word,customer,33,4.2
+bio_word,parent,32,4.1
+bio_word,nights,31,3.9
+bio_word,media,30,3.8
+bio_word,product,30,3.8
+bio_word,writer,30,3.8
+bio_word,engineer,28,3.6
+bio_word,honest,27,3.4
+bio_word,making,27,3.4
+bio_word,packaging,27,3.4
+bio_word,spreadsheets,24,3
+bio_word,creative,22,2.8
+bio_word,coffee,21,2.7
+bio_word,brands,20,2.5
+bio_word,designer,20,2.5
+bio_word,fair,20,2.5
+bio_word,human,20,2.5
+bio_word,owner,20,2.5
+bio_word,price,20,2.5
+bio_word,asked,19,2.4
+bio_word,bootstrapped,19,2.4
+bio_word,dashboards,19,2.4
+bio_word,dreams,19,2.4
+bio_word,nobody,19,2.4
+posts_by_hour_utc,00,176,
+posts_by_hour_utc,01,168,
+posts_by_hour_utc,02,195,
+posts_by_hour_utc,03,196,
+posts_by_hour_utc,04,206,
+posts_by_hour_utc,05,161,
+posts_by_hour_utc,06,196,
+posts_by_hour_utc,07,250,
+posts_by_hour_utc,08,209,
+posts_by_hour_utc,09,171,
+posts_by_hour_utc,10,147,
+posts_by_hour_utc,11,165,
+posts_by_hour_utc,12,222,
+posts_by_hour_utc,13,274,
+posts_by_hour_utc,14,279,
+posts_by_hour_utc,15,264,
+posts_by_hour_utc,16,281,
+posts_by_hour_utc,17,251,
+posts_by_hour_utc,18,242,
+posts_by_hour_utc,19,230,
+posts_by_hour_utc,20,220,
+posts_by_hour_utc,21,197,
+posts_by_hour_utc,22,168,
+posts_by_hour_utc,23,266,
+segment,Europe / Consumer & Customer Experience / English,29,
+segment,Europe / Technology & Software / English,26,
+segment,North America / Consumer & Customer Experience / English,24,
+segment,North America / Technology & Software / English,23,
+segment,North America / Entertainment & Sports / English,22,
+segment,Latin America / Students & Education / Spanish,19,
+segment,"Europe / Marketing, Media & Brands / English",17,
+segment,South Asia / Consumer & Customer Experience / Hinglish (English + Hindi),17,

@@ -10,15 +10,18 @@ function save(name, summary) {
   fs.writeFileSync(path.join(__dirname, 'output', name), '﻿' + P.csvText(P.toCsvRows(summary)));
 }
 
-function report(title, summary) {
+function report(title, s) {
   console.log('\n=== ' + title);
-  console.log('Profiles: ' + summary.profiles + ' (audience ' + summary.audience + ', brand accounts ' + summary.organisations + '), posts ' + summary.posts);
-  console.log('Coverage %:', JSON.stringify(summary.coverage));
-  ['language', 'region', 'interest', 'age'].forEach(function (d) {
-    console.log(d + ' (known ' + summary[d].known + ', not available ' + summary[d].unknown + '): ' +
-      summary[d].items.map(function (i) { return i.label + ' ' + (i.hidden ? '<' + summary.k : i.n); }).join('; '));
+  console.log('Profiles: ' + s.profiles + ' (audience ' + s.audience + ', brand accounts ' + s.organisations + '), posts ' + s.posts);
+  console.log('Coverage %:', JSON.stringify(s.coverage));
+  ['language', 'region', 'interest', 'age', 'reach', 'tenure'].forEach(function (d) {
+    console.log(d + ' (known ' + s[d].known + ', not available ' + s[d].unknown + '): ' +
+      s[d].items.map(function (i) { return i.label + ' ' + (i.hidden ? '<' + s.k : i.n); }).join('; '));
   });
-  console.log('Top segments:', summary.segments.slice(0, 3).map(function (s) { return s.region + ' / ' + s.interest + ' / ' + s.language + ' (' + s.n + ')'; }).join('; '));
+  console.log('Top words:', s.words.slice(0, 12).map(function (w) { return w.word + ' ' + w.n; }).join(', '));
+  console.log('Peak hour (UTC):', P.peakHour(s.hours));
+  console.log('Top segments:', s.segments.slice(0, 3).map(function (g) { return g.region + ' / ' + g.interest + ' / ' + g.language + ' (' + g.n + ') ' + g.words.join('+'); }).join('; '));
+  console.log('Field notes:'); s.notes.forEach(function (n) { console.log('  [' + n.kicker + '] ' + n.fig + n.unit + ' ' + n.headline + ' | ' + n.text); });
 }
 
 // 1. Section C's own sample audience

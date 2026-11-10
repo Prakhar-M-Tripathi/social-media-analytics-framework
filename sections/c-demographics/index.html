@@ -3,14 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Audience Atlas: an interactive constellation of anonymous profiles, grouped by language, region, interest, life stage and platform.">
+  <meta name="description" content="Audience Atlas: a field guide to the people behind the posts. An interactive constellation of anonymous profiles, with language, region, calling, rhythm, reach and vocabulary plates.">
   <meta name="color-scheme" content="dark">
   <title>Audience Atlas | Demographic Profiling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:dark;--bg:#050813;--bg2:#0a1022;--ink:#e9eef9;--muted:#97a4bd;--faint:#66738d;--line:rgba(255,255,255,.09);--glass:rgba(255,255,255,.045);--glass2:rgba(255,255,255,.075);--teal:#35d0c0;--violet:#b48cff;--gold:#ffc15e;--rose:#ff7a90;--blue:#6ea8ff;--display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    :root{color-scheme:dark;--bg:#050813;--ink:#e9eef9;--muted:#97a4bd;--faint:#66738d;--line:rgba(255,255,255,.09);--glass:rgba(255,255,255,.045);--glass2:rgba(255,255,255,.075);--teal:#35d0c0;--violet:#b48cff;--gold:#ffc15e;--rose:#ff7a90;--blue:#6ea8ff;--display:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Manrope",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
     *{box-sizing:border-box}[hidden]{display:none!important}
     html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
     body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(1200px 700px at 78% -10%,#14234a 0,transparent 60%),radial-gradient(900px 600px at -5% 30%,#0f2b33 0,transparent 55%),radial-gradient(900px 700px at 50% 120%,#1d1540 0,transparent 60%),var(--bg)}
     .aurora{position:fixed;inset:-20% -10% auto -10%;height:70vh;z-index:-1;pointer-events:none;filter:blur(70px);opacity:.55}
     .aurora i{position:absolute;border-radius:50%;animation:drift 26s ease-in-out infinite alternate}
@@ -43,15 +46,15 @@
     .eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:#8fe6dc;font-weight:700}
     .live{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 #35d0c077;animation:pulse 2.2s infinite}
     @keyframes pulse{70%{box-shadow:0 0 0 9px #35d0c000}100%{box-shadow:0 0 0 0 #35d0c000}}
-    h1{font:400 clamp(34px,5vw,60px)/1.02 var(--display);letter-spacing:-.02em;margin:12px 0 14px}
-    h1 em{font-style:italic;background:linear-gradient(100deg,var(--teal),var(--blue) 45%,var(--violet) 75%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 9s linear infinite}
+    h1{font:400 clamp(40px,6vw,76px)/.98 var(--display);letter-spacing:-.025em;margin:12px 0 16px}
+    h1 em{font-style:italic;font-weight:300;background:linear-gradient(100deg,var(--teal),var(--blue) 45%,var(--violet) 75%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 9s linear infinite;padding-right:.06em}
     @keyframes shine{to{background-position:-200% 0}}
-    .lede{color:var(--muted);max-width:610px;margin:0;font-size:15px}
+    .lede{color:var(--muted);max-width:560px;margin:0;font-size:15px;line-height:1.65}
     .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     .kpi{padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px);position:relative;overflow:hidden}
     .kpi:before{content:"";position:absolute;right:-24px;top:-24px;width:84px;height:84px;border-radius:50%;background:var(--c,#35d0c0);opacity:.13;filter:blur(8px)}
-    .kpi span{display:block;color:var(--muted);font-size:11px;letter-spacing:.05em}
-    .kpi strong{display:block;font:400 32px/1.1 var(--display);margin:4px 0 0;font-variant-numeric:tabular-nums}
+    .kpi span{display:block;color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+    .kpi strong{display:block;font:400 34px/1.1 var(--display);margin:4px 0 0;font-variant-numeric:tabular-nums}
     .kpi small{color:var(--faint);font-size:11px}
 
     /* stage */
@@ -60,17 +63,19 @@
     #sky{position:absolute;inset:0;width:100%;height:100%;display:block}
     .tip{position:absolute;pointer-events:none;z-index:4;padding:10px 13px;border-radius:12px;background:#0b1226ee;border:1px solid var(--line);backdrop-filter:blur(10px);box-shadow:0 12px 34px #0008;font-size:12px;max-width:240px;transform:translate(-50%,-125%)}
     .tip b{display:block;font-size:13px}.tip span{color:var(--muted)}.tip i{display:block;color:var(--faint);font-style:normal;font-size:11px;margin-top:3px}
-    .selchip{position:absolute;left:16px;top:14px;z-index:5;display:flex;align-items:center;gap:8px;padding:7px 8px 7px 13px;border-radius:99px;background:#0b1226dd;border:1px solid #35d0c066;font-size:12px;backdrop-filter:blur(8px)}
-    .selchip button{border:0;width:22px;height:22px;border-radius:50%;background:var(--glass2);line-height:1}
-    .selchip button:hover{background:#ffffff26}
-    .hint{position:absolute;right:16px;top:14px;z-index:3;color:var(--faint);font-size:11px;letter-spacing:.04em;pointer-events:none}
+    .fchips{position:absolute;left:16px;top:14px;right:16px;z-index:5;display:flex;gap:8px;flex-wrap:wrap}
+    .fchip{display:flex;align-items:center;gap:8px;padding:6px 7px 6px 13px;border-radius:99px;background:#0b1226dd;border:1px solid #35d0c066;font-size:12px;backdrop-filter:blur(8px)}
+    .fchip.w{border-color:#ffc15e77}
+    .fchip button{border:0;width:22px;height:22px;border-radius:50%;background:var(--glass2);line-height:1}
+    .fchip button:hover{background:#ffffff26}
+    .hint{position:absolute;right:16px;top:14px;z-index:3;color:var(--faint);font-size:11px;letter-spacing:.06em;pointer-events:none;font-family:var(--display);font-style:italic;font-size:13px}
     .controls{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;display:grid;gap:10px;padding:12px;border-radius:18px;background:#0a1122cc;border:1px solid var(--line);backdrop-filter:blur(14px)}
     .lens{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
     .lens-label{color:var(--faint);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-right:4px}
     .lens button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;transition:.18s}
     .lens button:hover{color:var(--ink);background:var(--glass)}
     .lens button[aria-pressed=true]{color:#05110f;background:linear-gradient(135deg,var(--teal),#9ff3e8);border-color:transparent;box-shadow:0 6px 20px #35d0c033}
-    .lens-note{margin-left:auto;color:var(--faint);font-size:11px}
+    .lens-note{margin-left:auto;color:var(--faint);font:italic 13px var(--display)}
     .timebar{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
     .play{width:36px;height:36px;border-radius:50%;border:1px solid #35d0c055;background:#35d0c014;display:grid;place-items:center;transition:.18s}
     .play:hover{background:#35d0c033}.play svg{width:14px;height:14px;fill:var(--teal)}
@@ -101,33 +106,55 @@
     .file-input:focus-visible+.btn{outline:2px solid var(--teal);outline-offset:2px}
     .banner{margin:10px 0;padding:11px 15px;border-radius:12px;font-size:12px;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line)}
     .banner b{white-space:nowrap}
-    .banner.privacy{background:#35d0c010;border-color:#35d0c033;color:#bfeee9}
     .banner.demo{background:#ffc15e10;border-color:#ffc15e33;color:#f3dba9}
     .banner.error{background:#ff7a9012;border-color:#ff7a9040;color:#ffc4cd}
-    h2{font:400 26px/1.15 var(--display);margin:0 0 4px;letter-spacing:-.01em}
-    h3{font-size:14px;margin:0 0 2px}
-    .section-head{margin:40px 0 14px}.section-head p{margin:0;color:var(--muted)}
+    .gate{display:inline-flex;align-items:center;gap:10px;margin:2px 0 0;padding:7px 14px 7px 8px;border-radius:99px;background:#35d0c012;border:1px solid #35d0c033;color:#bfeee9;font-size:12px}
+    .gate b{display:grid;place-items:center;min-width:34px;height:24px;border-radius:99px;background:#35d0c022;color:var(--teal);font-size:11px;letter-spacing:.04em}
+    h2{font:400 clamp(28px,3.4vw,40px)/1.1 var(--display);margin:0;letter-spacing:-.015em}
+    h2 em{font-weight:300}
+    h3{font:400 24px/1.1 var(--display);margin:0;letter-spacing:-.01em}
+    .section-head{margin:54px 0 18px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+    .section-head p{margin:0;color:var(--muted);font:italic 15px var(--display)}
     .glass{background:var(--glass);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(10px)}
-    .findings{padding:6px 24px}
-    .findings ol{list-style:none;margin:0;padding:0;counter-reset:f}
-    .findings li{counter-increment:f;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:15px 0;border-top:1px solid var(--line);font:400 18px/1.4 var(--display);color:#dfe6f5}
-    .findings li:first-child{border-top:0}
-    .findings li:before{content:counter(f,decimal-leading-zero);font:600 12px/2.2 var(--sans);color:var(--teal);letter-spacing:.08em}
+
+    /* field notes */
+    .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:12px}
+    .note{position:relative;padding:18px 18px 16px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 13%,transparent),var(--glass) 62%);overflow:hidden}
+    .note svg.ring{position:absolute;right:14px;top:14px;width:50px;height:50px;transform:rotate(-90deg)}
+    .note .kick{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);font-weight:700}
+    .note .fig{font:300 62px/1 var(--display);margin:10px 0 4px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+    .note .fig small{font:400 24px var(--display);color:var(--muted);margin-left:3px}
+    .note .head{font:italic 400 17px/1.3 var(--display);color:#dfe6f5;max-width:21ch}
+    .note p{margin:10px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+    /* personas */
     .personas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
     .persona{padding:16px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),var(--glass) 55%);position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
     .persona:hover{transform:translateY(-4px);border-color:var(--c)}
-    .persona svg{display:block;margin-bottom:8px;overflow:visible}
-    .persona h3{font:400 21px/1.15 var(--display)}
-    .persona .meta{color:var(--muted);font-size:12px;margin:3px 0 10px}
-    .persona .big{font:400 30px/1 var(--display);font-variant-numeric:tabular-nums}
+    .persona svg.av{display:block;margin-bottom:8px;overflow:visible}
+    .persona h3{font-size:23px}
+    .persona .meta{color:var(--muted);font-size:12px;margin:4px 0 10px}
+    .persona .big{font:300 34px/1 var(--display);font-variant-numeric:tabular-nums}
     .persona .big small{font:500 12px var(--sans);color:var(--faint);margin-left:6px}
-    .persona .row2{margin-top:10px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:9px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-    .panel{padding:20px 22px;min-width:0}
-    .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-    .badge{border:1px solid var(--line);color:var(--muted);padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.04em}
-    .badge.warn{border-color:#ffc15e55;color:#ffd488}
-    .desc{color:var(--muted);font-size:12px;margin:5px 0 15px}
+    .persona .row2{margin-top:10px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:9px;display:grid;gap:7px}
+    .sig{display:flex;flex-wrap:wrap;gap:5px}
+    .sig span{padding:2px 9px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line);font-size:11px;color:#cfd8ea}
+
+    /* plates */
+    .plates{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .plate{padding:22px 24px;min-width:0;display:flex;flex-direction:column}
+    .plate.wide{grid-column:1/-1}
+    .plate-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .plate-no{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+    .tag{border:1px solid var(--line);color:var(--muted);padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase}
+    .tag.warn{border-color:#ffc15e55;color:#ffd488}
+    .cap{font:italic 400 15px/1.45 var(--display);color:#c3cde1;margin:8px 0 18px;max-width:46ch}
+    .how{margin-top:auto;padding-top:16px;font-size:12px;color:var(--muted)}
+    .how summary{cursor:pointer;color:var(--faint);letter-spacing:.06em;font-size:11px;text-transform:uppercase;list-style:none;display:inline-flex;gap:8px;align-items:center}
+    .how summary::-webkit-details-marker{display:none}
+    .how summary:before{content:"+";display:grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid var(--line);font-size:12px;line-height:1}
+    .how[open] summary:before{content:"\2212"}
+    .how p{margin:8px 0 0;max-width:60ch}
     .bars{display:grid;gap:10px}
     .row{display:grid;grid-template-columns:minmax(110px,200px) 1fr 86px;align-items:center;gap:12px;font-size:12px}
     .row .name{color:#d3dbec}
@@ -136,27 +163,104 @@
     .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;font-size:11px}
     .na{margin-top:12px;font-size:11px;color:var(--faint)}
     .empty{padding:30px 8px;text-align:center;color:var(--faint);font-size:12px}
+    svg text{font-family:var(--sans)}
+    .svgt{fill:var(--muted);font-size:11px}.svgt.b{fill:var(--ink);font-weight:600}.svgt.f{fill:var(--faint);font-size:10px}
+
+    /* rhythm */
+    .rhythm{display:grid;grid-template-columns:270px 1fr;gap:26px;align-items:center}
+    .clock{width:100%;max-width:270px;height:auto;display:block;margin:auto}
+    .clock .wedge{transition:d .5s,fill .5s}
+    .heat{display:grid;gap:7px;min-width:0}
+    .hrow{display:grid;grid-template-columns:132px 1fr 44px;gap:10px;align-items:center;font-size:12px}
+    .hl{color:#d3dbec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hcells{display:grid;grid-template-columns:repeat(24,1fr);gap:2px}
+    .hcells i{display:block;height:22px;border-radius:4px;background:#ffffff08}
+    .hp{color:var(--faint);font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+    .haxis{display:grid;grid-template-columns:132px 1fr 44px;gap:10px;color:var(--faint);font-size:10px}
+    .haxis div{display:flex;justify-content:space-between}
+
+    /* reach + tenure */
+    .viz{width:100%;height:auto;display:block;overflow:visible}
+
+    /* vocabulary */
+    .vocab{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:center;padding:6px 0 2px;max-width:1000px;margin:0 auto}
+    .word{border:0;background:none;padding:2px 3px;color:var(--c);font-family:var(--display);line-height:1.15;border-radius:8px;transition:transform .2s,background .2s,text-shadow .2s;text-shadow:0 0 0 transparent}
+    .word:hover{transform:translateY(-2px) scale(1.06);text-shadow:0 0 18px var(--c)}
+    .word[aria-pressed=true]{background:#ffffff14;box-shadow:inset 0 -2px 0 var(--c);text-shadow:0 0 18px var(--c)}
+    .word.tagw{font-style:italic}
+    .word sup{font:500 9px var(--sans);color:var(--faint);margin-left:2px}
+
+    /* compare + table */
     .legend2{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:2px 0 12px}
     .legend2 span{display:inline-flex;align-items:center;gap:6px}.key{height:9px;width:9px;border-radius:3px;display:inline-block}
     .stack-row{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;margin-bottom:10px;font-size:12px}
     .stack{display:flex;height:20px;border-radius:7px;overflow:hidden;background:#ffffff0d}.stack i{display:block;height:100%;transition:width .5s}
     select{border:1px solid var(--line);background:#0c1326;border-radius:9px;padding:7px 28px 7px 11px;font-size:12px}
-    .full{margin-top:14px}
     .table-scroll{overflow:auto}
-    table{border-collapse:collapse;width:100%;font-size:12px;min-width:520px}
+    table{border-collapse:collapse;width:100%;font-size:12px;min-width:620px}
     th,td{padding:11px 12px;border-top:1px solid var(--line);text-align:left}
     th{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);font-weight:600}
     td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-    .method{padding:22px 26px;font-size:13px;color:#b7c2d9}
-    .method ul{margin:10px 0 0;padding-left:18px}.method li{margin:5px 0}.method code{background:#ffffff10;padding:1px 6px;border-radius:6px;font-size:12px}
-    footer{padding:26px 0 40px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-    .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
 
-    @media(max-width:1000px){.hero{grid-template-columns:1fr}.personas{grid-template-columns:repeat(2,minmax(0,1fr))}.rail-label{display:none}}
-    @media(max-width:860px){.grid2{grid-template-columns:1fr}.shell{padding:0 16px}.lens-note{display:none}.hint{display:none}.date{min-width:0}}
-    @media(max-width:560px){.personas{grid-template-columns:1fr}.row{grid-template-columns:1fr 78px;grid-template-areas:"n v" "t t"}.row .name{grid-area:n}.row .val{grid-area:v}.row .track{grid-area:t}.stack-row{grid-template-columns:1fr}.stage{height:680px}.step span{display:none}.timebar{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}.lens button{padding:6px 10px}}
-    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+    /* method */
+    .pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:s;position:relative}
+    .stepc{padding:18px;border-radius:18px;border:1px solid var(--line);background:var(--glass);position:relative}
+    .stepc:not(:last-child):after{content:"";position:absolute;top:34px;right:-13px;width:14px;height:1px;background:linear-gradient(90deg,var(--teal),transparent)}
+    .stepc .n{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#35d0c014;border:1px solid #35d0c044;color:var(--teal);font:500 15px var(--display);margin-bottom:12px}
+    .stepc h3{font-size:20px;margin-bottom:6px}
+    .stepc p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .never{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;font-size:12px;color:var(--muted)}
+    .never .lab{font:italic 15px var(--display);color:#c3cde1;margin-right:6px}
+    .never span.x{padding:4px 12px;border-radius:99px;border:1px dashed #ffffff26;text-decoration:line-through;text-decoration-color:var(--rose);text-decoration-thickness:1.5px;color:#aab6cd}
+    .caveats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .caveat{padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--glass);font-size:12.5px;color:var(--muted)}
+    .caveat b{display:block;font:italic 400 17px var(--display);color:var(--ink);margin-bottom:3px}
+    footer{margin-top:60px;padding:26px 0 40px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    footer em{font:italic 14px var(--display);color:var(--muted)}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+    .tabs{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:var(--glass);border:1px solid var(--line);flex-wrap:wrap}
+    .tabs button{border:0;background:transparent;color:var(--muted);padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600}
+    .tabs button:hover{color:var(--ink)}
+    .tabs button[aria-pressed=true]{background:linear-gradient(135deg,var(--teal),#9ff3e8);color:#05110f}
+    .opts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+    .trendbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 4px}
+    .trendbar .lab{font:italic 14px var(--display);color:#c3cde1;margin-right:4px}
+    .tagc{border:1px solid var(--line);background:var(--glass);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--muted)}
+    .tagc:hover{color:var(--ink);background:var(--glass2)}
+    .tagc[aria-pressed=true]{color:#2a1d04;background:var(--gold);border-color:transparent;font-weight:700}
+    .fchip.t{border-color:#ffc15e77}
+    .trow{display:grid;grid-template-columns:minmax(110px,190px) 1fr 62px;gap:12px;align-items:center;font-size:12px;margin-bottom:9px}
+    .trow .name{color:#d3dbec}.trow .v{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;font-size:11px}
+    .trow.wv{grid-template-columns:minmax(110px,170px) 1fr 138px}
+    .sbar{display:flex;height:16px;border-radius:6px;overflow:hidden;background:#ffffff0d}.sbar i{display:block;height:100%;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+    .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:0 0 12px}.lgd span{display:inline-flex;gap:6px;align-items:center}.lgd i{width:9px;height:9px;border-radius:3px;display:inline-block}
+    .scrollx{overflow-x:auto}
+    .fgrid{display:grid;gap:3px;min-width:760px;font-size:11px}
+    .fgrid button.h{border:0;background:none;color:var(--muted);font-size:11px;padding:6px 1px;border-radius:7px;font-family:var(--sans)}
+    .fgrid button.h:hover{color:var(--ink)}.fgrid button.h[aria-pressed=true]{background:var(--gold);color:#2a1d04;font-weight:700}
+    .fgrid .l{color:#d3dbec;font-size:12px;align-self:center;padding-right:8px}
+    .fgrid .c{height:36px;border-radius:7px;display:grid;place-items:center;color:#eef3fb;font-variant-numeric:tabular-nums;background:#ffffff08;position:relative}
+    .fgrid .c.hot{box-shadow:inset 0 0 0 1.5px var(--gold)}
+    .faceoff{padding:22px 24px}
+    .fo-pick{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin-bottom:18px}
+    .fo-pick select{width:100%;font:italic 20px var(--display);padding:10px 34px 10px 14px;border-radius:12px}
+    .fo-pick b{font:italic 400 22px var(--display);color:var(--faint)}
+    .fo-row{display:grid;grid-template-columns:1fr 160px 1fr;gap:12px;align-items:center;font-size:12px;margin-bottom:8px}
+    .fo-row .m{text-align:center;color:var(--muted)}
+    .fo-s{display:flex;align-items:center;gap:8px}.fo-s.a{flex-direction:row-reverse}
+    .fo-s .bar{flex:1;height:12px;background:#ffffff0a;border-radius:99px;overflow:hidden;display:flex}.fo-s.a .bar{justify-content:flex-end}
+    .fo-s .bar i{display:block;height:100%;border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+    .fo-s b{min-width:50px;font-weight:600;font-variant-numeric:tabular-nums}.fo-s.a b{text-align:right}
+    .fo-s.lead b{color:var(--gold)}
+    .fo-words{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .fo-words>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fo-words>div:first-child{justify-content:flex-end}
+    .fo-words span{padding:3px 10px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line);font:italic 14px var(--display);color:#dfe6f5}
+    @media(max-width:560px){.fo-pick{grid-template-columns:1fr}.fo-pick b{text-align:center}.fo-row{grid-template-columns:1fr 92px 1fr;gap:6px;font-size:11px}.fo-s b{min-width:34px}.trow{grid-template-columns:1fr 54px}.trow .name{grid-column:1/-1}.trow.wv{grid-template-columns:1fr 124px}.faceoff{padding:18px 16px}}
+    @media(max-width:1000px){.hero{grid-template-columns:1fr}.personas{grid-template-columns:repeat(2,minmax(0,1fr))}.rail-label{display:none}.rhythm{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.stepc:after{display:none}}
+    @media(max-width:860px){.plates{grid-template-columns:1fr}.shell{padding:0 16px}.lens-note{display:none}.hint{display:none}.date{min-width:0}.caveats{grid-template-columns:1fr}}
+    @media(max-width:560px){.personas{grid-template-columns:1fr}.row{grid-template-columns:1fr 78px;grid-template-areas:"n v" "t t"}.row .name{grid-area:n}.row .val{grid-area:v}.row .track{grid-area:t}.stack-row{grid-template-columns:1fr}.stage{height:680px}.step span{display:none}.timebar{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}.lens button{padding:6px 10px}.pipeline{grid-template-columns:1fr}.hrow,.haxis{grid-template-columns:84px 1fr 34px}.note .fig{font-size:54px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
@@ -181,22 +285,22 @@
 
     <section class="hero" aria-labelledby="title">
       <div>
-        <div class="eyebrow"><i class="live"></i> Section C &middot; Demographic profiling</div>
-        <h1 id="title">Meet the <em>audience</em> behind the numbers</h1>
-        <p class="lede">Every glowing dot is one anonymous profile. Regroup them by language, region, interest, life stage or platform, replay how the audience arrived, and click any cluster to focus the whole page on it.</p>
+        <div class="eyebrow"><i class="live"></i> Section C &middot; A field guide to the audience</div>
+        <h1 id="title">The crowd, <em>charted</em></h1>
+        <p class="lede">Where they live, what they speak, when they are awake. Every light is one anonymous profile. Tap a cluster and the whole atlas turns to follow it.</p>
       </div>
       <div class="kpis" aria-label="Summary">
-        <div class="kpi" style="--c:#35d0c0"><span>Audience profiles</span><strong id="k-users">&ndash;</strong><small id="k-users-sub">anonymised IDs</small></div>
-        <div class="kpi" style="--c:#6ea8ff"><span>Posts behind them</span><strong id="k-posts">&ndash;</strong><small>in the current view</small></div>
-        <div class="kpi" style="--c:#b48cff"><span>Languages found</span><strong id="k-langs">&ndash;</strong><small id="k-multi">&nbsp;</small></div>
-        <div class="kpi" style="--c:#ffc15e"><span>Stated a location</span><strong id="k-cov">&ndash;</strong><small id="k-cov-sub">&nbsp;</small></div>
+        <div class="kpi" style="--c:#35d0c0"><span>People mapped</span><strong id="k-users">&ndash;</strong><small id="k-users-sub">anonymous IDs</small></div>
+        <div class="kpi" style="--c:#6ea8ff"><span>Posts read</span><strong id="k-posts">&ndash;</strong><small id="k-posts-sub">in view</small></div>
+        <div class="kpi" style="--c:#b48cff"><span>Languages heard</span><strong id="k-langs">&ndash;</strong><small id="k-multi">&nbsp;</small></div>
+        <div class="kpi" style="--c:#ffc15e"><span>Place stated</span><strong id="k-cov">&ndash;</strong><small id="k-cov-sub">&nbsp;</small></div>
       </div>
     </section>
 
     <section class="stage" id="stage" aria-label="Audience constellation">
       <canvas id="sky" role="img" aria-label="Constellation of anonymous audience profiles grouped by the selected lens. Group totals are listed below the chart."></canvas>
-      <div class="selchip" id="selchip" hidden></div>
-      <div class="hint" id="hint">Hover a cluster &middot; click to focus</div>
+      <div class="fchips" id="fchips" hidden></div>
+      <div class="hint" id="hint">hover to read &middot; click to follow</div>
       <div class="tip" id="tip" hidden></div>
       <div class="controls" id="controls">
         <div class="lens" role="group" aria-label="Group dots by">
@@ -206,6 +310,8 @@
           <button type="button" data-lens="interest" aria-pressed="false">Interest</button>
           <button type="button" data-lens="age" aria-pressed="false">Life stage</button>
           <button type="button" data-lens="platform" aria-pressed="false">Platform</button>
+          <button type="button" data-lens="mood" aria-pressed="false" data-net>Mood</button>
+          <button type="button" data-lens="manner" aria-pressed="false" data-net>Manner</button>
           <span class="lens-note" id="lens-note"></span>
         </div>
         <div class="timebar">
@@ -219,77 +325,158 @@
       </div>
     </section>
     <div class="legend" id="legend" role="group" aria-label="Groups in the constellation"></div>
+    <div class="trendbar" id="trendbar" role="group" aria-label="Light up by trend" hidden><span class="lab">Light up a trend</span><span id="trendchips" style="display:contents"></span></div>
   </div>
 
   <main class="shell">
     <section class="strip" aria-label="Dataset">
       <div><strong id="dataset-title">Loading dataset&hellip;</strong><small id="dataset-meta">Looking for data</small></div>
       <div class="actions">
+        <a class="btn" href="sample/audience_sample.csv" download="audience_sample.csv">Download the dataset</a>
         <input class="file-input" id="csv-file" type="file" accept=".csv,text/csv">
-        <label class="btn" for="csv-file" role="button">Choose CSV</label>
-        <button class="btn" id="download" type="button" disabled>Export this view</button>
+        <label class="btn" for="csv-file" role="button">Load a CSV</label>
+        <button class="btn" id="download" type="button" disabled>Save this view</button>
       </div>
     </section>
     <div id="notice" role="status"></div>
-    <div class="banner privacy"><b>Privacy</b><span>Dots are anonymous and carry no text. Only group totals are shown. Groups with fewer than 5 profiles are merged into &ldquo;Other&rdquo; and their exact size is hidden. No handle, name or bio is displayed or exported.</span></div>
+    <div class="gate" title="Groups under 5 profiles fold into Other. Words used by under 5 profiles never appear."><b>k = 5</b><span>No names, bios or handles on screen. Small groups fold into &ldquo;Other&rdquo;.</span></div>
 
-    <div class="section-head reveal"><h2>What the data says</h2><p>Updates as you replay the timeline or focus a group.</p></div>
-    <section class="glass findings reveal" aria-label="Key findings"><ol id="findings"><li>Waiting for data.</li></ol></section>
+    <div class="section-head"><h2>Field notes</h2><p>Written fresh from whatever is on screen.</p></div>
+    <section class="notes" id="notes" aria-label="Field notes"></section>
 
-    <div class="section-head reveal"><h2>Audience personas</h2><p>Group-level archetypes: the largest region and interest segments, never individuals.</p></div>
-    <section class="personas reveal" id="personas" aria-label="Audience personas"></section>
+    <div class="section-head"><h2>Cast of characters</h2><p>Composite archetypes from the biggest groups. Never one person.</p></div>
+    <section class="personas" id="personas" aria-label="Audience personas"></section>
 
-    <div class="section-head reveal"><h2>Under the surface</h2><p>The numbers behind each lens.</p></div>
-    <div class="grid2 reveal">
-      <section class="glass panel" aria-labelledby="h-lang">
-        <div class="panel-head"><h3 id="h-lang">Languages</h3><span class="badge">Declared or detected</span></div>
-        <p class="desc">Main language per profile, from the language code, or the writing script when no code exists.</p>
+    <div class="section-head"><h2>The plates</h2><p>Every lens in detail.</p></div>
+    <div class="plates">
+      <section class="glass plate" aria-labelledby="h-lang">
+        <div class="plate-head"><div><span class="plate-no">Plate I</span><h3 id="h-lang">Tongues</h3></div><span class="tag">Language</span></div>
+        <p class="cap">The language each profile reaches for first.</p>
         <div class="bars" id="bars-language"></div><div class="na" id="na-language"></div>
+        <details class="how"><summary>How it is read</summary><p>The language tag on each post decides it. When a post has no tag, the writing script (Devanagari, Arabic, Cyrillic and so on) gives it away. Mixed speech such as Hinglish keeps its own line.</p></details>
       </section>
-      <section class="glass panel" aria-labelledby="h-reg">
-        <div class="panel-head"><h3 id="h-reg">Regions</h3><span class="badge">From stated location</span></div>
-        <p class="desc">Broad world region matched from location text. Exact places are never shown.</p>
+      <section class="glass plate" aria-labelledby="h-reg">
+        <div class="plate-head"><div><span class="plate-no">Plate II</span><h3 id="h-reg">Territories</h3></div><span class="tag">Region</span></div>
+        <p class="cap">Where the crowd says it lives, folded into world regions.</p>
         <div class="bars" id="bars-region"></div><div class="na" id="na-region"></div>
+        <details class="how"><summary>How it is read</summary><p>City and country names in the location field are matched to a world region. Exact places are never shown, and a blank or joke location counts as not stated.</p></details>
       </section>
-    </div>
-    <div class="grid2 reveal">
-      <section class="glass panel" aria-labelledby="h-int">
-        <div class="panel-head"><h3 id="h-int">Professional interests</h3><span class="badge">Keyword rules</span></div>
-        <p class="desc">Interest themes found in bio text. A profile can have several, so shares add up to more than 100%.</p>
+      <section class="glass plate" aria-labelledby="h-int">
+        <div class="plate-head"><div><span class="plate-no">Plate III</span><h3 id="h-int">Callings</h3></div><span class="tag">Interest</span></div>
+        <p class="cap">What people do, or love doing, in their own words.</p>
         <div class="bars" id="bars-interest"></div><div class="na" id="na-interest"></div>
+        <details class="how"><summary>How it is read</summary><p>Keyword rules read each bio for work and hobby themes. A bio can carry several, so these shares add up past 100%. In the constellation each dot sits in its first match.</p></details>
       </section>
-      <section class="glass panel" aria-labelledby="h-age">
-        <div class="panel-head"><h3 id="h-age">Life-stage cues</h3><span class="badge warn">Weak signal</span></div>
-        <p class="desc">Approximate age brackets suggested by self-described words such as &ldquo;student&rdquo;. Most profiles give no cue, and this says nothing about any one person.</p>
+      <section class="glass plate" aria-labelledby="h-age">
+        <div class="plate-head"><div><span class="plate-no">Plate IV</span><h3 id="h-age">Seasons</h3></div><span class="tag warn">Faint signal</span></div>
+        <p class="cap">A hint of life stage, from words like &ldquo;student&rdquo; or &ldquo;retired&rdquo;.</p>
         <div class="bars" id="bars-age"></div><div class="na" id="na-age"></div>
+        <details class="how"><summary>How it is read</summary><p>Most bios give no hint at all. This is a group-level estimate from self-described words and says nothing about any one person.</p></details>
+      </section>
+
+      <section class="glass plate wide" aria-labelledby="h-rh">
+        <div class="plate-head"><div><span class="plate-no">Plate V</span><h3 id="h-rh">Rhythm</h3></div><span class="tag">Posting hours &middot; UTC</span></div>
+        <p class="cap">When the crowd posts, hour by hour. The rows follow the lens you picked above.</p>
+        <div class="rhythm">
+          <div><svg class="clock" id="clock" viewBox="-130 -130 260 260" role="img" aria-label="24-hour clock of posting activity in UTC"></svg></div>
+          <div><div class="heat" id="heat"></div><div class="haxis" id="haxis" hidden><span></span><div><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div><span></span></div></div>
+        </div>
+        <details class="how"><summary>How it is read</summary><p>Each wedge adds up posts in that UTC hour; longer means busier. A region that posts late at night in UTC is usually awake in the evening where it lives. Hours are counted for every post by the profiles in view.</p></details>
+      </section>
+
+      <section class="glass plate" aria-labelledby="h-rc">
+        <div class="plate-head"><div><span class="plate-no">Plate VI</span><h3 id="h-rc">Reach</h3></div><span class="tag">Followers</span></div>
+        <p class="cap">Mostly small voices, and a few loud ones.</p>
+        <svg class="viz" id="reach" viewBox="0 0 500 170" role="img" aria-label="Follower tiers as bubbles"></svg><div class="na" id="na-reach"></div>
+        <details class="how"><summary>How it is read</summary><p>Public follower counts, grouped into five tiers. Bubble area follows the number of profiles in each tier.</p></details>
+      </section>
+      <section class="glass plate" aria-labelledby="h-tn">
+        <div class="plate-head"><div><span class="plate-no">Plate VII</span><h3 id="h-tn">Tenure</h3></div><span class="tag">Account age</span></div>
+        <p class="cap">When their accounts were opened.</p>
+        <svg class="viz" id="tenure" viewBox="0 0 500 170" role="img" aria-label="Account age cohorts as columns"></svg><div class="na" id="na-tenure"></div>
+        <details class="how"><summary>How it is read</summary><p>Public join dates, grouped into two-year cohorts. A tall right-hand column means a young audience on that platform.</p></details>
+      </section>
+
+      <section class="glass plate wide" aria-labelledby="h-vo">
+        <div class="plate-head"><div><span class="plate-no">Plate VIII</span><h3 id="h-vo">Vocabulary</h3></div><span class="tag">Bio words</span></div>
+        <p class="cap">The words people use to introduce themselves. Tap one and its owners light up in the constellation above.</p>
+        <div class="vocab" id="vocab"></div><div class="na" id="na-vocab" style="text-align:center"></div>
+        <details class="how"><summary>How it is read</summary><p>Only words used by at least 5 profiles appear, and common filler words are dropped. Larger means more profiles. Italic words are hashtags. The bios themselves are never shown.</p></details>
+      </section>
+
+      <section class="glass plate wide" data-net aria-labelledby="h-fa">
+        <div class="plate-head"><div><span class="plate-no">Plate IX</span><h3 id="h-fa">Fashions</h3></div><span class="tag">Trends</span></div>
+        <p class="cap">Which crowds wear which tags. Tap a tag to light up everyone wearing it.</p>
+        <div class="opts"><div class="tabs" id="fash-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="age" aria-pressed="false">Life stages</button><button type="button" data-d="cohort" aria-pressed="false">Account age</button></div></div>
+        <div class="scrollx"><div class="fgrid" id="fgrid"></div></div>
+        <details class="how"><summary>How it is read</summary><p>Each number is the share of a group who used that hashtag. A gold outline means the group took it up at least one and a half times as often as everyone else. Cells with fewer than 5 people stay blank.</p></details>
+      </section>
+
+      <section class="glass plate" data-net aria-labelledby="h-te">
+        <div class="plate-head"><div><span class="plate-no">Plate X</span><h3 id="h-te">Temperament</h3></div><span class="tag">Mood</span></div>
+        <p class="cap">Who runs warm, and who runs sour.</p>
+        <div class="opts"><div class="tabs" id="temp-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button></div></div>
+        <div class="lgd"><span><i style="background:#ff7a90"></i>Sour</span><span><i style="background:#566178"></i>Even</span><span><i style="background:#7be08a"></i>Warm</span></div>
+        <div id="temper"></div>
+        <details class="how"><summary>How it is read</summary><p>Groups are sorted from warmest to sourest by the share of positive minus negative posts. The number on the right is that balance, from &minus;100 to +100.</p></details>
+      </section>
+
+      <section class="glass plate" data-net aria-labelledby="h-ma">
+        <div class="plate-head"><div><span class="plate-no">Plate XI</span><h3 id="h-ma">Manners</h3></div><span class="tag">How they join in</span></div>
+        <p class="cap">Some start things, some answer, some pass it along.</p>
+        <div class="opts"><div class="tabs" id="man-dim"><button type="button" data-d="platform" aria-pressed="true">Platforms</button><button type="button" data-d="region" aria-pressed="false">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="age" aria-pressed="false">Life stages</button></div></div>
+        <div class="lgd" id="man-lgd"></div>
+        <div id="manners"></div>
+        <details class="how"><summary>How it is read</summary><p>Every post, reply, quote, repost and share by the group, as shares of what it does. The label on the right is the style this group has more of than the other groups do.</p></details>
+      </section>
+
+      <section class="glass plate wide" data-net aria-labelledby="h-ov">
+        <div class="plate-head"><div><span class="plate-no">Plate XII</span><h3 id="h-ov">Standing ovation</h3></div><span class="tag">Attention</span></div>
+        <p class="cap">How many reactions each post earns, and how far a big following carries it.</p>
+        <div class="opts"><div class="tabs" id="att-dim"><button type="button" data-d="reach" aria-pressed="true">Follower tier</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="region" aria-pressed="false">Regions</button><button type="button" data-d="cohort" aria-pressed="false">Account age</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button></div></div>
+        <div id="ovation"></div>
+        <details class="how"><summary>How it is read</summary><p>Replies, quotes, reposts and shares received from other people, divided by the group&rsquo;s own original posts. Reposts by the group itself are left out.</p></details>
       </section>
     </div>
 
-    <section class="glass panel full reveal" aria-labelledby="h-plat">
-      <div class="panel-head"><h3 id="h-plat">Compare platforms</h3>
-        <div><label for="dim" class="sr">Dimension</label><select id="dim" aria-label="Choose what to compare"><option value="language">Languages</option><option value="region">Regions</option><option value="interest">Interests</option></select></div></div>
-      <p class="desc">Mix of the current view, platform by platform. The number in brackets is the audience size.</p>
+    <div data-net>
+      <div class="section-head"><h2>Face-off</h2><p>Pick two crowds and put them side by side.</p></div>
+      <section class="glass faceoff" aria-label="Compare two groups">
+        <div class="opts"><div class="tabs" id="fo-dim"><button type="button" data-d="region" aria-pressed="true">Regions</button><button type="button" data-d="interest" aria-pressed="false">Callings</button><button type="button" data-d="language" aria-pressed="false">Languages</button><button type="button" data-d="platform" aria-pressed="false">Platforms</button><button type="button" data-d="age" aria-pressed="false">Life stages</button></div></div>
+        <div class="fo-pick"><label class="sr" for="fo-a">First crowd</label><select id="fo-a"></select><b>versus</b><label class="sr" for="fo-b">Second crowd</label><select id="fo-b"></select></div>
+        <div id="fo-rows"></div>
+        <div class="fo-words" id="fo-words"></div>
+      </section>
+    </div>
+
+    <div class="section-head"><h2>Habitats</h2><p>How each platform&rsquo;s crowd differs.</p></div>
+    <section class="glass plate" aria-labelledby="h-plat">
+      <div class="plate-head"><h3 id="h-plat" class="sr">Compare platforms</h3>
+        <div style="margin-left:auto"><label for="dim" class="sr">Dimension</label><select id="dim" aria-label="Choose what to compare"><option value="language">Languages</option><option value="region">Regions</option><option value="interest">Callings</option></select></div></div>
       <div class="legend2" id="stack-legend"></div><div id="stack"></div>
     </section>
 
-    <section class="glass panel full reveal" aria-labelledby="h-seg">
-      <div class="panel-head"><h3 id="h-seg">Largest audience segments</h3><span class="badge">Region &times; interest</span></div>
-      <p class="desc">Only segments with at least 5 profiles. Language and platform are the most common in that segment.</p>
-      <div class="table-scroll"><table><thead><tr><th>Region</th><th>Interest</th><th>Main language</th><th>Main platform</th><th class="num">Profiles</th></tr></thead><tbody id="seg-body"></tbody></table></div>
+    <div class="section-head"><h2>Tribes</h2><p>The biggest region and calling pairings.</p></div>
+    <section class="glass plate" aria-labelledby="h-seg">
+      <h3 id="h-seg" class="sr">Largest audience segments</h3>
+      <div class="table-scroll"><table><thead><tr><th>Region</th><th>Calling</th><th>Main language</th><th>Main platform</th><th class="num">Profiles</th></tr></thead><tbody id="seg-body"></tbody></table></div>
     </section>
 
-    <section class="glass method full reveal" aria-labelledby="h-m">
-      <h2 id="h-m">How it works, and its limits</h2>
-      <ul>
-        <li><b>Data:</b> the shared <code>data/posts.csv</code> when it has profile columns; otherwise Section C&rsquo;s own synthetic <code>sample/audience_sample.csv</code>. You can also load your own CSV with <code>user_id</code> and the optional <code>language</code>, <code>user_bio</code>, <code>user_location</code> columns.</li>
-        <li><b>Method:</b> transparent keyword rules and writing-script detection, run in your browser. No model is trained, nothing is uploaded, and no server is involved.</li>
-        <li><b>Unit:</b> one dot is one anonymised <code>user_id</code>. The same person on two platforms counts twice. Brand or official accounts are excluded from the audience.</li>
-        <li><b>Estimates, not facts:</b> bios and locations are self-reported, short and sometimes jokes. Rules miss many profiles (see the &ldquo;not available&rdquo; counts) and can mislabel others. Life-stage cues are the weakest signal here.</li>
-        <li><b>Not inferred:</b> gender, ethnicity, religion, politics, health or identity.</li>
-      </ul>
+    <div class="section-head"><h2>How the atlas is drawn</h2><p>Four steps, and a few things it will never do.</p></div>
+    <section class="pipeline" aria-label="How the atlas is drawn">
+      <div class="stepc"><div class="n">1</div><h3>Read</h3><p>Public signals only: the bio, the stated place, the language tag, posting hours, follower count, join date, and how each profile joins the conversation.</p></div>
+      <div class="stepc"><div class="n">2</div><h3>Match</h3><p>Plain keyword rules and script detection. No model is trained and nothing leaves your browser.</p></div>
+      <div class="stepc"><div class="n">3</div><h3>Count</h3><p>One light is one anonymous ID. Brand and official accounts are set aside, not counted as audience.</p></div>
+      <div class="stepc"><div class="n">4</div><h3>Gate</h3><p>Any group under 5 folds into Other. Any word used by fewer than 5 profiles never appears.</p></div>
     </section>
+    <div class="never"><span class="lab">Left out on purpose</span><span class="x">Names</span><span class="x">Handles</span><span class="x">Gender</span><span class="x">Ethnicity</span><span class="x">Religion</span><span class="x">Politics</span><span class="x">Health</span><span class="x">Exact location</span></div>
+    <div class="caveats">
+      <div class="caveat"><b>Self-reported</b>Bios and places are short, optional and sometimes jokes.</div>
+      <div class="caveat"><b>Rules miss people</b>Every &ldquo;not available&rdquo; count is a profile the rules could not read.</div>
+      <div class="caveat"><b>One ID, one light</b>The same person on two platforms counts twice.</div>
+    </div>
 
-    <footer><span>AI Social Media Analytics Framework &middot; Section C</span><span>Synthetic sample data unless a real dataset is loaded</span></footer>
+    <footer><span>Atlas of the audience &middot; Section C of the AI Social Media Analytics Framework &middot; Utsav</span><em>Sample data is synthetic unless a real dataset is loaded.</em></footer>
   </main>
 
   <script src="profiler.js"></script>
@@ -308,13 +495,15 @@
 
     var PALETTE = ['#6ea8ff', '#35d0c0', '#ffc15e', '#ff7a90', '#b48cff', '#7be08a', '#ff9f6e', '#5cd1ff', '#e58cff', '#c8d46a'];
     var C_OTHER = '#8b95a9', C_NA = '#5f6b82';
-    var LENS_NAMES = { language: 'Language', region: 'Region', interest: 'Interest', age: 'Life stage', platform: 'Platform' };
+    var LENS_NAMES = { language: 'Language', region: 'Region', interest: 'Interest', age: 'Life stage', platform: 'Platform', mood: 'Mood', manner: 'Manner' };
     var LENS_NOTES = {
-      language: 'Main language of each profile.',
-      region: 'Broad world region from the stated location.',
-      interest: 'Primary interest per profile (a profile can have several).',
-      age: 'Self-described life-stage words. A weak signal.',
-      platform: 'Where each profile posts.'
+      language: 'The tongue each profile uses most.',
+      region: 'World region, from the stated place.',
+      interest: 'Each profile’s first calling.',
+      age: 'Life-stage words in the bio. A faint signal.',
+      platform: 'Where each profile posts.',
+      mood: 'How each profile usually sounds.',
+      manner: 'Starts things, answers, or passes it on.'
     };
     var ARCH = {
       'Technology & Software': 'The Builder', 'Marketing, Media & Brands': 'The Storyteller',
@@ -328,18 +517,30 @@
     var FONT = getComputedStyle(document.body).fontFamily;
 
     var S = {
-      aud: [], orgCount: 0, lens: 'region', selIdx: -1, t: 1, tMin: 0, tMax: 1, playing: false,
+      aud: [], orgCount: 0, lens: 'region', selIdx: -1, word: null, tag: null, hasNet: false, t: 1, tMin: 0, tMax: 1, playing: false,
       grouping: null, colors: {}, parts: [], layout: null, hover: -1, mouse: null,
-      W: 0, H: 0, dpr: 1, ctx: null, onscreen: true, vc: [], agg: null, manual: false, last: 0, rq: 0
+      W: 0, H: 0, dpr: 1, ctx: null, onscreen: true, vc: [], agg: null, manual: false, last: 0, rq: 0, gi: [], platCount: 0
     };
 
     function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
     function fmt(n) { return Number(n).toLocaleString('en-US'); }
     function nText(it) { return it.hidden ? '<' + K : fmt(it.n); }
+    function pad2(n) { return (n < 10 ? '0' : '') + n; }
     function notice(kind, html) { $('notice').innerHTML = html ? '<div class="banner ' + kind + '">' + html + '</div>' : ''; }
     function hexA(hex, a) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
     function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
     function easeOutBack(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+
+    // night violet -> dawn rose -> noon gold -> dusk coral -> night violet
+    var HOUR_KEYS = [[0, [106, 92, 255]], [6, [255, 122, 168]], [12, [255, 193, 94]], [18, [255, 122, 92]], [24, [106, 92, 255]]];
+    function hourRGB(h) {
+      for (var i = 0; i < HOUR_KEYS.length - 1; i++) {
+        var a = HOUR_KEYS[i], b = HOUR_KEYS[i + 1];
+        if (h >= a[0] && h <= b[0]) { var t = (h - a[0]) / (b[0] - a[0]); return [0, 1, 2].map(function (c) { return Math.round(a[1][c] + (b[1][c] - a[1][c]) * t); }); }
+      }
+      return HOUR_KEYS[0][1];
+    }
+    function hourColor(h, alpha) { var c = hourRGB(h + 0.5); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + alpha + ')'; }
 
     /* ============================== data loading ============================== */
     function fetchText(url) {
@@ -391,8 +592,8 @@
       }).catch(function () {
         if (S.manual) return;
         $('dataset-title').textContent = 'No dataset found';
-        $('dataset-meta').textContent = 'Use Choose CSV to load a file with user_id and the optional language, user_bio and user_location columns.';
-        notice('error', '<b>No data</b><span>Neither the shared dataset nor the Section C sample could be loaded. Choose a CSV to begin.</span>');
+        $('dataset-meta').textContent = 'Use Load a CSV to open a file with user_id and the optional language, user_bio, user_location, followers and joined columns.';
+        notice('error', '<b>No data</b><span>Neither the shared dataset nor the Section C sample could be loaded. Load a CSV to begin.</span>');
       });
     }
 
@@ -400,31 +601,38 @@
       var profiles = P.buildProfiles(rows);
       S.aud = profiles.filter(function (p) { return !p.org; });
       S.orgCount = profiles.length - S.aud.length;
+      var plats = {}; S.aud.forEach(function (p) { plats[p.platform] = 1; }); S.platCount = Object.keys(plats).length;
       var ts = S.aud.map(function (p) { return p.first; }).filter(isFinite);
       S.tMin = ts.length ? Math.min.apply(null, ts) : 0;
       S.tMax = ts.length ? Math.max.apply(null, ts) : 1;
       if (S.tMax <= S.tMin) S.tMax = S.tMin + 1;
       S.aud.forEach(function (p) { if (!isFinite(p.first)) p.first = S.tMin; });
       var intro = !reduce && S.aud.length && !/[?&]intro=0/.test(location.search);   // ?intro=0 skips the arrival replay
-      S.parts = []; S.selIdx = -1; S.t = intro ? 0 : 1; S.playing = false;
+      S.parts = []; S.selIdx = -1; S.word = null; S.tag = null; S.t = intro ? 0 : 1; S.playing = false;
+      S.hasNet = rows.some(function (r) { return r.interaction || r.sentiment; });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-net]'), function (el) { el.hidden = !S.hasNet; });
+      if (!S.hasNet && (S.lens === 'mood' || S.lens === 'manner')) S.lens = 'region';
+      X.foA = X.foB = '';
+      renderTrendbar();
       $('time').value = intro ? 0 : 1000;
       $('dataset-title').textContent = title;
-      $('dataset-meta').innerHTML = fmt(rows.length) + ' posts &middot; ' + fmt(profiles.length) + ' anonymised profiles &middot; ' + meta;
-      notice(demo ? 'demo' : '', demo ? '<b>Synthetic data</b><span>These profiles are fictional and generated for the demo. The charts show how the page works, not a real audience.</span>' : '');
+      $('dataset-meta').innerHTML = fmt(rows.length) + ' posts &middot; ' + fmt(profiles.length) + ' anonymous profiles &middot; ' + meta;
+      notice(demo ? 'demo' : '', demo ? '<b>Synthetic data</b><span>Every profile here is fictional and generated for the demo. The charts show how the atlas works, not a real audience.</span>' : '');
       drawSpark();
-      regroup(true);
+      regroup();
       refresh();
       if (intro) setTimeout(play, 500);   // intro: replay the audience arriving
     }
 
     /* ============================== grouping + layout ============================== */
     function groupColor(label, idx) {
+      if (label === 'Warm') return '#7be08a'; if (label === 'Even') return '#ffc15e'; if (label === 'Sour') return '#ff7a90';
       if (label === P.OTHER_LABEL) return C_OTHER;
       if (label === P.NA_LABEL) return C_NA;
       return PALETTE[idx % PALETTE.length];
     }
 
-    function regroup(first) {
+    function regroup() {
       S.grouping = P.mapGroups(S.aud, S.lens, K);
       S.colors = {};
       var ci = 0;
@@ -437,7 +645,7 @@
       S.gi = S.aud.map(function (p, i) { return index[S.grouping.labels[i]]; });
       if (S.selIdx >= S.grouping.groups.length) S.selIdx = -1;
       if (!S.parts.length || S.parts.length !== S.aud.length) {
-        S.parts = S.aud.map(function () { return { x: S.W / 2 + (Math.random() - .5) * 60, y: S.H / 2 + (Math.random() - .5) * 60, tx: 0, ty: 0, ph: Math.random() * 6.28, vis: false, born: 0, a: 1 }; });
+        S.parts = S.aud.map(function () { return { x: S.W / 2 + (Math.random() - .5) * 60, y: S.H / 2 + (Math.random() - .5) * 60, tx: 0, ty: 0, ph: Math.random() * 6.28, vis: false, born: 0 }; });
       }
       layout();
       $('lens-note').textContent = LENS_NOTES[S.lens];
@@ -449,7 +657,7 @@
       var W = S.W, H = S.H, groups = S.grouping && S.grouping.groups;
       if (!W || !groups || !groups.length) { S.layout = null; return; }
       var ctrlH = $('controls').offsetHeight || 110;
-      var rect = { x0: W * 0.04, x1: W * 0.96, y0: H * 0.09, y1: H - ctrlH - 22 };
+      var rect = { x0: W * 0.04, x1: W * 0.96, y0: H * 0.09 + ($('fchips').hidden ? 0 : 26), y1: H - ctrlH - 22 };
       var rw = rect.x1 - rect.x0, rh = rect.y1 - rect.y0, total = 0;
       groups.forEach(function (g) { total += g.n; });
       var kk = Math.sqrt(rw * rh * 0.27 / (Math.PI * Math.max(1, total)));
@@ -528,7 +736,7 @@
             p.vis = true; p.born = now;
             var nd = S.layout.nodes[S.gi[i]]; if (!reduce) { p.x = nd.x; p.y = nd.y; } else { p.x = p.tx; p.y = p.ty; }
           } else if (!seen && p.vis) { p.vis = false; }
-          if (p.vis) vc[S.gi[i]]++;
+          if (p.vis && textHit(S.aud[i])) vc[S.gi[i]]++;
           var wx = reduce ? 0 : Math.sin(now * 0.0007 + p.ph) * 1.6, wy = reduce ? 0 : Math.cos(now * 0.0006 + p.ph * 1.3) * 1.6;
           var tx = p.tx + wx, ty = p.ty + wy;
           if (!reduce) { var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy; if (d2 < 5600 && d2 > 0.01) { var d = Math.sqrt(d2), f = (75 - d) / 75 * 16; tx += dx / d * f; ty += dy / d * f; } }
@@ -541,7 +749,7 @@
 
     function draw(now) {
       var ctx = S.ctx; if (!ctx) return;
-      var L = S.layout, groups = S.grouping.groups, sel = S.selIdx, hov = S.hover, i, j, p;
+      var L = S.layout, groups = S.grouping.groups, sel = S.selIdx, hov = S.hover, word = S.word, i, j, p;
       ctx.clearRect(0, 0, S.W, S.H);
       // soft cluster halos and rings
       L.nodes.forEach(function (nd, gi) {
@@ -556,7 +764,7 @@
       // constellation lines (a web inside each cluster)
       ctx.lineWidth = 1;
       L.members.forEach(function (list, gi) {
-        var dim = sel >= 0 && sel !== gi;
+        var dim = (sel >= 0 && sel !== gi) || !!(word || S.tag);
         ctx.strokeStyle = hexA(S.colors[groups[gi].label], dim ? 0.02 : 0.1);
         ctx.beginPath();
         for (j = 1; j < list.length; j++) {
@@ -572,10 +780,12 @@
       ctx.globalCompositeOperation = 'lighter';
       for (i = 0; i < S.parts.length; i++) {
         p = S.parts[i]; if (!p.vis) continue;
-        var gi = S.gi[i], col = S.colors[groups[gi].label], dim = sel >= 0 && sel !== gi;
+        var gi = S.gi[i], col = S.colors[groups[gi].label];
+        var filt = word || S.tag, hit = filt && textHit(S.aud[i]);
+        var dim = (sel >= 0 && sel !== gi) || (filt && !hit);
         var age = reduce ? 1 : (now - p.born) / 700, sc = age >= 1 ? 1 : easeOutBack(Math.max(0, age));
-        var s = 15 * sc;
-        ctx.globalAlpha = dim ? 0.16 : 0.9;
+        var s = (hit ? 22 : 15) * sc;
+        ctx.globalAlpha = dim ? 0.14 : 0.9;
         ctx.drawImage(sprite(col), p.x - s / 2, p.y - s / 2, s, s);
         if (age < 1 && !dim) {
           ctx.globalAlpha = (1 - age) * 0.55; ctx.strokeStyle = col; ctx.lineWidth = 1;
@@ -617,23 +827,23 @@
       var tip = $('tip');
       if (gi < 0) { tip.hidden = true; return; }
       var g = S.grouping.groups[gi], v = S.vc[gi] || 0, tot = S.vc.reduce(function (a, b) { return a + (b || 0); }, 0);
-      tip.innerHTML = '<b>' + esc(g.label) + '</b><span>' + (v < K && v > 0 ? '<' + K : fmt(v)) + ' profiles' + (v >= K && tot ? ' &middot; ' + (Math.round(1000 * v / tot) / 10) + '%' : '') + '</span><i>' + (S.selIdx === gi ? 'Click to clear focus' : 'Click to focus the page on this group') + '</i>';
+      tip.innerHTML = '<b>' + esc(g.label) + '</b><span>' + (v < K && v > 0 ? '<' + K : fmt(v)) + ' profiles' + (v >= K && tot ? ' &middot; ' + (Math.round(1000 * v / tot) / 10) + '%' : '') + '</span><i>' + (S.selIdx === gi ? 'Click to let go' : 'Click to follow this group') + '</i>';
       tip.hidden = false;
       var w = S.W; tip.style.left = Math.max(110, Math.min(w - 110, pos.x)) + 'px'; tip.style.top = Math.max(60, pos.y) + 'px';
     }
 
     /* ============================== selection + refresh ============================== */
-    function select(gi) {
-      S.selIdx = (gi === S.selIdx) ? -1 : gi;
-      updateChip();
-      queueRefresh(true);
-    }
-    function updateChip() {
-      var chip = $('selchip');
-      if (S.selIdx < 0) { chip.hidden = true; $('hint').hidden = false; return; }
-      var g = S.grouping.groups[S.selIdx];
-      chip.innerHTML = '<span>Focused on <b>' + esc(LENS_NAMES[S.lens]) + ': ' + esc(g.label) + '</b></span><button type="button" aria-label="Clear focus">&times;</button>';
-      chip.hidden = false; $('hint').hidden = true;
+    function select(gi) { S.selIdx = (gi === S.selIdx) ? -1 : gi; updateChips(); queueRefresh(true); }
+    function pickWord(w) { S.word = (S.word === w) ? null : w; updateChips(); queueRefresh(true); }
+
+    function updateChips() {
+      var box = $('fchips'), h = '';
+      if (S.selIdx >= 0) { var g = S.grouping.groups[S.selIdx]; h += '<span class="fchip">Following <b>' + esc(LENS_NAMES[S.lens]) + ': ' + esc(g.label) + '</b><button type="button" data-clear="sel" aria-label="Stop following this group">&times;</button></span>'; }
+      if (S.word) h += '<span class="fchip w">Bios saying <b>&ldquo;' + esc(S.word) + '&rdquo;</b><button type="button" data-clear="word" aria-label="Clear word filter">&times;</button></span>';
+      if (S.tag) h += '<span class="fchip t">Wearing <b>' + esc(S.tag) + '</b><button type="button" data-clear="tag" aria-label="Clear trend filter">&times;</button></span>';
+      var was = box.hidden;
+      box.innerHTML = h; box.hidden = !h; $('hint').hidden = !!h;
+      if (was !== box.hidden) layout();
     }
 
     function queueRefresh(now) {
@@ -642,15 +852,15 @@
       S.rq = setTimeout(function () { S.rq = 0; refresh(); }, S.playing ? 160 : 30);
     }
 
-    function visible() {
-      var cut = cutTime() + 0.5;
-      return S.aud.filter(function (p, i) { return p.first <= cut && (S.selIdx < 0 || S.gi[i] === S.selIdx); });
-    }
+    function textHit(p) { return (!S.word || p.words.has(S.word)) && (!S.tag || p.tags.has(S.tag)); }
+    function inView(p, i, cut) { return p.first <= cut && (S.selIdx < 0 || S.gi[i] === S.selIdx) && textHit(p); }
+    function visible() { var cut = cutTime() + 0.5; return S.aud.filter(function (p, i) { return inView(p, i, cut); }); }
 
     function countVisible() {
       var cut = cutTime() + 0.5, vc = S.vc, n = S.grouping ? S.grouping.groups.length : 0, i;
+      vc.length = n;       // a lens with fewer groups must not keep the old counts
       for (i = 0; i < n; i++) vc[i] = 0;
-      for (i = 0; i < S.aud.length; i++) if (S.aud[i].first <= cut) vc[S.gi[i]]++;
+      for (i = 0; i < S.aud.length; i++) if (S.aud[i].first <= cut && textHit(S.aud[i])) vc[S.gi[i]]++;
     }
 
     function refresh() {
@@ -658,32 +868,35 @@
       countVisible();
       var vis = visible(), agg = P.aggregate(vis, K);
       S.agg = agg;
+      var seen = S.aud.filter(function (p) { return p.first <= cutTime() + 0.5; }).length;
       $('k-users').textContent = fmt(agg.audience);
-      $('k-users-sub').textContent = S.orgCount ? fmt(S.orgCount) + ' brand accounts excluded' : 'anonymised IDs';
+      $('k-users-sub').textContent = S.orgCount ? fmt(S.orgCount) + ' brand accounts left out' : 'anonymous IDs';
       $('k-posts').textContent = fmt(agg.posts);
+      $('k-posts-sub').textContent = S.platCount ? 'across ' + S.platCount + ' platform' + (S.platCount === 1 ? '' : 's') : 'in view';
       var nl = agg.language.items.filter(function (i) { return !i.grouped; }).length + (agg.language.items.some(function (i) { return i.grouped; }) ? 1 : 0);
       $('k-langs').textContent = agg.language.known ? fmt(nl) : '–';
-      $('k-multi').textContent = agg.language.known ? agg.nonEnglishShare + '% not plain English' : ' ';
+      $('k-multi').textContent = agg.language.known ? agg.nonEnglishShare + '% beyond plain English' : ' ';
       $('k-cov').textContent = agg.audience ? agg.coverage.location + '%' : '–';
-      $('k-cov-sub').textContent = agg.audience ? agg.coverage.bio + '% have a bio' : ' ';
+      $('k-cov-sub').textContent = agg.audience ? agg.coverage.bio + '% also wrote a bio' : ' ';
       $('download').disabled = !agg.audience;
-
-      var d = new Date(cutTime());
-      $('date').innerHTML = '<b>' + d.toUTCString().slice(5, 16) + '</b> &middot; ' + fmt(S.aud.filter(function (p) { return p.first <= cutTime() + 0.5; }).length) + ' of ' + fmt(S.aud.length);
-      $('play').innerHTML = '';
+      $('date').innerHTML = '<b>' + new Date(cutTime()).toUTCString().slice(5, 16) + '</b> &middot; ' + fmt(seen) + ' of ' + fmt(S.aud.length);
       setPlayUI();
 
-      var ins = P.insights(agg);
-      $('findings').innerHTML = ins.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
-      bars('bars-language', agg.language, 'linear-gradient(90deg,#6ea8ff,#8fe0ff)', 'language');
+      notes(agg);
+      personas(agg);
+      bars('bars-language', trimDist(agg.language, 10), 'linear-gradient(90deg,#6ea8ff,#8fe0ff)', 'language');
       bars('bars-region', agg.region, 'linear-gradient(90deg,#35d0c0,#8ff0e4)', 'region');
       bars('bars-interest', agg.interest, 'linear-gradient(90deg,#b48cff,#e58cff)', 'interest');
       bars('bars-age', agg.age, 'linear-gradient(90deg,#ffc15e,#ff9f6e)', 'age');
-      personas(agg);
+      clock(agg.hours);
+      heat();
+      bubbles(agg.reach);
+      tenure(agg.tenure);
+      vocab(agg);
+      if (S.hasNet) { fashions(agg, vis); temper(vis); manners(vis); ovation(vis); faceoff(vis); syncTrend(); }
       segTable(agg);
       stacked(vis);
       legend();
-      updateChip();
     }
 
     /* ============================== panels ============================== */
@@ -713,11 +926,34 @@
         r.el.style.order = idx;
       });
       Object.keys(rows).forEach(function (l) { if (!seen[l]) { rows[l].el.remove(); delete rows[l]; } });
-      na.textContent = dist.unknown ? 'Not available for ' + fmt(dist.unknown) + ' of ' + fmt(S.agg.audience) + ' profiles (no stated value, or no rule matched).' : '';
+      na.textContent = dist.unknown ? fmt(dist.unknown) + ' of ' + fmt(S.agg.audience) + ' profiles gave nothing the rules could read.' : '';
+    }
+
+    /* Keep the longest lists readable: the top few rows, then one row for everything else. */
+    function trimDist(d, limit) {
+      var main = d.items.filter(function (i) { return !i.grouped; }), rest = d.items.filter(function (i) { return i.grouped; });
+      if (main.length <= limit) return d;
+      var tail = main.slice(limit).concat(rest), n = tail.reduce(function (t, x) { return t + x.n; }, 0), more = main.length - limit;
+      var other = { label: '+' + more + ' more, and small groups', n: n, share: d.known ? Math.round(1000 * n / d.known) / 10 : 0, grouped: true, hidden: false };
+      return { items: main.slice(0, limit).concat([other]), known: d.known, unknown: d.unknown };
+    }
+
+    function ring(pct, color) {
+      var r = 20, c = 2 * Math.PI * r, v = Math.max(0, Math.min(100, pct)) / 100 * c;
+      return '<svg class="ring" viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="' + r + '" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="5"/><circle cx="25" cy="25" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="5" stroke-linecap="round" stroke-dasharray="' + v.toFixed(1) + ' ' + c.toFixed(1) + '"/></svg>';
+    }
+
+    function notes(agg) {
+      var list = P.fieldNotes(agg), host = $('notes');
+      if (!list.length) { host.innerHTML = '<div class="glass empty" style="grid-column:1/-1">Too few profiles in this view to say anything fair. Try a bigger group.</div>'; return; }
+      host.innerHTML = list.map(function (n, i) {
+        var c = PALETTE[i % PALETTE.length], fig = n.fig >= 10 ? Math.round(n.fig) : n.fig;
+        return '<article class="note" style="--c:' + c + '">' + ring(n.ring, c) + '<div class="kick">' + esc(n.kicker) + '</div><div class="fig">' + esc(fig) + '<small>' + esc(n.unit) + '</small></div><div class="head">' + esc(n.headline) + '</div><p>' + esc(n.text) + '</p></article>';
+      }).join('');
     }
 
     function avatar(seedStr, color) {
-      var h = hash(seedStr), pts = [], i, out = '<svg viewBox="-32 -32 64 64" width="58" height="58" aria-hidden="true"><g stroke="' + color + '" stroke-opacity=".4" fill="none">';
+      var h = hash(seedStr), pts = [], i, out = '<svg class="av" viewBox="-32 -32 64 64" width="58" height="58" aria-hidden="true"><g stroke="' + color + '" stroke-opacity=".4" fill="none">';
       for (i = 0; i < 14; i++) { var a = i * 2.39996 + (h % 628) / 100, r = 3 + Math.sqrt(i) * 7.8; pts.push([Math.cos(a) * r, Math.sin(a) * r]); }
       for (i = 1; i < pts.length; i++) out += '<path d="M' + pts[i - 1][0].toFixed(1) + ' ' + pts[i - 1][1].toFixed(1) + 'L' + pts[i][0].toFixed(1) + ' ' + pts[i][1].toFixed(1) + '"/>';
       out += '</g>';
@@ -727,22 +963,110 @@
 
     function personas(agg) {
       var host = $('personas');
-      if (!agg.segments.length) { host.innerHTML = '<div class="glass empty" style="grid-column:1/-1">No segment reaches 5 profiles in this view.</div>'; return; }
-      host.innerHTML = agg.segments.slice(0, 4).map(function (s) {
+      if (!agg.segments.length) { host.innerHTML = '<div class="glass empty" style="grid-column:1/-1">No pairing reaches 5 profiles in this view.</div>'; return; }
+      // favour variety: one persona per calling first, then fill from the biggest remaining pairings
+      var seenCalling = {}, picks = [];
+      agg.segments.forEach(function (s) { if (!seenCalling[s.interest] && picks.length < 4) { seenCalling[s.interest] = 1; picks.push(s); } });
+      agg.segments.forEach(function (s) { if (picks.length < 4 && picks.indexOf(s) < 0) picks.push(s); });
+      host.innerHTML = picks.map(function (s) {
         var color = PALETTE[Math.max(0, INTEREST_ORDER.indexOf(s.interest)) % PALETTE.length];
         var share = agg.audience ? Math.round(1000 * s.n / agg.audience) / 10 : 0;
+        var sig = s.words.length ? '<div class="sig">' + s.words.map(function (w) { return '<span>' + esc(w) + '</span>'; }).join('') + '</div>' : '';
         return '<article class="persona" style="--c:' + color + '">' + avatar(s.interest + s.region, color) +
           '<h3>' + esc(ARCH[s.interest] || 'The Regular') + '</h3>' +
           '<div class="meta">' + esc(s.interest) + ' &middot; ' + esc(s.region) + '</div>' +
           '<div class="big">' + fmt(s.n) + '<small>' + share + '% of view</small></div>' +
-          '<div class="row2">Mostly ' + esc(s.language) + ' &middot; most active on ' + esc(s.platform) + '</div></article>';
+          '<div class="row2"><span>Mostly ' + esc(s.language) + ' &middot; found on ' + esc(s.platform) + ' &middot; busiest near ' + pad2(s.peak) + ':00 UTC</span>' + (s.moodLabel ? '<span>Runs ' + s.moodLabel.toLowerCase() + ' &middot; mostly ' + esc(STYLE_WORD[s.style] || s.style) + (s.tag ? ' &middot; wears ' + esc(s.tag) : '') + '</span>' : '') + sig + '</div></article>';
       }).join('');
+    }
+
+    function clock(hours) {
+      var svg = $('clock'), total = hours.reduce(function (a, b) { return a + b; }, 0), max = Math.max.apply(null, hours) || 1;
+      if (total < K) { svg.innerHTML = '<text class="svgt" text-anchor="middle" y="4">Not enough posts yet</text>'; return; }
+      var r0 = 34, R = 104, out = '', i;
+      [r0, 69, R].forEach(function (r, k) { out += '<circle r="' + r + '" fill="none" stroke="rgba(255,255,255,' + (k === 2 ? 0.1 : 0.05) + ')" stroke-dasharray="' + (k === 2 ? '' : '2 4') + '"/>'; });
+      function pt(r, a) { return (Math.cos(a) * r).toFixed(2) + ' ' + (Math.sin(a) * r).toFixed(2); }
+      for (i = 0; i < 24; i++) {
+        var a0 = (i * 15 - 90 + 0.7) * Math.PI / 180, a1 = ((i + 1) * 15 - 90 - 0.7) * Math.PI / 180;
+        var r1 = r0 + (R - r0) * Math.sqrt(hours[i] / max);
+        out += '<path class="wedge" d="M' + pt(r0, a0) + ' L' + pt(r1, a0) + ' A' + r1.toFixed(2) + ' ' + r1.toFixed(2) + ' 0 0 1 ' + pt(r1, a1) + ' L' + pt(r0, a1) + ' A' + r0 + ' ' + r0 + ' 0 0 0 ' + pt(r0, a0) + ' Z" fill="' + hourColor(i, 0.92) + '"><title>' + pad2(i) + ':00 UTC, ' + fmt(hours[i]) + ' posts</title></path>';
+      }
+      [[0, '00'], [6, '06'], [12, '12'], [18, '18']].forEach(function (l) {
+        var a = (l[0] * 15 - 90) * Math.PI / 180;
+        out += '<text class="svgt f" text-anchor="middle" dominant-baseline="middle" x="' + (Math.cos(a) * 119).toFixed(1) + '" y="' + (Math.sin(a) * 119).toFixed(1) + '">' + l[1] + '</text>';
+      });
+      var pk = P.peakHour(hours);
+      out += '<text class="svgt b" text-anchor="middle" y="2" style="font-family:var(--display);font-size:20px">' + pad2(pk) + 'h</text><text class="svgt f" text-anchor="middle" y="16">peak, UTC</text>';
+      svg.innerHTML = out;
+    }
+
+    function heat() {
+      var host = $('heat'), axis = $('haxis'), groups = S.grouping.groups, cut = cutTime() + 0.5, rows = {}, i;
+      groups.forEach(function (g, gi) { rows[gi] = new Array(24).fill(0); });
+      for (i = 0; i < S.aud.length; i++) {
+        var p = S.aud[i];
+        if (!inView(p, i, cut)) continue;
+        var row = rows[S.gi[i]]; for (var h = 0; h < 24; h++) row[h] += p.hours[h];
+      }
+      var order = groups.map(function (g, gi) { return gi; }).filter(function (gi) {
+        var l = groups[gi].label; return l !== P.OTHER_LABEL && l !== P.NA_LABEL && rows[gi].reduce(function (a, b) { return a + b; }, 0) >= K;
+      }).sort(function (a, b) { return S.vc[b] - S.vc[a]; }).slice(0, 7);
+      if (!order.length) { host.innerHTML = '<div class="empty">Not enough posts in this view.</div>'; axis.hidden = true; return; }
+      axis.hidden = false;
+      host.innerHTML = order.map(function (gi) {
+        var row = rows[gi], max = Math.max.apply(null, row) || 1;
+        var cells = row.map(function (v, h) { return '<i title="' + pad2(h) + ':00 UTC" style="background:' + hourColor(h, Math.max(0.05, Math.pow(v / max, 0.8)).toFixed(2)) + '"></i>'; }).join('');
+        return '<div class="hrow"><span class="hl" title="' + esc(groups[gi].label) + '">' + esc(groups[gi].label) + '</span><span class="hcells">' + cells + '</span><span class="hp">' + pad2(P.peakHour(row)) + 'h</span></div>';
+      }).join('');
+    }
+
+    function bubbles(dist) {
+      var svg = $('reach'), na = $('na-reach');
+      if (dist.known < K) { svg.innerHTML = '<text class="svgt" x="250" y="80" text-anchor="middle">This dataset has no follower counts.</text>'; na.textContent = ''; return; }
+      var max = Math.max.apply(null, dist.items.map(function (i) { return i.n; })) || 1, cols = ['#5cd1ff', '#35d0c0', '#7be08a', '#ffc15e', '#ff7a90'], out = '';
+      dist.items.forEach(function (it, i) {
+        var x = 50 + i * 100, r = it.n ? 8 + 32 * Math.sqrt(it.n / max) : 3, c = cols[i];
+        out += '<circle cx="' + x + '" cy="72" r="' + (r + 9).toFixed(1) + '" fill="' + hexA(c, 0.08) + '"/><circle cx="' + x + '" cy="72" r="' + r.toFixed(1) + '" fill="' + hexA(c, 0.5) + '" stroke="' + c + '" stroke-width="1.2"/>';
+        out += '<text class="svgt b" x="' + x + '" y="76" text-anchor="middle" style="font-size:13px">' + (it.hidden ? '&lt;' + K : fmt(it.n)) + '</text>';
+        out += '<text class="svgt" x="' + x + '" y="145" text-anchor="middle">' + esc(it.label) + '</text><text class="svgt f" x="' + x + '" y="160" text-anchor="middle">' + (it.n ? it.share + '%' : '') + '</text>';
+      });
+      svg.innerHTML = out;
+      na.textContent = dist.unknown ? fmt(dist.unknown) + ' profiles carried no follower count.' : '';
+    }
+
+    function tenure(dist) {
+      var svg = $('tenure'), na = $('na-tenure');
+      if (dist.known < K) { svg.innerHTML = '<text class="svgt" x="250" y="80" text-anchor="middle">This dataset has no join dates.</text>'; na.textContent = ''; return; }
+      var max = Math.max.apply(null, dist.items.map(function (i) { return i.share; })) || 1, out = '';
+      var short = ['2015 or earlier', '2016–17', '2018–19', '2020–21', '2022–23', '2024–now'];
+      out += '<defs><linearGradient id="tg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#b48cff" stop-opacity=".3"/><stop offset="1" stop-color="#35d0c0"/></linearGradient></defs>';
+      out += '<line x1="10" x2="490" y1="118" y2="118" stroke="rgba(255,255,255,.1)"/>';
+      dist.items.forEach(function (it, i) {
+        var x = 22 + i * 78, h = it.n ? Math.max(4, 98 * it.share / max) : 0;
+        out += '<rect x="' + x + '" y="' + (118 - h).toFixed(1) + '" width="52" height="' + h.toFixed(1) + '" rx="6" fill="url(#tg)"><title>' + esc(it.label) + ': ' + (it.hidden ? '<' + K : fmt(it.n)) + ' profiles</title></rect>';
+        out += '<text class="svgt b" x="' + (x + 26) + '" y="' + (112 - h).toFixed(1) + '" text-anchor="middle">' + (it.n ? it.share + '%' : '') + '</text>';
+        out += '<text class="svgt" x="' + (x + 26) + '" y="138" text-anchor="middle" style="font-size:10.5px">' + short[i] + '</text>';
+      });
+      svg.innerHTML = out;
+      na.textContent = dist.unknown ? fmt(dist.unknown) + ' profiles carried no join date.' : '';
+    }
+
+    function vocab(agg) {
+      var host = $('vocab'), na = $('na-vocab'), list = agg.words.slice(0, 40);
+      if (!list.length) { host.innerHTML = '<div class="empty">No word is shared by 5 profiles in this view.</div>'; na.textContent = ''; return; }
+      var lo = list[list.length - 1].n, hi = list[0].n, span = Math.max(1, hi - lo);
+      list = list.slice().sort(function (a, b) { return a.word < b.word ? -1 : 1; });      // alphabetical reads like a cloud, not a ranking
+      host.innerHTML = list.map(function (w) {
+        var size = 14 + 26 * Math.sqrt((w.n - lo) / span), c = PALETTE[hash(w.word) % PALETTE.length], tag = w.word.charAt(0) === '#';
+        return '<button type="button" class="word' + (tag ? ' tagw' : '') + '" data-w="' + esc(w.word) + '" aria-pressed="' + (S.word === w.word) + '" style="font-size:' + size.toFixed(1) + 'px;--c:' + c + '" title="' + fmt(w.n) + ' profiles">' + esc(w.word) + '</button>';
+      }).join('');
+      na.textContent = '';
     }
 
     function segTable(agg) {
       $('seg-body').innerHTML = agg.segments.length
         ? agg.segments.map(function (s) { return '<tr><td>' + esc(s.region) + '</td><td>' + esc(s.interest) + '</td><td>' + esc(s.language) + '</td><td>' + esc(s.platform) + '</td><td class="num">' + fmt(s.n) + '</td></tr>'; }).join('')
-        : '<tr><td colspan="5" class="empty">No segment reaches 5 profiles in this view.</td></tr>';
+        : '<tr><td colspan="5" class="empty">No pairing reaches 5 profiles in this view.</td></tr>';
     }
 
     function stacked(vis) {
@@ -765,7 +1089,7 @@
         }).join('');
         var rest = Math.max(0, 100 - used);
         return '<div class="stack-row"><span>' + esc(n) + ' <small style="color:var(--faint)">(' + fmt(plats[n].length) + ')</small></span><span class="stack" role="img" aria-label="' + esc(n) + ' ' + esc(dim) + ' mix">' + segs + (rest > 0.5 ? '<i style="width:' + rest + '%;background:' + C_OTHER + '"></i>' : '') + '</span></div>';
-      }).join('') + (dim === 'interest' ? '<div class="na">Interests are multi-label, so each bar shows that interest&rsquo;s share of all interest cues on the platform.</div>' : '');
+      }).join('') + (dim === 'interest' ? '<div class="na">Callings are multi-label, so each bar shows that calling&rsquo;s share of all callings on the platform.</div>' : '');
     }
 
     function legend() {
@@ -776,6 +1100,118 @@
         return '<button type="button" class="chip" data-gi="' + i + '" aria-pressed="' + (S.selIdx === i) + '" style="--c:' + S.colors[g.label] + '"><i></i>' + esc(g.label) + ' <b>' + (v === 0 ? '0' : v < K ? '<' + K : (tot ? Math.round(100 * v / tot) + '%' : '')) + '</b></button>';
       }).join('');
     }
+
+    /* ============================== mood, manner, trends ============================== */
+    var X = { fash: 'region', temp: 'region', man: 'platform', att: 'reach', fo: 'region', foA: '', foB: '' };
+    var STYLE_WORD = { post: 'original posts', reply: 'replies', quote: 'quotes', repost: 'reposts', share: 'shares' };
+    var ACT = [['post', 'Starts', '#6ea8ff'], ['reply', 'Answers', '#35d0c0'], ['quote', 'Quotes', '#b48cff'], ['repost', 'Reposts', '#ffc15e'], ['share', 'Shares across', '#ff7a90']];
+    var ORDERED = { reach: P.REACH_TIERS, cohort: P.COHORTS };
+    function short(l) { return String(l).replace(/ \(.*\)$/, ''); }
+    function sortOrdered(list, dim) { var o = ORDERED[dim]; return o ? list.slice().sort(function (a, b) { return o.indexOf(a.label) - o.indexOf(b.label); }) : list; }
+
+    function renderTrendbar() {
+      var c = {}; S.aud.forEach(function (p) { p.tags.forEach(function (t) { c[t] = (c[t] || 0) + 1; }); });
+      S.tagList = Object.keys(c).filter(function (t) { return c[t] >= K; }).sort(function (a, b) { return c[b] - c[a]; }).slice(0, 12);
+      $('trendbar').hidden = !S.tagList.length;
+      $('trendchips').innerHTML = S.tagList.map(function (t) { return '<button type="button" class="tagc" data-t="' + esc(t) + '" aria-pressed="false">' + esc(t) + '</button>'; }).join('');
+    }
+    function syncTrend() { Array.prototype.forEach.call(document.querySelectorAll('#trendchips button, #fgrid button.h'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-t') === S.tag)); }); }
+    function pickTag(t) { S.tag = S.tag === t ? null : t; updateChips(); queueRefresh(true); }
+
+    function fashions(agg, vis) {
+      var host = $('fgrid'), tags = (S.tagList || []).slice(0, 11), list = P.compareGroups(vis, X.fash, K).slice(0, 8);
+      list = sortOrdered(list, X.fash);
+      if (!tags.length || !list.length) { host.innerHTML = '<div class="empty">No trend is shared by 5 profiles in this view.</div>'; host.style.gridTemplateColumns = '1fr'; return; }
+      host.style.gridTemplateColumns = '150px repeat(' + tags.length + ', minmax(0, 1fr))';
+      var overall = {}; agg.tags.forEach(function (t) { overall[t.tag] = t.share; });
+      var mx = 1; list.forEach(function (g) { tags.forEach(function (t) { var n = g.tags.get(t) || 0; if (n >= K) mx = Math.max(mx, 100 * n / g.n); }); });
+      var o = '<div></div>' + tags.map(function (t) { return '<button type="button" class="h" data-t="' + esc(t) + '" aria-pressed="false" title="' + esc(t) + '">' + esc(t.replace('#', '')) + '</button>'; }).join('');
+      list.forEach(function (g) {
+        o += '<div class="l">' + esc(short(g.label)) + '</div>' + tags.map(function (t) {
+          var n = g.tags.get(t) || 0;
+          if (n < K) return '<div class="c"></div>';
+          var up = 100 * n / g.n, hot = overall[t] && up / overall[t] >= 1.5;
+          return '<div class="c' + (hot ? ' hot' : '') + '" style="background:rgba(180,140,255,' + (0.1 + 0.8 * Math.pow(up / mx, 0.7)).toFixed(2) + ')" title="' + esc(short(g.label)) + ', ' + esc(t) + ': ' + Math.round(up) + '%">' + Math.round(up) + '</div>';
+        }).join('');
+      });
+      host.innerHTML = o;
+    }
+
+    function temper(vis) {
+      var list = P.compareGroups(vis, X.temp, K).filter(function (e) { return e.moodN >= K; }).sort(function (a, b) { return b.net - a.net; }).slice(0, 12), host = $('temper');
+      host.innerHTML = list.length ? list.map(function (e) {
+        var v = Math.round(e.net * 100);
+        return '<div class="trow"><span class="name">' + esc(short(e.label)) + '</span><span class="sbar"><i style="width:' + e.neg + '%;background:#ff7a90"></i><i style="width:' + e.neu + '%;background:#566178"></i><i style="width:' + e.pos + '%;background:#7be08a"></i></span><span class="v">' + (v > 0 ? '+' : '') + v + '</span></div>';
+      }).join('') : '<div class="empty">Not enough mood data in this view.</div>';
+    }
+
+    function manners(vis) {
+      $('man-lgd').innerHTML = ACT.map(function (a) { return '<span><i style="background:' + a[2] + '"></i>' + a[1] + '</span>'; }).join('');
+      var list = P.compareGroups(vis, X.man, K).slice(0, 10), host = $('manners'), all = {}, allN = 0;
+      list.forEach(function (e) { e.manners.forEach(function (n, m) { all[m] = (all[m] || 0) + n; allN += n; }); });
+      function leaning(e) {            // the style this group has more of than the others do
+        var best = '', lift = 0, tot = 0;
+        e.manners.forEach(function (n) { tot += n; });
+        e.manners.forEach(function (n, m) { var l = (n / tot) / (all[m] / allN); if (n >= K && l > lift) { lift = l; best = m; } });
+        return best;
+      }
+      host.innerHTML = list.length ? list.map(function (e) {
+        var segs = ACT.map(function (a) { var w = e.actTotal ? 100 * (e.acts[a[0]] || 0) / e.actTotal : 0; return w ? '<i style="width:' + w.toFixed(1) + '%;background:' + a[2] + '" title="' + a[1] + ': ' + Math.round(w) + '%"></i>' : ''; }).join('');
+        return '<div class="trow wv"><span class="name">' + esc(short(e.label)) + '</span><span class="sbar">' + segs + '</span><span class="v">' + (leaning(e) ? 'leans ' + esc(leaning(e)) : '') + '</span></div>';
+      }).join('') : '<div class="empty">Not enough activity in this view.</div>';
+    }
+
+    function ovation(vis) {
+      var list = sortOrdered(P.compareGroups(vis, X.att, K), X.att), host = $('ovation');
+      if (!ORDERED[X.att]) list = list.slice().sort(function (a, b) { return b.reactions - a.reactions; });
+      list = list.slice(0, 12);
+      var mx = Math.max.apply(null, list.map(function (e) { return e.reactions; })) || 1;
+      host.innerHTML = list.length ? '<div class="bars">' + list.map(function (e) {
+        return '<div class="row"><span class="name">' + esc(short(e.label)) + '</span><span class="track"><i class="fill" style="width:' + Math.max(2, Math.round(100 * e.reactions / mx)) + '%;background:linear-gradient(90deg,#ffc15e,#ff7a90)"></i></span><span class="val">' + e.reactions.toFixed(2) + ' per post</span></div>';
+      }).join('') + '</div>' : '<div class="empty">Not enough activity in this view.</div>';
+    }
+
+    function faceoff(vis) {
+      var groups = P.compareGroups(S.aud, X.fo, K), a = $('fo-a'), b = $('fo-b');
+      var sig = X.fo + '|' + groups.map(function (g) { return g.label; }).join('|');
+      if (a.dataset.sig !== sig) {
+        var opts = groups.map(function (g) { return '<option value="' + esc(g.label) + '">' + esc(short(g.label)) + '</option>'; }).join('');
+        a.innerHTML = opts; b.innerHTML = opts; a.dataset.sig = sig;
+        X.foA = groups[0] ? groups[0].label : ''; X.foB = groups[1] ? groups[1].label : X.foA;
+      }
+      a.value = X.foA; b.value = X.foB;
+      function side(label) {
+        var list = vis.filter(function (p) { return P.dimValue(p, X.fo) === label; });
+        return list.length >= K ? { agg: P.aggregate(list, K), c: P.compareGroups(list, X.fo, 1)[0], n: list.length } : null;
+      }
+      var A = side(X.foA), B = side(X.foB), rows = $('fo-rows'), words = $('fo-words');
+      if (!A || !B) { rows.innerHTML = '<div class="empty">One of these crowds has fewer than 5 profiles in this view.</div>'; words.innerHTML = ''; return; }
+      function pctv(v) { return Math.round(v) + '%'; }
+      function small(ag) { var r = ag.reach; return r.known ? 100 * (r.items[0].n + r.items[1].n) / r.known : 0; }
+      function fresh(ag) { var t = ag.tenure; return t.known ? 100 * t.items[5].n / t.known : 0; }
+      var M = [
+        ['People', A.n, B.n, fmt], ['Posts per person', A.c.perPerson, B.c.perPerson, function (v) { return v.toFixed(1); }],
+        ['Warm posts', A.c.pos, B.c.pos, pctv], ['Sour posts', A.c.neg, B.c.neg, pctv],
+        ['Answering others', A.c.replyShare, B.c.replyShare, pctv], ['Passing things on', A.c.passShare, B.c.passShare, pctv],
+        ['Reactions per post', A.c.reactions, B.c.reactions, function (v) { return v.toFixed(2); }],
+        ['Beyond plain English', A.agg.nonEnglishShare, B.agg.nonEnglishShare, pctv],
+        ['Under 1K followers', small(A.agg), small(B.agg), pctv], ['Joined since 2024', fresh(A.agg), fresh(B.agg), pctv]
+      ];
+      rows.innerHTML = M.map(function (m) {
+        var mx = Math.max(m[1], m[2]) || 1;
+        function s(v, cls, col) { return '<div class="fo-s ' + cls + ((cls === 'a' ? m[1] > m[2] : m[2] > m[1]) ? ' lead' : '') + '"><b>' + m[3](v) + '</b><span class="bar"><i style="width:' + (100 * v / mx).toFixed(1) + '%;background:' + col + '"></i></span></div>'; }
+        return '<div class="fo-row">' + s(m[1], 'a', '#35d0c0') + '<div class="m">' + m[0] + '</div>' + s(m[2], 'b', '#b48cff') + '</div>';
+      }).join('');
+      function own(x, y) { var other = {}; y.agg.words.slice(0, 24).forEach(function (w) { other[w.word] = 1; }); return x.agg.words.filter(function (w) { return !other[w.word]; }).slice(0, 5).map(function (w) { return '<span>' + esc(w.word) + '</span>'; }).join(''); }
+      words.innerHTML = '<div>' + own(A, B) + '</div><div>' + own(B, A) + '</div>';
+    }
+
+    function bindTabs(id, key) { $(id).addEventListener('click', function (e) { var b = e.target.closest('button[data-d]'); if (!b) return; X[key] = b.getAttribute('data-d'); Array.prototype.forEach.call($(id).querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x === b)); }); queueRefresh(true); }); }
+    bindTabs('fash-dim', 'fash'); bindTabs('temp-dim', 'temp'); bindTabs('man-dim', 'man'); bindTabs('att-dim', 'att'); bindTabs('fo-dim', 'fo');
+    $('trendchips').addEventListener('click', function (e) { var b = e.target.closest('button[data-t]'); if (b) pickTag(b.getAttribute('data-t')); });
+    $('fgrid').addEventListener('click', function (e) { var b = e.target.closest('button[data-t]'); if (b) { pickTag(b.getAttribute('data-t')); window.scrollTo({ top: $('stage').offsetTop - 20, behavior: reduce ? 'auto' : 'smooth' }); } });
+    $('fo-a').addEventListener('change', function () { X.foA = this.value; queueRefresh(true); });
+    $('fo-b').addEventListener('change', function () { X.foB = this.value; queueRefresh(true); });
 
     /* ============================== timeline ============================== */
     function setPlayUI() {
@@ -800,27 +1236,31 @@
     /* ============================== events ============================== */
     document.querySelector('.lens').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-lens]'); if (!b) return;
-      S.lens = b.getAttribute('data-lens'); S.selIdx = -1; regroup(); queueRefresh(true);
+      S.lens = b.getAttribute('data-lens'); S.selIdx = -1; regroup(); updateChips(); queueRefresh(true);
     });
-    $('legend').addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-gi]'); if (b) select(parseInt(b.getAttribute('data-gi'), 10));
+    $('legend').addEventListener('click', function (e) { var b = e.target.closest('button[data-gi]'); if (b) select(parseInt(b.getAttribute('data-gi'), 10)); });
+    $('vocab').addEventListener('click', function (e) { var b = e.target.closest('button[data-w]'); if (b) { pickWord(b.getAttribute('data-w')); window.scrollTo({ top: $('stage').offsetTop - 20, behavior: reduce ? 'auto' : 'smooth' }); } });
+    $('fchips').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-clear]'); if (!b) return;
+      e.stopPropagation();   // the chips are rebuilt below, so this click must not also reach the stage
+      var what = b.getAttribute('data-clear'); if (what === 'sel') S.selIdx = -1; else if (what === 'tag') S.tag = null; else S.word = null;
+      updateChips(); queueRefresh(true);
     });
-    $('selchip').addEventListener('click', function (e) { if (e.target.closest('button')) { S.selIdx = -1; updateChip(); queueRefresh(true); } });
     $('play').addEventListener('click', function () { S.playing ? pause() : play(); });
     $('time').addEventListener('input', function () { S.playing = false; setPlayUI(); S.t = this.value / 1000; queueRefresh(); });
     $('dim').addEventListener('change', function () { stacked(visible()); });
 
     var stage = $('stage');
     stage.addEventListener('pointermove', function (e) {
-      if (e.target.closest && e.target.closest('.controls')) { S.mouse = null; S.hover = -1; showTip(-1); return; }
+      if (e.target.closest && (e.target.closest('.controls') || e.target.closest('.fchips'))) { S.mouse = null; S.hover = -1; showTip(-1); return; }
       var pos = localXY(e); S.mouse = pos; S.hover = hitTest(pos.x, pos.y);
       stage.style.cursor = S.hover >= 0 ? 'pointer' : 'default'; showTip(S.hover, pos);
     });
     stage.addEventListener('pointerleave', function () { S.mouse = null; S.hover = -1; showTip(-1); });
     stage.addEventListener('click', function (e) {
-      if (e.target.closest('.controls') || e.target.closest('.selchip')) return;
+      if (e.target.closest('.controls') || e.target.closest('.fchips')) return;
       var pos = localXY(e), gi = hitTest(pos.x, pos.y);
-      if (gi >= 0) select(gi); else if (S.selIdx >= 0) { S.selIdx = -1; updateChip(); queueRefresh(true); }
+      if (gi >= 0) select(gi); else if (S.selIdx >= 0) { S.selIdx = -1; updateChips(); queueRefresh(true); }
     });
 
     $('csv-file').addEventListener('change', function (e) {
@@ -830,7 +1270,7 @@
         S.manual = true;
         var data = P.parseCSV(String(reader.result));
         if (!data.length || !('user_id' in data[0] || 'post_id' in data[0])) { notice('error', '<b>Could not read file</b><span>The CSV needs a header row with at least <code>user_id</code> (or <code>post_id</code>).</span>'); return; }
-        var missing = P.hasProfileColumns(data) ? '' : ' &middot; no language, user_bio or user_location columns, so most results will be unavailable';
+        var missing = P.hasProfileColumns(data) ? '' : ' &middot; no language, user_bio or user_location columns, so most plates will be empty';
         setData(data, 'Your file', esc(f.name).slice(0, 80) + missing, false);
       };
       reader.onerror = function () { notice('error', '<b>Could not read file</b><span>The file could not be opened.</span>'); };
@@ -844,12 +1284,7 @@
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
     });
 
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { S.onscreen = en[0].isIntersecting; }, { threshold: 0 }).observe(stage);
-      var rv = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); rv.unobserve(x.target); } }); }, { threshold: 0.08 });
-      Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) { rv.observe(el); });
-    } else { Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) { el.classList.add('in'); }); }
-
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { S.onscreen = en[0].isIntersecting; }, { threshold: 0 }).observe(stage);
     if (window.ResizeObserver) { var ro = new ResizeObserver(function () { resize(); }); ro.observe(stage); ro.observe($('controls')); }   // controls wrap on phones, so re-measure
     else window.addEventListener('resize', resize);
 

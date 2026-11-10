@@ -4,11 +4,13 @@
  * Node (make_summary.js) so the same code produces the page and the saved CSV.
  *
  * Everything shown to a visitor is an AGGREGATE. buildProfiles() creates one internal
- * record per anonymised user_id (derived labels only, no bio or location text is kept),
- * and the page only draws them as anonymous dots or counts them in groups.
- * Groups smaller than K_MIN users are merged into "Other (grouped for privacy)".
+ * record per anonymised user_id (derived labels only: no bio, location or handle text is
+ * kept), and the page only draws them as anonymous dots or counts them in groups.
+ * Groups smaller than K_MIN users are merged into "Other (grouped for privacy)", and a
+ * bio word is shown only when at least K_MIN profiles use it.
  * All estimates come from public, self-described indicators (bio text, location text,
- * language codes, writing script) using transparent keyword rules.
+ * language codes, writing script, posting hours, follower counts, join dates) using
+ * transparent keyword rules.
  */
 (function (root) {
   'use strict';
@@ -54,18 +56,16 @@
     return false;
   }
 
-  /* Add language / user_bio / user_location from Section A sidecar files to the shared
-     six-column posts, matching on post_id. Returns how many posts were enriched. */
+  /* Add language / user_bio / user_location (and followers / joined when present) from a
+     Section A sidecar file to the shared six-column posts, matching on post_id. */
   function mergeProfileFields(posts, sidecarRows) {
-    var byId = {}, matched = 0;
+    var byId = {}, matched = 0, extra = ['language', 'user_bio', 'user_location', 'followers', 'joined'];
     sidecarRows.forEach(function (m) { if (m.post_id) byId[m.post_id] = m; });
     posts.forEach(function (p) {
       var m = byId[p.post_id];
       if (!m) return;
       matched++;
-      if (!p.language) p.language = m.language || '';
-      if (!p.user_bio) p.user_bio = m.user_bio || '';
-      if (!p.user_location) p.user_location = m.user_location || '';
+      extra.forEach(function (f) { if (!p[f] && m[f]) p[f] = m[f]; });
     });
     return matched;
   }
@@ -84,10 +84,10 @@
   var REGION_RULES = [
     ['Latin America', /latin america|south america|central america|\b(brazil|brasil|argentina|mexico|colombia|chile|peru|bogota|buenos aires|sao paulo|rio de janeiro|lima|santiago|medellin)\b/i],
     ['South Asia', /south asia|\b(india|bharat|delhi|mumbai|bengaluru|bangalore|hyderabad|chennai|kolkata|pune|pakistan|karachi|lahore|islamabad|bangladesh|dhaka|sri lanka|colombo|nepal|kathmandu)\b/i],
-    ['Europe', /europe|\b(uk|u\.k\.|united kingdom|england|scotland|london|germany|berlin|munich|france|paris|spain|madrid|barcelona|italy|rome|milan|netherlands|amsterdam|ireland|dublin|sweden|stockholm|poland|warsaw|portugal|lisbon|vienna|zurich|prague|oslo|copenhagen|brussels|athens|helsinki|budapest)\b/i],
+    ['Europe', /europe|\b(uk|u\.k\.|united kingdom|england|scotland|london|manchester|germany|berlin|munich|france|paris|spain|madrid|barcelona|italy|rome|milan|netherlands|amsterdam|ireland|dublin|sweden|stockholm|poland|warsaw|portugal|lisbon|vienna|zurich|prague|oslo|copenhagen|brussels|athens|helsinki|budapest)\b/i],
     ['Middle East & Africa', /middle east|africa|\b(nigeria|lagos|kenya|nairobi|egypt|cairo|uae|dubai|saudi|riyadh|israel|turkey|istanbul|ghana|accra)\b/i],
     ['East Asia & Pacific', /asia pacific|apac|\b(china|japan|tokyo|korea|seoul|singapore|australia|sydney|melbourne|new zealand|indonesia|jakarta|philippines|manila|vietnam|thailand|hong kong|taiwan)\b/i],
-    ['North America', /north america|\b(usa|u\.s\.a?\.?|united states|america|canada|toronto|vancouver|new york|nyc|california|texas|austin|chicago|los angeles|san francisco|seattle|boston)\b/i]
+    ['North America', /north america|\b(usa|u\.s\.a?\.?|united states|america|canada|toronto|vancouver|montreal|new york|nyc|california|texas|austin|chicago|los angeles|san francisco|seattle|boston)\b/i]
   ];
 
   var UNKNOWN_LOCATION = /^(not specified|unknown|n\/a|na|none|null|-|\?)$/i;
@@ -109,16 +109,16 @@
   // A user can match several interests (multi-label). The first match is the "primary"
   // interest used to place the user in one cluster on the constellation.
   var INTEREST_RULES = [
-    ['Technology & Software', /\b(tech|technology|software|developer|engineer(ing)?|coding|programm\w*|ai|data|gadgets?|digital|apps?|cyber\w*)\b|tecnolog|तकनीक/i],
-    ['Marketing, Media & Brands', /\b(marketing|brands?|campaigns?|advertis\w*|media|content|journalis\w*|pr|creators?|influencers?|publicity|copywriter)\b|marca|विज्ञापन/i],
-    ['Business & Entrepreneurship', /\b(business|owner|founder|entrepreneur\w*|startups?|retail|shop|consultant|manager|sales|negocio)\b|व्यवसाय|empresa/i],
-    ['Students & Education', /\b(students?|college|university|school|teacher|education|learning|learner|academic|undergrad\w*)\b|estudiante|छात्र|शिक्षा/i],
-    ['Sustainability & Design', /\b(sustainab\w*|climate|eco|green|design\w*|environment\w*)\b|sostenib|diseño/i],
-    ['Consumer & Customer Experience', /\b(customers?|consumers?|shoppers?|products?|everyday|community|launch(es)?|experiences?|services?)\b|cliente|consumidor|ग्राहक/i],
+    ['Technology & Software', /\b(tech|technology|software|developer|engineer(ing)?|coding|programm\w*|ai|data|gadgets?|digital|apps?|cyber\w*)\b|tecnolog|technologie|desenvolvedor|d[eé]veloppeur|entwickler|तकनीक/i],
+    ['Marketing, Media & Brands', /\b(marketing|brands?|campaigns?|advertis\w*|media|content|journalis\w*|pr|creators?|influencers?|publicity|copywriter)\b|marca|marke|विज्ञापन/i],
+    ['Business & Entrepreneurship', /\b(business|owner|founder|entrepreneur\w*|startups?|retail|shop|consultant|manager|sales|negocio)\b|व्यवसाय|empresa|empreendedor|fundador|fondateur|gr[uü]nder/i],
+    ['Students & Education', /\b(students?|college|university|school|teacher|education|learning|learner|academic|undergrad\w*)\b|estudiante|estudante|[eé]tudiant|studentin|छात्र|शिक्षा/i],
+    ['Sustainability & Design', /\b(sustainab\w*|climate|eco|green|design\w*|environment\w*)\b|sostenib|sustentab|diseño|durabilit/i],
+    ['Consumer & Customer Experience', /\b(customers?|consumers?|shoppers?|products?|everyday|community|launch(es)?|experiences?|services?)\b|cliente|consumidor|kunde|ग्राहक/i],
     ['Finance & Economics', /\b(financ\w*|invest\w*|bank\w*|accounting|economics?|trading|crypto)\b|finanzas/i],
-    ['Health & Wellness', /\b(health\w*|fitness|doctor|nurse|wellness|medical|yoga|nutrition)\b|salud/i],
-    ['Entertainment & Sports', /\b(gaming|gamers?|gamer|music|films?|movies?|sports?|football|cricket|entertainment)\b|deporte/i],
-    ['Travel & Food', /\b(travel\w*|food\w*|chef|coffee|restaurants?|cooking|recipes?)\b|viajes|cocina/i]
+    ['Health & Wellness', /\b(health\w*|fitness|doctor|nurse|wellness|medical|yoga|nutrition|physio\w*)\b|salud|sa[uú]de/i],
+    ['Entertainment & Sports', /\b(gaming|gamers?|gamer|music|films?|movies?|sports?|football|cricket|entertainment)\b|deporte|futebol|cin[eé]ma|musik|m[uú]sica/i],
+    ['Travel & Food', /\b(travel\w*|food\w*|chef|coffee|restaurants?|cooking|recipes?|backpacker)\b|viajes|viagem|cocina/i]
   ];
 
   var ORG_RULE = /\b(official|verified)\b.*\b(account|brand|page)\b|\bbrand account\b|\bcustomer (care|support) team\b/i;
@@ -141,14 +141,41 @@
     mid: '25 to 44 (working-professional cues)',
     senior: '45 and over (retirement or seniority cues)'
   };
+  var AGE_SHORT = {};
+  AGE_SHORT[AGE_LABELS.young] = 'under 25';
+  AGE_SHORT[AGE_LABELS.mid] = '25 to 44';
+  AGE_SHORT[AGE_LABELS.senior] = '45 and over';
 
   function classifyAge(bio) {
     var s = String(bio || '');
     if (!s.trim()) return null;
     if (/\b(retired|retiree|grandparent|grandmother|grandfather|boomer|pensioner|veteran)\b|jubilad/i.test(s)) return AGE_LABELS.senior;
-    if (/\b(students?|undergrad\w*|college|university|high school|class of 20\d\d|gen ?z|freshman|sophomore|school)\b|estudiante|छात्र/i.test(s)) return AGE_LABELS.young;
-    if (/\b(professional|manager|founder|owner|engineer|developer|consultant|entrepreneur|director|executive|analyst|designer|parent|career|lead|strategist|coach)\b|profesional/i.test(s)) return AGE_LABELS.mid;
+    if (/\b(students?|undergrad\w*|college|university|high school|class of 20\d\d|gen ?z|freshman|sophomore|school)\b|estudiante|estudante|[eé]tudiant|studentin|छात्र/i.test(s)) return AGE_LABELS.young;
+    if (/\b(professional|manager|founder|owner|engineer|developer|consultant|entrepreneur|director|executive|analyst|designer|parent|mom|dad|career|lead|strategist|coach)\b|profesional|fundador|fondateur/i.test(s)) return AGE_LABELS.mid;
     return null;
+  }
+
+  /* ---------------------------------------------------------- Bio vocabulary */
+
+  var STOP = {};
+  ('and the for with from that this here just its are who you your our about into than then they them one two all any can has have had was were not but also more most very too out over under new like love loves lover lovers when what where which while every each some many much other another their there these those been being does doing done make makes made get gets got going goes year years day days time times life way ways thing things people person interested sharing following discussing enjoys enjoy writes writing talks talking always weekend daily now still maybe mostly mainly often sometimes between during after before only even ever never opinions opinion own probably everything else first last later' +
+    ' official account simulated campaign side class tiny good late night little real true best big small joys small' +
+    ' because though really quite rather whose whom would could should might must will shall').split(' ').forEach(function (w) { STOP[w] = 1; });
+  var SHORT_OK = { ai: 1, ml: 1, ux: 1, ui: 1, pr: 1 };
+
+  /* Distinct words and #hashtags in a bio. Only the words are kept, never the bio itself. */
+  function bioWords(bio) {
+    var out = {}, list = [];
+    var m = String(bio || '').toLowerCase().match(/#?[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) || [];
+    m.forEach(function (w) {
+      w = w.replace(/['’]s$/, '').replace(/[-'’]+$/, '');
+      var plain = w.replace(/^#/, '');
+      if (!plain || /^\d+$/.test(plain)) return;
+      if (plain.length < 3 && !SHORT_OK[plain]) return;
+      if (STOP[plain]) return;
+      if (!out[w]) { out[w] = 1; list.push(w); }
+    });
+    return list;
   }
 
   /* ------------------------------------------------------------ Language */
@@ -187,6 +214,19 @@
     return code.toUpperCase();
   }
 
+  /* ------------------------------------------------------- Reach and tenure */
+
+  var REACH_TIERS = ['Under 100', '100 to 1K', '1K to 10K', '10K to 100K', '100K and up'];
+  function reachTier(n) {
+    if (!isFinite(n) || n < 0) return null;
+    return n < 100 ? REACH_TIERS[0] : n < 1000 ? REACH_TIERS[1] : n < 10000 ? REACH_TIERS[2] : n < 100000 ? REACH_TIERS[3] : REACH_TIERS[4];
+  }
+  var COHORTS = ['2015 or earlier', '2016 to 2017', '2018 to 2019', '2020 to 2021', '2022 to 2023', '2024 to now'];
+  function cohortOf(year) {
+    if (!isFinite(year) || year < 1990 || year > 2100) return null;
+    return year <= 2015 ? COHORTS[0] : year <= 2017 ? COHORTS[1] : year <= 2019 ? COHORTS[2] : year <= 2021 ? COHORTS[3] : year <= 2023 ? COHORTS[4] : COHORTS[5];
+  }
+
   /* ----------------------------------------------------------- Aggregation */
 
   function inc(map, key, by) { map.set(key, (map.get(key) || 0) + (by || 1)); }
@@ -199,24 +239,57 @@
 
   function pct(n, total) { return total ? Math.round((1000 * n) / total) / 10 : 0; }
 
+  function emptyHours() { var a = [], i; for (i = 0; i < 24; i++) a.push(0); return a; }
+
+  /* Mood, manner and trends come from the optional sentiment, interaction and #hashtag data. */
+  var MOOD_INDEX = { positive: 0, neutral: 1, negative: 2 };
+  var TAG_RE = /#[\p{L}\p{N}_]{2,}/gu;
+  function moodNet(m) { var n = m[0] + m[1] + m[2]; return n ? (m[0] - m[2]) / n : 0; }
+  function moodLabel(m) { if (!(m[0] + m[1] + m[2])) return null; var v = moodNet(m); return v > 0.2 ? 'Warm' : v < -0.2 ? 'Sour' : 'Even'; }
+  function mannerOf(a) {
+    var t = 0; Object.keys(a).forEach(function (k) { t += a[k]; });
+    if (!t) return null;
+    if (((a.repost || 0) + (a.share || 0)) / t >= 0.5) return 'Amplifiers';
+    if (((a.reply || 0) + (a.quote || 0)) / t >= 0.5) return 'Conversationalists';
+    return 'Originators';
+  }
+  function topAct(a) { var best = 'post', n = -1; Object.keys(a).sort().forEach(function (k) { if (a[k] > n) { n = a[k]; best = k; } }); return best; }
+
   /* One internal record per anonymised user_id. Only derived labels are kept. */
   function buildProfiles(rows) {
-    var users = new Map();
+    var users = new Map(), owner = new Map();
     rows.forEach(function (r) {
       var id = r.user_id || ('post:' + r.post_id);
       var u = users.get(id);
       if (!u) {
-        u = { platform: r.platform || 'Unknown', bio: '', loc: '', langs: new Map(), scripts: new Map(), first: Infinity, posts: 0 };
+        u = { platform: r.platform || 'Unknown', bio: '', loc: '', langs: new Map(), scripts: new Map(), first: Infinity, posts: 0, hours: emptyHours(), followers: NaN, joined: NaN, acts: {}, moods: [0, 0, 0], tags: new Set(), received: 0 };
         users.set(id, u);
       }
       u.posts++;
+      if (r.post_id) owner.set(r.post_id, id);
+      var kind = r.interaction || (r.parent_id ? 'reply' : 'post');
+      u.acts[kind] = (u.acts[kind] || 0) + 1;
+      if (r.sentiment in MOOD_INDEX) u.moods[MOOD_INDEX[r.sentiment]]++;
+      (String(r.text || '').match(TAG_RE) || []).forEach(function (t) { u.tags.add(t); });
       if (!u.bio && r.user_bio) u.bio = String(r.user_bio).trim();
       if (!u.loc && r.user_location) u.loc = String(r.user_location).trim();
+      if (!isFinite(u.followers) && r.followers !== undefined && r.followers !== '') {
+        var f = Number(String(r.followers).replace(/[, ]/g, ''));
+        if (isFinite(f)) u.followers = f;
+      }
+      if (!isFinite(u.joined) && r.joined) { var y = parseInt(String(r.joined).slice(0, 4), 10); if (isFinite(y)) u.joined = y; }
       var code = String(r.language || '').trim().toLowerCase();
       if (code) { inc(u.langs, code); }
       else { var g = inferScript(r.text); if (g) inc(u.scripts, g); }
       var ts = parseTs(r.timestamp);
-      if (!isNaN(ts) && ts < u.first) u.first = ts;
+      if (!isNaN(ts)) {
+        if (ts < u.first) u.first = ts;
+        u.hours[new Date(ts).getUTCHours()]++;
+      }
+    });
+    rows.forEach(function (r) {                  // reactions each voice received from others
+      var ref = r.ref_post_id || r.parent_id, me = r.user_id || ('post:' + r.post_id), who = ref ? owner.get(ref) : null;
+      if (who && who !== me) users.get(who).received++;
     });
     var out = [];
     users.forEach(function (u) {
@@ -226,6 +299,7 @@
         platform: u.platform,
         first: isFinite(u.first) ? u.first : NaN,
         posts: u.posts,
+        hours: u.hours,
         org: isOrganisation(u.bio),
         hasBio: !!u.bio,
         declaredLang: u.langs.size > 0,
@@ -234,13 +308,17 @@
         region: classifyRegion(u.loc),
         interests: interests,
         primaryInterest: interests[0] || null,
-        age: classifyAge(u.bio)
+        age: classifyAge(u.bio),
+        words: new Set(bioWords(u.bio)),
+        tier: reachTier(u.followers),
+        cohort: cohortOf(u.joined),
+        acts: u.acts, moods: u.moods, moodLabel: moodLabel(u.moods), manner: mannerOf(u.acts), tags: u.tags, received: u.received
       });
     });
     return out;
   }
 
-  /* Turn a Map(label -> users) into a privacy-safe distribution. */
+  /* Turn a Map(label -> users) into a privacy-safe distribution, largest first. */
   function makeDist(counter, unknown, k, base) {
     // base = number of profiles with a known value. Pass it for multi-label data
     // (interests), where the sum of counts is larger than the number of profiles.
@@ -260,41 +338,86 @@
     return { items: shown, known: known, unknown: unknown || 0 };
   }
 
+  /* Like makeDist, but keeps a fixed order (tiers, cohorts) and shows every step. */
+  function makeOrdered(order, counter, unknown, k) {
+    var known = 0;
+    order.forEach(function (l) { known += counter.get(l) || 0; });
+    var items = order.map(function (l) {
+      var n = counter.get(l) || 0;
+      return { label: l, n: n, share: pct(n, known), hidden: n > 0 && n < k };
+    });
+    return { items: items, known: known, unknown: unknown || 0 };
+  }
+
+  function peakHour(hours) {
+    var best = 0, i;
+    for (i = 1; i < 24; i++) if (hours[i] > hours[best]) best = i;
+    return best;
+  }
+
   function aggregate(profiles, k) {
     k = k || K_MIN;
-    var langC = new Map(), regC = new Map(), intC = new Map(), ageC = new Map(), segC = new Map();
-    var langUnk = 0, regUnk = 0, intUnk = 0, ageUnk = 0;
-    var org = 0, audience = 0, withBio = 0, withLoc = 0, withLang = 0, nonEnglish = 0, langKnown = 0, posts = 0;
+    var langC = new Map(), regC = new Map(), intC = new Map(), ageC = new Map(), segC = new Map(),
+      tierC = new Map(), cohC = new Map(), wordC = new Map();
+    var langUnk = 0, regUnk = 0, intUnk = 0, ageUnk = 0, tierUnk = 0, cohUnk = 0;
+    var org = 0, audience = 0, withBio = 0, withLoc = 0, withLang = 0, nonEnglish = 0, langKnown = 0, posts = 0, withWords = 0;
+    var hours = emptyHours(), moods = [0, 0, 0], acts = {}, received = 0, tagC = new Map(), mannerC = new Map(), mannerUnk = 0;
 
     profiles.forEach(function (p) {
       if (p.org) { org++; return; }                      // brand accounts are not audience
       audience++; posts += p.posts;
+      moods[0] += p.moods[0]; moods[1] += p.moods[1]; moods[2] += p.moods[2]; received += p.received;
+      Object.keys(p.acts).forEach(function (a) { acts[a] = (acts[a] || 0) + p.acts[a]; });
+      p.tags.forEach(function (t) { inc(tagC, t); });
+      if (p.manner) inc(mannerC, p.manner); else mannerUnk++;
       if (p.hasBio) withBio++;
       if (p.region) withLoc++;
       if (p.declaredLang) withLang++;
+      for (var h = 0; h < 24; h++) hours[h] += p.hours[h];
 
       if (p.lang) { inc(langC, p.lang); langKnown++; if (p.code !== 'en') nonEnglish++; } else { langUnk++; }
       if (p.region) inc(regC, p.region); else regUnk++;
       if (p.interests.length) p.interests.forEach(function (i) { inc(intC, i); }); else intUnk++;
       if (p.age) inc(ageC, p.age); else ageUnk++;
+      if (p.tier) inc(tierC, p.tier); else tierUnk++;
+      if (p.cohort) inc(cohC, p.cohort); else cohUnk++;
+      if (p.words.size) { withWords++; p.words.forEach(function (w) { inc(wordC, w); }); }
 
       if (p.region && p.interests.length) {
         p.interests.forEach(function (i) {
           var key = p.region + '\u0001' + i;
           var seg = segC.get(key);
-          if (!seg) { seg = { region: p.region, interest: i, n: 0, langs: new Map(), plats: new Map() }; segC.set(key, seg); }
+          if (!seg) { seg = { region: p.region, interest: i, n: 0, langs: new Map(), plats: new Map(), words: new Map(), hours: emptyHours(), moods: [0, 0, 0], acts: {}, tags: new Map() }; segC.set(key, seg); }
           seg.n++;
           if (p.lang) inc(seg.langs, p.lang);
           inc(seg.plats, p.platform);
+          p.words.forEach(function (w) { inc(seg.words, w); });
+          seg.moods[0] += p.moods[0]; seg.moods[1] += p.moods[1]; seg.moods[2] += p.moods[2];
+          Object.keys(p.acts).forEach(function (a) { seg.acts[a] = (seg.acts[a] || 0) + p.acts[a]; });
+          p.tags.forEach(function (t) { inc(seg.tags, t); });
+          for (var j = 0; j < 24; j++) seg.hours[j] += p.hours[j];
         });
       }
     });
 
     var segments = [];
     segC.forEach(function (s) {
-      if (s.n >= k) segments.push({ region: s.region, interest: s.interest, n: s.n, language: modeOf(s.langs) || 'Undetermined', platform: modeOf(s.plats) });
+      if (s.n < k) return;
+      var sig = [];
+      s.words.forEach(function (n, w) { if (n >= k) sig.push([w, n]); });
+      sig.sort(function (a, b) { return b[1] - a[1] || (a[0] < b[0] ? -1 : 1); });
+      segments.push({
+        region: s.region, interest: s.interest, n: s.n,
+        language: modeOf(s.langs) || 'Undetermined', platform: modeOf(s.plats),
+        peak: peakHour(s.hours), words: sig.slice(0, 3).map(function (x) { return x[0]; }),
+        moodLabel: moodLabel(s.moods), style: topAct(s.acts), tag: (function () { var t = modeOf(s.tags); return t && s.tags.get(t) >= k ? t : null; })()
+      });
     });
     segments.sort(function (a, b) { return b.n - a.n || (a.region + a.interest < b.region + b.interest ? -1 : 1); });
+
+    var words = [];
+    wordC.forEach(function (n, w) { if (n >= k) words.push({ word: w, n: n, share: pct(n, withWords) }); });
+    words.sort(function (a, b) { return b.n - a.n || (a.word < b.word ? -1 : 1); });
 
     return {
       posts: posts,
@@ -307,7 +430,16 @@
       region: makeDist(regC, regUnk, k),
       interest: makeDist(intC, intUnk, k, audience - intUnk),
       age: makeDist(ageC, ageUnk, k),
+      reach: makeOrdered(REACH_TIERS, tierC, tierUnk, k),
+      tenure: makeOrdered(COHORTS, cohC, cohUnk, k),
+      hours: hours,
+      words: words.slice(0, 48),
+      wordBase: withWords,
       segments: segments.slice(0, 8),
+      moods: moods, net: moodNet(moods), acts: acts, received: received,
+      manner: makeDist(mannerC, mannerUnk, k),
+      tags: (function () { var l = []; tagC.forEach(function (n, t) { if (n >= k) l.push({ tag: t, n: n, share: pct(n, audience) }); }); return l.sort(function (a, b) { return b.n - a.n; }); })(),
+      compare: { region: compareGroups(profiles, 'region', k), interest: compareGroups(profiles, 'interest', k), platform: compareGroups(profiles, 'platform', k) },
       k: k
     };
   }
@@ -318,6 +450,13 @@
     return s;
   }
 
+  /* Sum posting hours for any set of profiles (used for the rhythm rows). */
+  function hourSums(profiles) {
+    var h = emptyHours();
+    profiles.forEach(function (p) { if (!p.org) for (var i = 0; i < 24; i++) h[i] += p.hours[i]; });
+    return h;
+  }
+
   /* Group profiles for the constellation. lens: language | region | interest | age | platform.
      Groups with fewer than k profiles are merged into one "Other" group. */
   function groupValue(p, lens) {
@@ -325,7 +464,36 @@
     if (lens === 'region') return p.region || NA_LABEL;
     if (lens === 'interest') return p.primaryInterest || NA_LABEL;
     if (lens === 'age') return p.age || NA_LABEL;
+    if (lens === 'mood') return p.moodLabel || NA_LABEL;
+    if (lens === 'manner') return p.manner || NA_LABEL;
     return p.platform || 'Unknown';
+  }
+
+  function dimValue(p, dim) { return dim === 'reach' ? p.tier : dim === 'cohort' ? p.cohort : groupValue(p, dim); }
+
+  /* Side-by-side figures for every group along one dimension, largest first. */
+  function compareGroups(profiles, dim, k) {
+    var g = {};
+    profiles.forEach(function (p) {
+      if (p.org) return;
+      var v = dimValue(p, dim);
+      if (!v || v === NA_LABEL) return;
+      var e = g[v] || (g[v] = { label: v, n: 0, moods: [0, 0, 0], acts: {}, received: 0, posts: 0, original: 0, tags: new Map(), manners: new Map() });
+      e.n++; e.posts += p.posts; e.received += p.received; e.original += p.posts - (p.acts.repost || 0);
+      e.moods[0] += p.moods[0]; e.moods[1] += p.moods[1]; e.moods[2] += p.moods[2];
+      Object.keys(p.acts).forEach(function (a) { e.acts[a] = (e.acts[a] || 0) + p.acts[a]; });
+      p.tags.forEach(function (t) { inc(e.tags, t); });
+      if (p.manner) inc(e.manners, p.manner);
+    });
+    return Object.keys(g).map(function (k2) { return g[k2]; }).filter(function (e) { return e.n >= k; }).map(function (e) {
+      var t = 0; Object.keys(e.acts).forEach(function (a) { t += e.acts[a]; });
+      e.moodN = e.moods[0] + e.moods[1] + e.moods[2]; e.net = moodNet(e.moods); e.pos = pct(e.moods[0], e.moodN); e.neu = pct(e.moods[1], e.moodN); e.neg = pct(e.moods[2], e.moodN);
+      e.actTotal = t; e.replyShare = pct((e.acts.reply || 0) + (e.acts.quote || 0), t); e.passShare = pct((e.acts.repost || 0) + (e.acts.share || 0), t); e.postShare = pct(e.acts.post || 0, t);
+      e.reactions = e.original ? Math.round(100 * e.received / e.original) / 100 : 0;
+      e.perPerson = Math.round(10 * e.posts / e.n) / 10;
+      e.manner = modeOf(e.manners);
+      return e;
+    }).sort(function (a, b) { return b.n - a.n; });
   }
 
   function mapGroups(profiles, lens, k) {
@@ -360,24 +528,120 @@
       var sub = analyse(rows.filter(function (r) { return (r.platform || 'Unknown') === p; }), k);
       out.byPlatform[p] = { audience: sub.audience, language: sub.language, region: sub.region, interest: sub.interest };
     });
-    out.insights = insights(out);
+    out.notes = fieldNotes(out);
     return out;
   }
 
-  function insights(s) {
-    var lines = [];
-    if (!s.audience) return ['No audience profiles in this selection.'];
-    var topReg = s.region.items.filter(function (i) { return !i.grouped; })[0];
-    if (topReg && topReg.share < 99.9) lines.push(topReg.label + ' is the largest region, at ' + topReg.share + '% of profiles that state a location (' + s.coverage.location + '% of profiles do).');
-    var topLang = s.language.items.filter(function (i) { return !i.grouped; })[0];
-    if (topLang) lines.push(topLang.label + ' is the most common language (' + topLang.share + '%). ' + s.nonEnglishShare + '% of profiles with a known language use something other than plain English.');
-    var topInt = s.interest.items.filter(function (i) { return !i.grouped; })[0];
-    if (topInt) lines.push('The leading professional interest is ' + topInt.label + ' (' + topInt.share + '% of profiles with an interest cue; users can have more than one).');
-    if (s.segments.length) lines.push('Largest audience segment: ' + s.segments[0].interest + ' in ' + s.segments[0].region + ', mostly ' + s.segments[0].language + '.');
-    return lines;
+  /* ------------------------------------------------------------ Field notes */
+  // Short, specific observations written from the numbers on screen. Each note has a
+  // kicker (what it is about), a big figure, a headline and one supporting line.
+
+  function topItems(d) { return d.items.filter(function (i) { return !i.grouped; }); }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  function busiestWindow(hours, width) {
+    var total = 0, i, best = 0, bestSum = -1, quiet = 0;
+    for (i = 0; i < 24; i++) total += hours[i];
+    for (i = 0; i < 24; i++) {
+      var s = 0, j;
+      for (j = 0; j < width; j++) s += hours[(i + j) % 24];
+      if (s > bestSum) { bestSum = s; best = i; }
+      if (hours[i] < hours[quiet]) quiet = i;
+    }
+    return { start: best, share: pct(bestSum, total), quiet: quiet, total: total };
   }
 
-  /* Flat rows for the "Export aggregates" button and make_summary.js. */
+  function fieldNotes(s) {
+    var notes = [], k = s.k || K_MIN;
+    if (!s.audience) return notes;
+
+    var reg = topItems(s.region);
+    if (reg.length && reg[0].share < 99.9) {
+      notes.push({
+        key: 'territory', kicker: 'Home turf', fig: reg[0].share, unit: '%', ring: reg[0].share, headline: reg[0].label,
+        text: (reg[1] ? reg[1].label + ' follows at ' + reg[1].share + '%. ' : '') + s.coverage.location + '% of profiles say where they are.'
+      });
+    }
+
+    var langs = topItems(s.language), beyond = langs.filter(function (i) { return i.label !== 'English'; });
+    if (s.language.known && beyond.length && s.nonEnglishShare > 0 && s.nonEnglishShare < 100) {
+      notes.push({
+        key: 'tongues', kicker: 'Beyond English', fig: s.nonEnglishShare, unit: '%', ring: s.nonEnglishShare, headline: 'write in another tongue',
+        text: beyond[0].label + ' leads that chorus at ' + beyond[0].share + '%, among ' + langs.length + (s.language.items.some(function (i) { return i.grouped; }) ? '+' : '') + ' languages heard.'
+      });
+    }
+
+    var ints = topItems(s.interest);
+    if (ints.length && ints[0].share < 99.9) {
+      notes.push({
+        key: 'calling', kicker: 'Loudest calling', fig: ints[0].share, unit: '%', ring: ints[0].share, headline: ints[0].label,
+        text: s.interest.unknown ? s.interest.unknown + ' profiles leave their work and hobbies unsaid.' : 'Every bio gives at least one clue.'
+      });
+    }
+
+    var hrTotal = 0; s.hours.forEach(function (v) { hrTotal += v; });
+    if (hrTotal >= k * 3) {
+      var w = busiestWindow(s.hours, 3);
+      notes.push({
+        key: 'rhythm', kicker: 'Rush hour', fig: w.share, unit: '%', ring: w.share,
+        headline: 'of posts land between ' + pad2(w.start) + ':00 and ' + pad2((w.start + 3) % 24) + ':00 UTC',
+        text: 'The sky is quietest around ' + pad2(w.quiet) + ':00 UTC.'
+      });
+    }
+
+    if (s.reach.known >= k) {
+      var small = s.reach.items[0].n + s.reach.items[1].n, big = s.reach.items[3].n + s.reach.items[4].n, huge = s.reach.items[4].n;
+      notes.push({
+        key: 'reach', kicker: 'Small voices', fig: pct(small, s.reach.known), unit: '%', ring: pct(small, s.reach.known), headline: 'have fewer than 1,000 followers',
+        text: pct(big, s.reach.known) + '% cross 10K' + (huge >= k ? ', and ' + pct(huge, s.reach.known) + '% pass 100K.' : '.')
+      });
+    }
+
+    if (s.tenure.known >= k) {
+      var fresh = s.tenure.items[5].n, old = s.tenure.items[0].n;
+      notes.push({
+        key: 'tenure', kicker: 'Fresh arrivals', fig: pct(fresh, s.tenure.known), unit: '%', ring: pct(fresh, s.tenure.known), headline: 'opened their account in 2024 or later',
+        text: pct(old, s.tenure.known) + '% have been around since 2015 or earlier.'
+      });
+    }
+
+    if (s.words.length) {
+      var wd = s.words[0], wd2 = s.words[1];
+      notes.push({
+        key: 'vocab', kicker: 'Signature word', fig: wd.share, unit: '%', ring: wd.share, headline: 'of bios say “' + wd.word + '”',
+        text: wd2 ? 'The runner-up is “' + wd2.word + '”. Tap any word in the vocabulary plate to light up its owners.' : 'Tap it in the vocabulary plate to light up its owners.'
+      });
+    }
+
+    var ages = topItems(s.age);
+    if (ages.length && s.age.known >= k) {
+      notes.push({
+        key: 'seasons', kicker: 'Life seasons', fig: ages[0].share, unit: '%', ring: ages[0].share, headline: 'of bios with a life-stage hint point to ages ' + (AGE_SHORT[ages[0].label] || ages[0].label),
+        text: s.age.unknown + ' bios say nothing about it, so treat this as a faint signal.'
+      });
+    }
+
+    var byMood = s.compare.interest.filter(function (e) { return e.moodN >= 20; }).sort(function (a, b) { return b.net - a.net; });
+    if (byMood.length > 1) {
+      var sun = byMood[0], sour = byMood[byMood.length - 1];
+      notes.push({ key: 'sunny', kicker: 'Sunniest corner', fig: sun.pos, unit: '%', ring: sun.pos, headline: 'of posts from ' + sun.label + ' read as warm', text: 'Across the whole crowd it is ' + pct(s.moods[0], s.moods[0] + s.moods[1] + s.moods[2]) + '%.' });
+      notes.push({ key: 'sour', kicker: 'Sharpest tongue', fig: sour.neg, unit: '%', ring: sour.neg, headline: 'of posts from ' + sour.label + ' read as sour', text: 'The crowd as a whole sits at ' + pct(s.moods[2], s.moods[0] + s.moods[1] + s.moods[2]) + '%.' });
+    }
+    var talk = s.compare.platform.filter(function (e) { return e.actTotal >= 20; }).sort(function (a, b) { return b.replyShare - a.replyShare; });
+    if (talk.length > 1 && (s.acts.reply || s.acts.quote)) {
+      notes.push({ key: 'talk', kicker: 'Chattiest room', fig: talk[0].replyShare, unit: '%', ring: talk[0].replyShare, headline: 'of what happens on ' + talk[0].label + ' is answering someone', text: talk[talk.length - 1].label + ' answers least, at ' + talk[talk.length - 1].replyShare + '%.' });
+    }
+    if (s.tags.length) {
+      var tg = s.tags[0], up = s.compare.region.map(function (e) { var n = e.tags.get(tg.tag) || 0; return { label: e.label, n: n, up: pct(n, e.n) }; }).filter(function (x) { return x.n >= k; }).sort(function (a, b) { return b.up - a.up; })[0];
+      if (up) notes.push({ key: 'fashion', kicker: 'First to wear it', fig: up.up, unit: '%', ring: up.up, headline: 'of ' + up.label + ' picked up ' + tg.tag, text: 'Across everyone, ' + tg.share + '% did.' });
+    }
+    return notes;
+  }
+
+  /* Plain sentences for the saved summary. */
+  function insights(s) { return fieldNotes(s).map(function (n) { return n.kicker + ': ' + n.fig + n.unit + ' ' + n.headline + '. ' + n.text; }); }
+
+  /* Flat rows for "Save this view" and make_summary.js. */
   function toCsvRows(s) {
     var rows = [];
     function add(dimension, d) {
@@ -390,6 +654,13 @@
     add('region', s.region);
     add('professional_interest', s.interest);
     add('age_stage_cue', s.age);
+    add('manner', s.manner);
+    ['positive', 'neutral', 'negative'].forEach(function (m, i) { rows.push(['post_mood', m, s.moods[i], '']); });
+    s.tags.forEach(function (t) { rows.push(['trend_uptake', t.tag, t.n, t.share]); });
+    add('reach_tier', s.reach);
+    add('account_cohort', s.tenure);
+    s.words.slice(0, 30).forEach(function (w) { rows.push(['bio_word', w.word, w.n, w.share]); });
+    s.hours.forEach(function (v, h) { rows.push(['posts_by_hour_utc', pad2(h), v, '']); });
     s.segments.forEach(function (g) { rows.push(['segment', g.region + ' / ' + g.interest + ' / ' + g.language, g.n, '']); });
     return [['dimension', 'category', 'users', 'share_percent']].concat(rows);
   }
@@ -404,12 +675,13 @@
   }
 
   var api = {
-    K_MIN: K_MIN, OTHER_LABEL: OTHER_LABEL, NA_LABEL: NA_LABEL,
+    K_MIN: K_MIN, OTHER_LABEL: OTHER_LABEL, NA_LABEL: NA_LABEL, REACH_TIERS: REACH_TIERS, COHORTS: COHORTS, AGE_SHORT: AGE_SHORT,
     parseCSV: parseCSV, hasProfileColumns: hasProfileColumns, mergeProfileFields: mergeProfileFields,
     classifyRegion: classifyRegion, classifyInterests: classifyInterests, classifyAge: classifyAge,
-    isOrganisation: isOrganisation, inferScript: inferScript, languageLabel: languageLabel,
-    buildProfiles: buildProfiles, aggregate: aggregate, analyse: analyse, mapGroups: mapGroups,
-    groupValue: groupValue, summarize: summarize, insights: insights, toCsvRows: toCsvRows, csvText: csvText
+    isOrganisation: isOrganisation, inferScript: inferScript, languageLabel: languageLabel, bioWords: bioWords,
+    buildProfiles: buildProfiles, aggregate: aggregate, analyse: analyse, mapGroups: mapGroups, hourSums: hourSums,
+    groupValue: groupValue, dimValue: dimValue, compareGroups: compareGroups, summarize: summarize, fieldNotes: fieldNotes, insights: insights, peakHour: peakHour,
+    toCsvRows: toCsvRows, csvText: csvText
   };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.Profiler = api;
